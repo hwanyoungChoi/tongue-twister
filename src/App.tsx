@@ -1,8 +1,15 @@
+import AppEntry from "./containers/AppEntry";
+import AppLayout from "./containers/AppLayout";
+
 function App() {
   return (
-    <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </>
+    <AppLayout>
+      <AppEntry>
+        <main>
+          <h1 className="text-3xl font-one-pop">궁중 숭늉 중</h1>
+        </main>
+      </AppEntry>
+    </AppLayout>
   );
 }
 
