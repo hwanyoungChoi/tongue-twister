@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+## Tongue-twister (TT)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+텅틀려!
 
-Currently, two official plugins are available:
+**"실수 없이 말할 수 있겠어?"**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+<img src="./public/images/thumbnail.png"  width="700" height="370">
 
-## React Compiler
+## 기술 스택
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Frontend**
 
-## Expanding the ESLint configuration
+- Framework: React (Vite)
+- Styling: TailwindCSS
+- State Management: Zustand
+- Animation: Framer Motion & Lottie
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**Infrastructure**
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Deployment: Vercel
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 기술 고려 사항
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**2. App-like UX 구현**
+
+Single Page Architecture: 모든 게임 흐름을 상태(State) 기반으로 관리하여, 페이지 새로고침 없는 매끄러운 화면 전환과 게임 데이터의 연속성 보장.
+
+AppEntry: 스플래시 화면 처리 및 핵심 에셋(폰트, 사운드) 프리로딩 로직을 분리하여 네이티브 앱과 유사한 진입 경험 제공.
+
+**3. 연출 (Interactive UI)**
+
+Framer Motion: 버튼 피드백, 페이지 전환, 바텀시트 모션 등 인터랙션을 통해 게임의 몰입감을 극대화.
+
+Design: Tailwind CSS를 활용하여 피그마 디자인 명세를 100% 반영한 UI 구축.
+
+## Project Structure
+
+```
+src/
+├── assets/           # 폰트, 이미지, 사운드 에셋
+├── components/       # UI 컴포넌트 (ui/Button, common/GameButton 등)
+├── containers/       # 비즈니스 로직이 포함된 뷰 (Splash, GameBoard 등)
+├── hooks/            # useTimer, useSound 등 커스텀 훅
+├── store/            # Zustand 전역 상태 (인원, 점수, 모드 관리)
+├── styles/           # globals.css (Tailwind v4 테마 변수)
+├── types/            # 게임 도메인 타입 정의
+└── utils/            # 사운드 매니저 및 게임 엔진 로직
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Docs
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+- [미팅록](./meetings/)
+- [AI 컨텍스트](./gemini.md)
