@@ -49,5 +49,4 @@ src/
 
 ## Docs
 
-- [미팅록](./meetings/)
 - [AI 컨텍스트](./gemini.md)
