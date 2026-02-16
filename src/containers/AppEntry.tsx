@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import ImageLogo from "../assets/images/logo.png";
-import ImageSplash2 from "../assets/images/splash-2.png";
+import ImageLogo from "@/assets/images/logo.png";
+import ImageSplash2 from "@/assets/images/splash-2.png";
 
 export default function AppEntry({ children }: { children: React.ReactNode }) {
   const [splashStep, setSplashStep] = useState(0); // 0: first splash, 1: seconds splash, 2: done

@@ -1,4 +1,4 @@
-import useGameStore, { GameStep } from "../../stores/useGameStore";
+import useGameStore, { GameStep } from "@/stores/useGameStore";
 import GameLobby from "./GameLobby";
 import GamePlay from "./GamePlay";
 
