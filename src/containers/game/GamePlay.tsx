@@ -1,8 +1,26 @@
+import useGameStore from "@/stores/useGameStore";
+
 export default function GamePlay() {
+  const backStep = useGameStore((state) => state.backStep);
+
+  const { currentStep, players, penalty, levelOfDifficulty, playType } =
+    useGameStore((state) => state);
+
   return (
     <div>
-      인원 별 시작 스플래시, 타이머 노출되고, 설정에 따른 게임 진행이
-      이뤄집니다.
+      <button onClick={backStep}>뒤로가기</button>
+      <ul>
+        <li>
+          players:{" "}
+          {players.map((p, i) => (
+            <div key={i}>{p}</div>
+          ))}
+        </li>
+        <li>currentStep: {currentStep}</li>
+        <li>penalty: {penalty}</li>
+        <li>levelOfDifficulty: {levelOfDifficulty}</li>
+        <li>playType: {playType}</li>
+      </ul>
     </div>
   );
 }

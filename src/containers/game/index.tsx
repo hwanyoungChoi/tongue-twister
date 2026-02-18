@@ -5,10 +5,16 @@ import GamePlay from "./GamePlay";
 export default function Game() {
   const currentStep = useGameStore((state) => state.currentStep);
 
-  return (
-    <>
-      {currentStep === GameStep.LOBBY && <GameLobby />}
-      {currentStep === GameStep.PLAY && <GamePlay />}
-    </>
-  );
+  const renderGame = () => {
+    switch (currentStep) {
+      case GameStep.LOBBY:
+        return <GameLobby />;
+      case GameStep.PLAY:
+        return <GamePlay />;
+      default:
+        return null;
+    }
+  };
+
+  return renderGame();
 }
