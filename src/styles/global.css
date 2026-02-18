@@ -142,4 +142,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  html {
+    /* 16px을 기본 폰트 크기로 고정 */
+    font-size: 16px;
+  }
 }
