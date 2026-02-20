@@ -9,7 +9,7 @@ import {
   DrawerFooter,
 } from "@/components/ui/drawer";
 
-interface BottomSheetProps {
+export interface BottomSheetProps {
   open: boolean;
   close: () => void;
   dismissible?: boolean;

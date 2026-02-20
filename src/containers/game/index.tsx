@@ -1,6 +1,6 @@
 import useGameStore, { GameStep } from "@/stores/useGameStore";
-import GameLobby from "./GameLobby";
-import GamePlay from "./GamePlay";
+import GameLobby from "./lobby";
+import GamePlay from "./play";
 
 export default function Game() {
   const currentStep = useGameStore((state) => state.currentStep);
