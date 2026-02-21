@@ -48,4 +48,4 @@
 - **컴포넌트**:
   - `components/ui`: 기능 위주의 순수 컴포넌트 (스타일 최소화).
   - `components/common`: 프로젝트 디자인 명세가 반영된 확장 컴포넌트 (GameButton, GameSwitch 등).
-- **스택**: React + Vite 기반 (CSR), Tailwind CSS v4 스타일링 적용. 단일 페이지(Single Page Application) 구조로 개발하며, 모든 화면 전환은 상태(State) 기반으로 처리함.
+- **스택**: React + Vite 기반 (CSR), Tailwind CSS v4 스타일링 적용. 단일 페이지(Single Page Application) 구조로 개발하며, 게임 컴포넌트 내의 모든 화면 전환은 `react-router-dom`을 사용하여 처리함.

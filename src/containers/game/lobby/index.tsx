@@ -23,9 +23,12 @@ import PlayersBottomSheet from "./components/PlayersBottomSheet";
 import ShadowBox from "./components/ShadowBox";
 import Header from "@/components/common/Header";
 import FixedBottom from "@/components/common/FixedBottom";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "@/lib/routes";
 
 export default function GameLobby() {
-  const nextStep = useGameStore((state) => state.nextStep);
+  const navigate = useNavigate();
+
   const players = useGameStore((state) => state.players);
   const penalty = useGameStore((state) => state.penalty);
   const levelOfDifficulty = useGameStore((state) => state.levelOfDifficulty);
@@ -172,7 +175,11 @@ export default function GameLobby() {
       </div>
 
       <FixedBottom>
-        <Button variant="primary" size="md" onClick={nextStep}>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => navigate(ROUTES.PLAY_TYPE_SETUP)}
+        >
           게임 시작
         </Button>
       </FixedBottom>

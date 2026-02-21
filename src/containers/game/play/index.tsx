@@ -1,20 +1,15 @@
 import useGameStore from "@/stores/useGameStore";
+import { useNavigate } from "react-router-dom";
 
 export default function GamePlay() {
-  const backStep = useGameStore((state) => state.backStep);
+  const navigate = useNavigate();
 
-  const {
-    currentStep,
-    players,
-    penalty,
-    levelOfDifficulty,
-    playType,
-    playTime,
-  } = useGameStore((state) => state);
+  const { players, penalty, levelOfDifficulty, playType, playTime } =
+    useGameStore((state) => state);
 
   return (
     <div>
-      <button onClick={backStep}>뒤로가기</button>
+      <button onClick={() => navigate(-1)}>뒤로가기</button>
       <ul>
         <li>
           players:{" "}
@@ -22,7 +17,6 @@ export default function GamePlay() {
             <div key={i}>{p}</div>
           ))}
         </li>
-        <li>currentStep: {currentStep}</li>
         <li>penalty: {penalty}</li>
         <li>levelOfDifficulty: {levelOfDifficulty}</li>
         <li>playType: {playType}</li>

@@ -6,6 +6,8 @@ import Header from "@/components/common/Header";
 import FixedBottom from "@/components/common/FixedBottom";
 
 import ImageIntroCharacter from "@/assets/images/intro-character.png";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "@/lib/routes";
 
 export default function GamePlayTypeSetup() {
   const playType = useGameStore((state) => state.playType);
@@ -23,7 +25,7 @@ export default function GamePlayTypeSetup() {
 const TIME_OPTIONS = [10, 15, 20, 30, 40];
 
 function TimerSetup() {
-  const nextStep = useGameStore((state) => state.nextStep);
+  const navigate = useNavigate();
 
   const playTime = useGameStore((state) => state.playTime);
   const setPlayTime = useGameStore((state) => state.setPlayTime);
@@ -52,7 +54,11 @@ function TimerSetup() {
       </div>
 
       <FixedBottom>
-        <Button variant="primary" size="md" onClick={nextStep}>
+        <Button
+          variant="primary"
+          size="md"
+          onClick={() => navigate(ROUTES.PLAY)}
+        >
           진짜 게임 시작
         </Button>
       </FixedBottom>
@@ -61,15 +67,15 @@ function TimerSetup() {
 }
 
 function ConscienceSetup() {
-  const nextStep = useGameStore((state) => state.nextStep);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      nextStep();
+      navigate(ROUTES.PLAY);
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [nextStep]);
+  }, [navigate]);
 
   return (
     <div className="flex flex-[1] flex-col items-center justify-center font-one-pop bg-white">

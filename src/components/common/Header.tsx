@@ -2,10 +2,10 @@ import ImageLogo from "@/assets/images/logo.png";
 
 import IconArrowLeft from "@/assets/icons/arrow_left.svg?react";
 
-import useGameStore from "@/stores/useGameStore";
 import { useState } from "react";
 import { Popup, type PopupProps } from "./Popup";
 import { Switch } from "../ui/switch";
+import { useNavigate } from "react-router-dom";
 
 type Header = "main" | "back" | "playing" | "finished";
 
@@ -52,11 +52,11 @@ function MainHeaderContent() {
 }
 
 function BackHeaderContent() {
-  const backStep = useGameStore((state) => state.backStep);
+  const navigate = useNavigate();
 
   return (
     <header className="h-[48px] px-[16px] flex items-center">
-      <button onClick={backStep}>
+      <button onClick={() => navigate(-1)}>
         <IconArrowLeft width={32} height={32} />
       </button>
     </header>
