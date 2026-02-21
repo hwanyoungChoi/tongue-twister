@@ -8,7 +8,7 @@ import {
 
 import IconX from "@/assets/icons/x.svg?react";
 
-interface PopupProps {
+export interface PopupProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   title: string;

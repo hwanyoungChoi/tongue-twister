@@ -3,8 +3,14 @@ import useGameStore from "@/stores/useGameStore";
 export default function GamePlay() {
   const backStep = useGameStore((state) => state.backStep);
 
-  const { currentStep, players, penalty, levelOfDifficulty, playType } =
-    useGameStore((state) => state);
+  const {
+    currentStep,
+    players,
+    penalty,
+    levelOfDifficulty,
+    playType,
+    playTime,
+  } = useGameStore((state) => state);
 
   return (
     <div>
@@ -20,6 +26,7 @@ export default function GamePlay() {
         <li>penalty: {penalty}</li>
         <li>levelOfDifficulty: {levelOfDifficulty}</li>
         <li>playType: {playType}</li>
+        <li>playTime: {playTime}</li>
       </ul>
     </div>
   );
