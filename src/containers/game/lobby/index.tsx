@@ -22,6 +22,7 @@ import PenaltyBottomSheet from "./components/PenaltyBottomSheet";
 import PlayersBottomSheet from "./components/PlayersBottomSheet";
 import ShadowBox from "./components/ShadowBox";
 import Header from "@/components/common/Header";
+import FixedBottom from "@/components/common/FixedBottom";
 
 export default function GameLobby() {
   const nextStep = useGameStore((state) => state.nextStep);
@@ -46,7 +47,7 @@ export default function GameLobby() {
       <div className="bg-[#F8FAFA] flex flex-col min-h-dvh">
         <Header type="main" />
 
-        <div className="px-[16px] mt-[17px]">
+        <div className="px-[16px] mt-[17px] pb-[120px]">
           <div className="space-y-[12px]">
             <ShadowBox>
               <div className="flex items-center justify-between ">
@@ -170,11 +171,11 @@ export default function GameLobby() {
         </div>
       </div>
 
-      <div className="sticky bottom-0 pb-[24px] px-[16px] w-full max-w-[480px] min-w-[375px]">
+      <FixedBottom>
         <Button variant="primary" size="md" onClick={nextStep}>
           게임 시작
         </Button>
-      </div>
+      </FixedBottom>
 
       <PenaltyBottomSheet
         open={openPenalty}
