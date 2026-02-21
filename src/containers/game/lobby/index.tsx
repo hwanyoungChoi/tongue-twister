@@ -3,7 +3,6 @@ import useGameStore, {
   GamePlayType,
 } from "@/stores/useGameStore";
 
-import ImageLogo from "@/assets/images/logo.png";
 import ImageModeLong from "@/assets/images/lobby/mode_long.png";
 import ImageModeLongDisabled from "@/assets/images/lobby/mode_long_disabled.png";
 import ImageModeShort from "@/assets/images/lobby/mode_short.png";
@@ -21,6 +20,8 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import PenaltyBottomSheet from "./components/PenaltyBottomSheet";
 import PlayersBottomSheet from "./components/PlayersBottomSheet";
+import ShadowBox from "./components/ShadowBox";
+import Header from "@/components/common/Header";
 
 export default function GameLobby() {
   const nextStep = useGameStore((state) => state.nextStep);
@@ -43,34 +44,29 @@ export default function GameLobby() {
   return (
     <>
       <div className="bg-[#F8FAFA] flex flex-col min-h-dvh">
-        <header className="h-[48px] py-[7px] px-[20px] flex items-center justify-between">
-          <img src={ImageLogo} alt="팅틀러 로고" className="w-[78px] h-auto" />
-
-          <div className="font-bold text-[#4A4A4A] text-[15px] flex gap-[20px]">
-            <button>게임방법</button>
-            <button>설정</button>
-          </div>
-        </header>
+        <Header type="main" />
 
         <div className="px-[16px] mt-[17px]">
           <div className="space-y-[12px]">
-            <div className="bg-white p-[16px] rounded-[16px] flex items-center justify-between shadow-[0_0_10px_0_rgba(0,0,0,0.08)]">
-              <div className="font-bold text-[#4A4A4A] text-[16px]">
-                게임 인원/닉네임
+            <ShadowBox>
+              <div className="flex items-center justify-between ">
+                <div className="font-bold text-[#4A4A4A] text-[16px]">
+                  게임 인원/닉네임
+                </div>
+                <button
+                  className="font-one-pop text-[#F571A2] text-[18px] flex items-center"
+                  onClick={() => setOpenPlayers(true)}
+                >
+                  {players.length}명
+                  <IconChevronRight
+                    className="text-[#F571A2]"
+                    width={20}
+                    height={20}
+                  />
+                </button>
               </div>
-              <button
-                className="font-one-pop text-[#F571A2] text-[18px] flex items-center"
-                onClick={() => setOpenPlayers(true)}
-              >
-                {players.length}명
-                <IconChevronRight
-                  className="text-[#F571A2]"
-                  width={20}
-                  height={20}
-                />
-              </button>
-            </div>
-            <div className="bg-white p-[16px] rounded-[16px] shadow-[0_0_10px_0_rgba(0,0,0,0.08)]">
+            </ShadowBox>
+            <ShadowBox>
               <div className="flex items-center justify-between ">
                 <div className="font-bold text-[#4A4A4A] text-[16px] flex items-center gap-[4px]">
                   벌칙 설정
@@ -91,8 +87,8 @@ export default function GameLobby() {
                   </p>
                 </>
               )}
-            </div>
-            <div className="bg-white p-[16px] rounded-[16px] shadow-[0_0_10px_0_rgba(0,0,0,0.08)]">
+            </ShadowBox>
+            <ShadowBox>
               <div className="flex items-center justify-between">
                 <div className="font-bold text-[#4A4A4A] text-[16px]">
                   문구 길이
@@ -102,7 +98,7 @@ export default function GameLobby() {
                 </div>
               </div>
               <div className="mt-[12px] mb-[8px] flex gap-[8px]">
-                <div
+                <button
                   className="w-full"
                   onClick={() =>
                     setLevelOfDifficulty(GameLevelOfDifficulty.Long)
@@ -112,8 +108,8 @@ export default function GameLobby() {
                     src={isLong ? ImageModeLong : ImageModeLongDisabled}
                     alt={isLong ? "긴 문장 모드" : "긴 문장 모드 비활성"}
                   />
-                </div>
-                <div
+                </button>
+                <button
                   className="w-full"
                   onClick={() =>
                     setLevelOfDifficulty(GameLevelOfDifficulty.Short)
@@ -123,15 +119,15 @@ export default function GameLobby() {
                     src={!isLong ? ImageModeShort : ImageModeShortDisabled}
                     alt={!isLong ? "짧은 문장 모드" : "짧은 문장 모드 비활성화"}
                   />
-                </div>
+                </button>
               </div>
               <p className="text-center text-[#8C8C8C] text-[13px] font-[500]">
                 {isLong
                   ? "복잡하고 길어서 혀가 꼬일 수 있어!"
                   : "짧은 단어라도 혀가 꼬이기도 하지!"}
               </p>
-            </div>
-            <div className="bg-white p-[16px] rounded-[16px] shadow-[0_0_10px_0_rgba(0,0,0,0.08)]">
+            </ShadowBox>
+            <ShadowBox>
               <div className="flex items-center justify-between">
                 <div className="font-bold text-[#4A4A4A] text-[16px]">
                   진행 방식
@@ -141,7 +137,7 @@ export default function GameLobby() {
                 </div>
               </div>
               <div className="mt-[12px] mb-[8px] flex gap-[8px]">
-                <div
+                <button
                   className="w-full"
                   onClick={() => setPlayType(GamePlayType.Timer)}
                 >
@@ -149,8 +145,8 @@ export default function GameLobby() {
                     src={isTimer ? ImageModeTimer : ImageModeTimerDisabled}
                     alt={isTimer ? "타이머 모드" : "타이머 모드 비활성"}
                   />
-                </div>
-                <div
+                </button>
+                <button
                   className="w-full"
                   onClick={() => setPlayType(GamePlayType.Conscience)}
                 >
@@ -162,14 +158,14 @@ export default function GameLobby() {
                     }
                     alt={!isTimer ? "양심 모드" : "양심 모드 비활성화"}
                   />
-                </div>
+                </button>
               </div>
               <p className="text-center text-[#8C8C8C] text-[13px] font-[500]">
                 {isTimer
                   ? "제한 시간 안에 꼬이지 않고 빠르게 읽는 거야!"
                   : "잘 읽었다면 성공, 혀가 꼬였으면 실패! 양심에 맡겨봐!"}
               </p>
-            </div>
+            </ShadowBox>
           </div>
         </div>
       </div>
