@@ -3,11 +3,11 @@ import AppLayout from "./containers/AppLayout";
 import Game from "./containers/game";
 
 function App() {
-  const buildDate = new Date(__APP_BUILD_DATE__).toLocaleString();
+  const buildDate = new Date(__APP_BUILD_DATE__).toLocaleDateString();
 
   return (
     <div className="relative">
-      <div className="absolute bottom-2 left-2 text-xs text-gray-500">
+      <div className="absolute top-0 left-0 text-xs text-gray-500">
         Build Date👅: {buildDate}
       </div>
       <AppLayout>
