@@ -6,6 +6,8 @@ import Header from "@/components/common/Header";
 import FixedBottom from "@/components/common/FixedBottom";
 
 import ImageIntroCharacter from "@/assets/images/intro-character.png";
+import IconCheckCircleFill from "@/assets/icons/check_circle_fill.svg?react";
+
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
 
@@ -39,18 +41,22 @@ function TimerSetup() {
         <br />몇 초안에 읽을래?
       </h1>
       <div className="space-y-[12px] px-[24px]">
-        {TIME_OPTIONS.map((option) => (
-          <button
-            key={option}
-            className={`
-              w-full flex items-center rounded-[12px] px-[16px] h-[56px] font-one-pop text-[20px]
-              ${playTime === option ? "bg-white text-[#1F1F1F] border-[2px] border-[#1F1F1F]" : "bg-[#F5F5F5] text-[#BDBDBD] active:bg-[#E5E5E5]"}
+        {TIME_OPTIONS.map((option) => {
+          const isSelected = playTime === option;
+
+          return (
+            <button
+              key={option}
+              className={`
+              w-full flex items-center justify-between rounded-[12px] px-[16px] h-[56px] font-one-pop text-[20px]
+              ${isSelected ? "bg-white text-[#1F1F1F] border-[2px] border-[#1F1F1F]" : "bg-[#F5F5F5] text-[#BDBDBD] active:bg-[#E5E5E5]"}
             `}
-            onClick={() => setPlayTime(option)}
-          >
-            {option}초
-          </button>
-        ))}
+              onClick={() => setPlayTime(option)}
+            >
+              {option}초{isSelected && <IconCheckCircleFill />}
+            </button>
+          );
+        })}
       </div>
 
       <FixedBottom>
