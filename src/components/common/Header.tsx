@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Popup, type PopupProps } from "./Popup";
 import { Switch } from "../ui/switch";
 import { useNavigate } from "react-router-dom";
+import useAppStore from "@/stores/useAppStore";
 
 type Header = "main" | "back" | "playing" | "finished";
 
@@ -81,8 +82,11 @@ function SettingPopup({
   open,
   onOpenChange,
 }: Pick<PopupProps, "open" | "onOpenChange">) {
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [bgmEnabled, setBgmEnabled] = useState(false);
+  const soundEnabled = useAppStore((state) => state.soundEnabled);
+  const setSoundEnabled = useAppStore((state) => state.setSoundEnabled);
+
+  const bgmEnabled = useAppStore((state) => state.bgmEnabled);
+  const setBgmEnabled = useAppStore((state) => state.setBgmEnabled);
 
   return (
     <Popup open={open} onOpenChange={onOpenChange} title="설정">
