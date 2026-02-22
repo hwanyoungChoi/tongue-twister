@@ -84,7 +84,7 @@ function ConscienceSetup() {
   }, [navigate]);
 
   return (
-    <div className="flex flex-[1] flex-col items-center justify-center font-one-pop bg-white">
+    <div className="flex flex-[1] flex-col items-center justify-center font-one-pop bg-white -mt-[48px]">
       <h1 className="text-center text-[28px] text-[#1F1F1F] font-one-pop">
         친구가 잘 읽었는지
         <br />
