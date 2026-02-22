@@ -184,15 +184,9 @@ export default function GameLobby() {
         </Button>
       </FixedBottom>
 
-      <PenaltyBottomSheet
-        open={openPenalty}
-        close={() => setOpenPenlaty(false)}
-      />
+      <PenaltyBottomSheet open={openPenalty} onOpenChange={setOpenPenlaty} />
 
-      <PlayersBottomSheet
-        open={openPlayers}
-        close={() => setOpenPlayers(false)}
-      />
+      <PlayersBottomSheet open={openPlayers} onOpenChange={setOpenPlayers} />
     </>
   );
 }

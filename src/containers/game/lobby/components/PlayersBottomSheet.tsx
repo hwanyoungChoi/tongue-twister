@@ -11,8 +11,8 @@ import { useState } from "react";
 
 export default function PlayersBottomSheet({
   open,
-  close,
-}: Pick<BottomSheetProps, "open" | "close">) {
+  onOpenChange,
+}: Pick<BottomSheetProps, "open" | "onOpenChange">) {
   const players = useGameStore((state) => state.players);
   const setPlayers = useGameStore((state) => state.setPlayers);
 
@@ -38,8 +38,8 @@ export default function PlayersBottomSheet({
   return (
     <BottomSheet
       open={open}
-      close={close}
-      dismissible={false}
+      onOpenChange={onOpenChange}
+      fixed
       title="게임 인원/닉네임 설정"
       content={
         <div className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide max-h-[258px] min-h-[258px]">
@@ -82,7 +82,7 @@ export default function PlayersBottomSheet({
           size="sm"
           onClick={() => {
             setPlayers(inputPlayers);
-            close();
+            onOpenChange(false);
           }}
         >
           적용하기

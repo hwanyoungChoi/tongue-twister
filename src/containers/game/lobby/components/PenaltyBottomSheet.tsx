@@ -8,8 +8,8 @@ import { useState } from "react";
 
 export default function PenaltyBottomSheet({
   open,
-  close,
-}: Pick<BottomSheetProps, "open" | "close">) {
+  onOpenChange,
+}: Pick<BottomSheetProps, "open" | "onOpenChange">) {
   const penalty = useGameStore((state) => state.penalty);
   const setPenalty = useGameStore((state) => state.setPenalty);
 
@@ -18,8 +18,8 @@ export default function PenaltyBottomSheet({
   return (
     <BottomSheet
       open={open}
-      close={close}
-      dismissible={false}
+      onOpenChange={onOpenChange}
+      fixed
       title="벌칙 적용"
       content={
         <div className="px-5">
@@ -45,7 +45,7 @@ export default function PenaltyBottomSheet({
           size="sm"
           onClick={() => {
             setPenalty(inputPenalty);
-            close();
+            onOpenChange(false);
           }}
           // 삭제할 땐 비워져있는 경우에도 적용하기 버튼 활성화
           disabled={!inputPenalty && !penalty}

@@ -11,8 +11,9 @@ import {
 
 export interface BottomSheetProps {
   open: boolean;
-  close: () => void;
+  onOpenChange: (open: boolean) => void;
   dismissible?: boolean;
+  fixed?: boolean;
   title?: string;
   content?: React.ReactNode;
   footer?: React.ReactNode;
@@ -20,14 +21,20 @@ export interface BottomSheetProps {
 
 export function BottomSheet({
   open,
-  close,
-  dismissible = true,
+  onOpenChange,
+  dismissible,
+  fixed,
   title,
   content,
   footer,
 }: BottomSheetProps) {
   return (
-    <Drawer open={open} dismissible={dismissible}>
+    <Drawer
+      open={open}
+      dismissible={dismissible}
+      fixed={fixed}
+      onOpenChange={onOpenChange}
+    >
       <DrawerContent className="rounded-t-[20px] max-w-[480px] min-w-[375px] mx-auto">
         {/* 헤더: 타이틀 & 닫기 버튼 */}
         <DrawerHeader className="relative flex flex-row items-center justify-between px-[24px] h-[74px]">
@@ -35,10 +42,7 @@ export function BottomSheet({
             {title}
           </DrawerTitle>
           <DrawerClose asChild>
-            <button
-              className="text-gray-400 hover:text-gray-600"
-              onClick={close}
-            >
+            <button className="text-gray-400 hover:text-gray-600">
               <IconX className="w-6 h-6" />
             </button>
           </DrawerClose>
