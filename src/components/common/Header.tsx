@@ -18,11 +18,11 @@ export default function Header({ type }: HeaderProps) {
   const renderHeader = () => {
     switch (type) {
       case "main":
-        return MainHeaderContent();
+        return <MainHeaderContent />;
       case "back":
-        return BackHeaderContent();
+        return <BackHeaderContent />;
       case "playing":
-        return null;
+        return <PlayinHeaderContent />;
       case "finished":
         return null;
       default:
@@ -38,7 +38,7 @@ function MainHeaderContent() {
   const [openSetting, setOpenSetting] = useState(false);
 
   return (
-    <header className="h-[48px] px-[20px] flex items-center justify-between">
+    <header className="h-[48px] px-[20px] flex items-center justify-between sticky top-0 bg-[#F8FAFA]">
       <img src={ImageLogo} alt="팅틀러 로고" className="w-[78px] h-auto" />
 
       <div className="font-bold text-[#4A4A4A] text-[15px] flex gap-[20px]">
@@ -56,10 +56,33 @@ function BackHeaderContent() {
   const navigate = useNavigate();
 
   return (
-    <header className="h-[48px] px-[16px] flex items-center">
+    <header className="h-[48px] px-[16px] flex items-center sticky top-0 bg-white">
       <button onClick={() => navigate(-1)}>
         <IconArrowLeft width={32} height={32} />
       </button>
+    </header>
+  );
+}
+
+function PlayinHeaderContent() {
+  const navigate = useNavigate();
+
+  const [openRule, setOpenRule] = useState(false);
+  const [openSetting, setOpenSetting] = useState(false);
+
+  return (
+    <header className="h-[48px] px-[20px] flex items-center justify-between sticky top-0 bg-[#F8FAFA]">
+      <button onClick={() => navigate(-1)}>
+        <IconArrowLeft width={32} height={32} />
+      </button>
+
+      <div className="font-bold text-[#4A4A4A] text-[15px] flex gap-[20px]">
+        <button onClick={() => setOpenRule(true)}>게임방법</button>
+        <button onClick={() => setOpenSetting(true)}>설정</button>
+      </div>
+
+      <RulePopup open={openRule} onOpenChange={setOpenRule} />
+      <SettingPopup open={openSetting} onOpenChange={setOpenSetting} />
     </header>
   );
 }
