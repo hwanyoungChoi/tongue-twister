@@ -71,7 +71,7 @@ function PlayinHeaderContent() {
   const [openSetting, setOpenSetting] = useState(false);
 
   return (
-    <header className="h-[48px] px-[20px] flex items-center justify-between sticky top-0 bg-[#F8FAFA]">
+    <header className="h-[48px] pl-[16px] pr-[20px] flex items-center justify-between sticky top-0 bg-[#F8FAFA]">
       <button onClick={() => navigate(-1)}>
         <IconArrowLeft width={32} height={32} />
       </button>
