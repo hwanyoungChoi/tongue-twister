@@ -7,6 +7,7 @@ import FixedBottom from "@/components/common/FixedBottom";
 
 import ImageIntroCharacter from "@/assets/images/intro-character.png";
 import IconCheckCircleFill from "@/assets/icons/check_circle_fill.svg?react";
+import IconCheckCircle from "@/assets/icons/check_circle.svg?react";
 
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
@@ -53,7 +54,8 @@ function TimerSetup() {
             `}
               onClick={() => setPlayTime(option)}
             >
-              {option}초{isSelected && <IconCheckCircleFill />}
+              {option}초
+              {isSelected ? <IconCheckCircleFill /> : <IconCheckCircle />}
             </button>
           );
         })}
