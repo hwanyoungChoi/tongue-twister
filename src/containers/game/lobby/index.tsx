@@ -3,14 +3,14 @@ import useGameStore, {
   GamePlayType,
 } from "@/stores/useGameStore";
 
-import ImageModeLong from "@/assets/images/lobby/mode_long.png";
-import ImageModeLongDisabled from "@/assets/images/lobby/mode_long_disabled.png";
-import ImageModeShort from "@/assets/images/lobby/mode_short.png";
-import ImageModeShortDisabled from "@/assets/images/lobby/mode_short_disabled.png";
-import ImageModeTimer from "@/assets/images/lobby/mode_timer.png";
-import ImageModeTimerDisabled from "@/assets/images/lobby/mode_timer_disabled.png";
-import ImageModeConscience from "@/assets/images/lobby/mode_conscience.png";
-import ImageModeConscienceDisabled from "@/assets/images/lobby/mode_conscience_disabled.png";
+import ImageModeLong from "@/assets/images/lobby/mode_long.svg?react";
+import ImageModeLongDisabled from "@/assets/images/lobby/mode_long_disabled.svg?react";
+import ImageModeShort from "@/assets/images/lobby/mode_short.svg?react";
+import ImageModeShortDisabled from "@/assets/images/lobby/mode_short_disabled.svg?react";
+import ImageModeTimer from "@/assets/images/lobby/mode_timer.svg?react";
+import ImageModeTimerDisabled from "@/assets/images/lobby/mode_timer_disabled.svg?react";
+import ImageModeConscience from "@/assets/images/lobby/mode_conscience.svg?react";
+import ImageModeConscienceDisabled from "@/assets/images/lobby/mode_conscience_disabled.svg?react";
 
 import IconChevronRight from "@/assets/icons/chevron_right.svg?react";
 import IconQuestionFill from "@/assets/icons/question_fill.svg?react";
@@ -108,10 +108,11 @@ export default function GameLobby() {
                     setLevelOfDifficulty(GameLevelOfDifficulty.Long)
                   }
                 >
-                  <img
-                    src={isLong ? ImageModeLong : ImageModeLongDisabled}
-                    alt={isLong ? "긴 문장 모드" : "긴 문장 모드 비활성"}
-                  />
+                  {isLong ? (
+                    <ImageModeLong className="w-full h-auto" />
+                  ) : (
+                    <ImageModeLongDisabled className="w-full h-auto" />
+                  )}
                 </button>
                 <button
                   className="w-full"
@@ -119,10 +120,11 @@ export default function GameLobby() {
                     setLevelOfDifficulty(GameLevelOfDifficulty.Short)
                   }
                 >
-                  <img
-                    src={!isLong ? ImageModeShort : ImageModeShortDisabled}
-                    alt={!isLong ? "짧은 문장 모드" : "짧은 문장 모드 비활성화"}
-                  />
+                  {!isLong ? (
+                    <ImageModeShort className="w-full h-auto" />
+                  ) : (
+                    <ImageModeShortDisabled className="w-full h-auto" />
+                  )}
                 </button>
               </div>
               <p className="text-center text-[#8C8C8C] text-[13px] font-[500]">
@@ -145,23 +147,21 @@ export default function GameLobby() {
                   className="w-full"
                   onClick={() => setPlayType(GamePlayType.Timer)}
                 >
-                  <img
-                    src={isTimer ? ImageModeTimer : ImageModeTimerDisabled}
-                    alt={isTimer ? "타이머 모드" : "타이머 모드 비활성"}
-                  />
+                  {isTimer ? (
+                    <ImageModeTimer className="w-full h-auto" />
+                  ) : (
+                    <ImageModeTimerDisabled className="w-full h-auto" />
+                  )}
                 </button>
                 <button
                   className="w-full"
                   onClick={() => setPlayType(GamePlayType.Conscience)}
                 >
-                  <img
-                    src={
-                      !isTimer
-                        ? ImageModeConscience
-                        : ImageModeConscienceDisabled
-                    }
-                    alt={!isTimer ? "양심 모드" : "양심 모드 비활성화"}
-                  />
+                  {!isTimer ? (
+                    <ImageModeConscience className="w-full h-auto" />
+                  ) : (
+                    <ImageModeConscienceDisabled className="w-full h-auto" />
+                  )}
                 </button>
               </div>
               <p className="text-center text-[#8C8C8C] text-[13px] font-[500]">

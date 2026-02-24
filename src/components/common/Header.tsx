@@ -1,4 +1,4 @@
-import ImageLogo from "@/assets/images/logo.png";
+import ImageLogo from "@/assets/images/logo.svg?react";
 
 import IconArrowLeft from "@/assets/icons/arrow_left.svg?react";
 
@@ -38,7 +38,7 @@ function MainHeaderContent() {
 
   return (
     <header className="h-[48px] px-[20px] flex items-center justify-between sticky top-0 bg-[#F8FAFA]">
-      <img src={ImageLogo} alt="팅틀러 로고" className="w-[78px] h-auto" />
+      <ImageLogo className="w-[78px] h-auto" />
 
       <div className="font-bold text-[#4A4A4A] text-[15px] flex gap-[20px]">
         <button onClick={() => setOpenRule(true)}>게임방법</button>

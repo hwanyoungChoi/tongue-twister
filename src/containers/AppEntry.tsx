@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import ImageLogo from "@/assets/images/logo.png";
+import ImageLogo from "@/assets/images/logo.svg?react";
 import LottieSplash from "@/assets/lotties/splash.json";
 
 import Lottie from "lottie-react";
@@ -26,7 +26,7 @@ export default function AppEntry({ children }: { children: React.ReactNode }) {
   if (splashStep === 0) {
     return (
       <div className="min-h-dvh flex flex-col items-center justify-center font-one-pop bg-white">
-        <img src={ImageLogo} alt="텅틀려 로고" className="w-[163px] h-auto" />
+        <ImageLogo className="w-[163px] h-auto" />
       </div>
     );
   }
