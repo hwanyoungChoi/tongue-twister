@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 
 import ImageLogo from "@/assets/images/logo.png";
-import ImageSplash2 from "@/assets/images/splash-2.png";
+import LottieSplash from "@/assets/lotties/splash.json";
+
+import Lottie from "lottie-react";
 
 export default function AppEntry({ children }: { children: React.ReactNode }) {
   const [splashStep, setSplashStep] = useState(0); // 0: first splash, 1: seconds splash, 2: done
@@ -37,9 +39,9 @@ export default function AppEntry({ children }: { children: React.ReactNode }) {
           <br />
           말할 수 있겠어?
         </h1>
-        <img
-          src={ImageSplash2}
-          alt="텅틀려 스플래시 캐릭터"
+        <Lottie
+          animationData={LottieSplash}
+          loop
           className="w-[186px] h-auto mt-[15px]"
         />
       </div>
