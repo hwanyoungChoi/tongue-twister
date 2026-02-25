@@ -50,7 +50,7 @@ function TimerSetup() {
               key={option}
               className={`
               w-full flex items-center justify-between rounded-[12px] px-[16px] h-[56px] font-one-pop text-[20px]
-              ${isSelected ? "bg-white text-[#1F1F1F] border-[2px] border-[#1F1F1F]" : "bg-[#F5F5F5] text-[#BDBDBD] active:bg-[#E5E5E5]"}
+              ${isSelected ? "bg-white text-[#1F1F1F] ring-inset ring-[2px] ring-[#1F1F1F]" : "bg-[#F5F5F5] text-[#BDBDBD] active:bg-[#E5E5E5]"}
             `}
               onClick={() => setPlayTime(option)}
             >
