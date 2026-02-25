@@ -1,4 +1,4 @@
-import useGameStore, { GamePlayType } from "@/stores/useGameStore";
+import useGameStore from "@/stores/useGameStore";
 
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -19,8 +19,8 @@ export default function GamePlayTypeSetup() {
     <div className="min-h-dvh flex flex-col">
       <Header type="back" />
 
-      {playType === GamePlayType.Timer && <TimerSetup />}
-      {playType === GamePlayType.Conscience && <ConscienceSetup />}
+      {playType === "timer" && <TimerSetup />}
+      {playType === "conscience" && <ConscienceSetup />}
     </div>
   );
 }

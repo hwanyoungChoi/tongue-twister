@@ -1,19 +1,5 @@
+import type { GameLevelOfDifficulty, GamePlayType } from "@/types/game";
 import { create } from "zustand";
-
-export const GameLevelOfDifficulty = {
-  Long: 0,
-  Short: 1,
-};
-
-export type GameLevelOfDifficulty =
-  (typeof GameLevelOfDifficulty)[keyof typeof GameLevelOfDifficulty];
-
-export const GamePlayType = {
-  Timer: 0,
-  Conscience: 1,
-};
-
-export type GamePlayType = (typeof GamePlayType)[keyof typeof GamePlayType];
 
 interface GameState {
   /**
@@ -36,7 +22,9 @@ interface GameState {
    * playType이 Timer일 때 사용되는 상태, 게임 타이머
    */
   playTime: number;
+}
 
+interface GameAction {
   setPlayers: (param: string[]) => void;
   setPenalty: (param: string) => void;
   setLevelOfDifficulty: (param: GameLevelOfDifficulty) => void;
@@ -44,10 +32,10 @@ interface GameState {
   setPlayTime: (param: number) => void;
 }
 
-const useGameStore = create<GameState>((set) => ({
+const useGameStore = create<GameState & GameAction>((set) => ({
   players: ["플레이어1", "플레이어2"],
-  levelOfDifficulty: GameLevelOfDifficulty.Long,
-  playType: GamePlayType.Timer,
+  levelOfDifficulty: "long",
+  playType: "timer",
   playTime: 30,
 
   setPlayers: (newState) => set(() => ({ players: newState })),

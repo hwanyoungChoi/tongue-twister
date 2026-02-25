@@ -1,7 +1,4 @@
-import useGameStore, {
-  GameLevelOfDifficulty,
-  GamePlayType,
-} from "@/stores/useGameStore";
+import useGameStore from "@/stores/useGameStore";
 
 import ImageModeLong from "@/assets/images/lobby/mode_long.svg?react";
 import ImageModeLongDisabled from "@/assets/images/lobby/mode_long_disabled.svg?react";
@@ -39,8 +36,8 @@ export default function GameLobby() {
   );
   const setPlayType = useGameStore((state) => state.setPlayType);
 
-  const isLong = levelOfDifficulty === GameLevelOfDifficulty.Long;
-  const isTimer = playType === GamePlayType.Timer;
+  const isLong = levelOfDifficulty === "long";
+  const isTimer = playType === "timer";
 
   const [openPenalty, setOpenPenlaty] = useState(false);
   const [openPlayers, setOpenPlayers] = useState(false);
@@ -104,9 +101,7 @@ export default function GameLobby() {
               <div className="mt-[12px] mb-[8px] flex gap-[8px]">
                 <button
                   className="w-full"
-                  onClick={() =>
-                    setLevelOfDifficulty(GameLevelOfDifficulty.Long)
-                  }
+                  onClick={() => setLevelOfDifficulty("long")}
                 >
                   {isLong ? (
                     <ImageModeLong className="w-full h-auto" />
@@ -116,9 +111,7 @@ export default function GameLobby() {
                 </button>
                 <button
                   className="w-full"
-                  onClick={() =>
-                    setLevelOfDifficulty(GameLevelOfDifficulty.Short)
-                  }
+                  onClick={() => setLevelOfDifficulty("short")}
                 >
                   {!isLong ? (
                     <ImageModeShort className="w-full h-auto" />
@@ -143,10 +136,7 @@ export default function GameLobby() {
                 </div>
               </div>
               <div className="mt-[12px] mb-[8px] flex gap-[8px]">
-                <button
-                  className="w-full"
-                  onClick={() => setPlayType(GamePlayType.Timer)}
-                >
+                <button className="w-full" onClick={() => setPlayType("timer")}>
                   {isTimer ? (
                     <ImageModeTimer className="w-full h-auto" />
                   ) : (
@@ -155,7 +145,7 @@ export default function GameLobby() {
                 </button>
                 <button
                   className="w-full"
-                  onClick={() => setPlayType(GamePlayType.Conscience)}
+                  onClick={() => setPlayType("conscience")}
                 >
                   {!isTimer ? (
                     <ImageModeConscience className="w-full h-auto" />
