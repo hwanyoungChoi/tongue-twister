@@ -10,10 +10,14 @@ import IconTongueGray from "@/assets/icons/tongue_gray.svg?react";
 
 import FixedBottom from "@/components/common/FixedBottom";
 import { GAME_TEXT_LIST } from "@/lib/constants";
+import { useNavigate } from "react-router-dom";
+import ROUTES from "@/lib/routes";
 
 type PlayStep = "INTRO" | "COUNTDOWN" | "GAME";
 
 export default function GamePlay() {
+  const navigate = useNavigate();
+
   const players = useGameStore((state) => state.players);
   const levelOfDifficulty = useGameStore((state) => state.levelOfDifficulty);
   const playType = useGameStore((state) => state.playType);
@@ -39,6 +43,7 @@ export default function GamePlay() {
     } else {
       // 모든 플레이어가 끝났다면 결과 화면(다음 스텝)으로 이동
       // nextStep();
+      navigate(ROUTES.FINISH);
     }
   };
 

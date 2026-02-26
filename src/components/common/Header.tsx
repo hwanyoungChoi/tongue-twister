@@ -23,7 +23,7 @@ export default function Header({ type }: HeaderProps) {
       case "playing":
         return <PlayinHeaderContent />;
       case "finished":
-        return null;
+        return <FinishedHeaderContent />;
       default:
         return null;
     }
@@ -82,6 +82,20 @@ function PlayinHeaderContent() {
 
       <RulePopup open={openRule} onOpenChange={setOpenRule} />
       <SettingPopup open={openSetting} onOpenChange={setOpenSetting} />
+    </header>
+  );
+}
+
+function FinishedHeaderContent() {
+  return (
+    <header className="h-[48px] px-[20px] flex items-center justify-between sticky top-0 bg-[#F8FAFA]">
+      <ImageLogo className="w-[78px] h-auto" />
+      <button
+        className="font-bold text-[#4A4A4A] text-[15px]"
+        onClick={() => alert("추후 제공됩니다.")}
+      >
+        공유하기
+      </button>
     </header>
   );
 }
