@@ -1,6 +1,5 @@
 import { BrowserRouter } from "react-router-dom";
 import AppEntry from "./containers/AppEntry";
-import AppLayout from "./containers/AppLayout";
 import AppRoutes from "./AppRoutes";
 
 function App() {
@@ -12,11 +11,9 @@ function App() {
         <div className="absolute top-0 left-0 text-xs text-gray-500">
           Build Date👅: {buildDate}
         </div>
-        <AppLayout>
-          <AppEntry>
-            <AppRoutes />
-          </AppEntry>
-        </AppLayout>
+        <AppEntry>
+          <AppRoutes />
+        </AppEntry>
       </div>
     </BrowserRouter>
   );
