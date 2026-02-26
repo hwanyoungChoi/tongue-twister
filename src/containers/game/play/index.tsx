@@ -51,7 +51,7 @@ export default function GamePlay() {
     <div
       className={`flex flex-col min-h-dvh ${subStep === "GAME" ? "bg-[#F8FAFA]" : "bg-white -mt-[48px]"}`}
     >
-      <Header type={subStep === "GAME" ? "playing" : "back"} />
+      <Header type={subStep === "GAME" ? "play" : "back"} />
 
       {subStep === "INTRO" && (
         <Intro

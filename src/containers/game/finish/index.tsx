@@ -9,7 +9,7 @@ export default function GameFinish() {
 
   return (
     <div className="min-h-dvh bg-[#F8FAFA]">
-      <Header type="finished" />
+      <Header type="finish" />
 
       <main>
         <p>탈락자 누구누구</p>

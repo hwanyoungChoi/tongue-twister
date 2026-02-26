@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import SettingPopup from "./SettingPopup";
 import RulePopup from "./RulePopup";
 
-type Header = "main" | "back" | "playing" | "finished";
+type Header = "main" | "back" | "play" | "finish";
 
 interface HeaderProps {
   type: Header;
@@ -20,10 +20,10 @@ export default function Header({ type }: HeaderProps) {
         return <MainHeaderContent />;
       case "back":
         return <BackHeaderContent />;
-      case "playing":
-        return <PlayinHeaderContent />;
-      case "finished":
-        return <FinishedHeaderContent />;
+      case "play":
+        return <PlayHeaderContent />;
+      case "finish":
+        return <FinishHeaderContent />;
       default:
         return null;
     }
@@ -63,7 +63,7 @@ function BackHeaderContent() {
   );
 }
 
-function PlayinHeaderContent() {
+function PlayHeaderContent() {
   const navigate = useNavigate();
 
   const [openRule, setOpenRule] = useState(false);
@@ -86,7 +86,7 @@ function PlayinHeaderContent() {
   );
 }
 
-function FinishedHeaderContent() {
+function FinishHeaderContent() {
   return (
     <header className="h-[48px] px-[20px] flex items-center justify-between sticky top-0 bg-[#F8FAFA]">
       <ImageLogo className="w-[78px] h-auto" />
