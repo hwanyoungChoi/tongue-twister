@@ -12,9 +12,11 @@ import ImageModeConscienceDisabled from "@/assets/images/lobby/mode_conscience_d
 import IconChevronRight from "@/assets/icons/chevron_right.svg?react";
 import IconQuestionFill from "@/assets/icons/question_fill.svg?react";
 
+import SoundEffect from "@/assets/sounds/effect.mp3";
+
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PenaltyBottomSheet from "./components/PenaltyBottomSheet";
 import PlayersBottomSheet from "./components/PlayersBottomSheet";
 import ShadowBox from "./components/ShadowBox";
@@ -22,8 +24,22 @@ import Header from "@/components/common/Header";
 import FixedBottom from "@/components/common/FixedBottom";
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
+import useSound from "use-sound";
+import useAppStore from "@/stores/useAppStore";
 
 export default function GameLobby() {
+  const soundEnabled = useAppStore((state) => state.soundEnabled);
+  const [play, { pause }] = useSound(SoundEffect, {
+    soundEnabled,
+    interrupt: true,
+  });
+
+  useEffect(() => {
+    if (!soundEnabled) {
+      pause();
+    }
+  }, [pause, soundEnabled]);
+
   const navigate = useNavigate();
 
   const players = useGameStore((state) => state.players);
@@ -168,7 +184,10 @@ export default function GameLobby() {
         <Button
           variant="primary"
           size="md"
-          onClick={() => navigate(ROUTES.PLAY_TYPE_SETUP)}
+          onClick={() => {
+            navigate(ROUTES.PLAY_TYPE_SETUP);
+            play();
+          }}
         >
           게임 시작
         </Button>

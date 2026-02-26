@@ -3,25 +3,49 @@ import { useEffect, useState } from "react";
 import ImageLogo from "@/assets/images/logo.svg?react";
 import LottieSplash from "@/assets/lotties/splash.json";
 
+import SoundBgm from "@/assets/sounds/bgm.mp3";
+
 import Lottie from "lottie-react";
+import useAppStore from "@/stores/useAppStore";
+import useSound from "use-sound";
 
 export default function AppEntry({ children }: { children: React.ReactNode }) {
   const [splashStep, setSplashStep] = useState(0); // 0: first splash, 1: seconds splash, 2: done
 
+  const bgmEnabled = useAppStore((state) => state.bgmEnabled);
+
+  const [play, { pause }] = useSound(SoundBgm, {
+    loop: true,
+    soundEnabled: bgmEnabled,
+    interrupt: true,
+  });
+
+  useEffect(() => {
+    if (!bgmEnabled) {
+      pause();
+    }
+  }, [bgmEnabled, pause]);
+
   useEffect(() => {
     const timer1 = setTimeout(() => {
       setSplashStep(1);
-    }, 1000);
+    }, 2000);
 
     const timer2 = setTimeout(() => {
       setSplashStep(2);
-    }, 2000);
+    }, 4000);
 
     return () => {
       clearTimeout(timer1);
       clearTimeout(timer2);
     };
   }, []);
+
+  useEffect(() => {
+    if (splashStep === 2) {
+      play();
+    }
+  }, [play, splashStep]);
 
   if (splashStep === 0) {
     return (
