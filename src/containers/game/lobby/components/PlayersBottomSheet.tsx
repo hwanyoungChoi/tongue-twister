@@ -9,6 +9,9 @@ import IconPlusCircleFill from "@/assets/icons/plus_circle_fill.svg?react";
 import useGameStore from "@/stores/useGameStore";
 import { useState } from "react";
 
+const MIN_PLAYER_COUNT = 2;
+const MAX_PLAYER_COUNT = 10;
+
 export default function PlayersBottomSheet({
   open,
   onOpenChange,
