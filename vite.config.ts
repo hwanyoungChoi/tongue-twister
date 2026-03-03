@@ -8,7 +8,7 @@ import path from "path";
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
   define: {
-    __APP_BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+    __APP_BUILD_DATE__: new Date(),
   },
   resolve: {
     alias: {
