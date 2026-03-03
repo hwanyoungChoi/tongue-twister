@@ -10,13 +10,21 @@ import IconTongueGray from "@/assets/icons/tongue_gray.svg?react";
 
 import FixedBottom from "@/components/common/FixedBottom";
 import { GAME_TEXT_LIST } from "@/lib/constants";
-import { useNavigate } from "react-router-dom";
+import { useBlocker, useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
+import ConfirmPopup from "@/components/common/ConfirmPopup";
 
 type PlayStep = "INTRO" | "COUNTDOWN" | "GAME";
 
 export default function GamePlay() {
   const navigate = useNavigate();
+
+  const {
+    state: blockerState,
+    proceed,
+    reset,
+  } = useBlocker(({ historyAction }) => historyAction === "POP");
+  console.log(blockerState);
 
   const players = useGameStore((state) => state.players);
   const levelOfDifficulty = useGameStore((state) => state.levelOfDifficulty);
@@ -48,117 +56,132 @@ export default function GamePlay() {
   };
 
   return (
-    <div
-      className={`flex flex-col min-h-dvh ${subStep === "GAME" ? "bg-[#F8FAFA]" : "bg-white -mt-[48px]"}`}
-    >
-      <Header type={subStep === "GAME" ? "play" : "back"} />
+    <>
+      <div
+        className={`flex flex-col min-h-dvh ${subStep === "GAME" ? "bg-[#F8FAFA]" : "bg-white -mt-[48px]"}`}
+      >
+        <Header type={subStep === "GAME" ? "play" : "back"} />
 
-      {subStep === "INTRO" && (
-        <Intro
-          currentPlayerIndex={currentPlayerIndex}
-          currentPlayerName={currentPlayerName}
-          onNext={() => setSubStep("COUNTDOWN")}
-        />
-      )}
+        {subStep === "INTRO" && (
+          <Intro
+            currentPlayerIndex={currentPlayerIndex}
+            currentPlayerName={currentPlayerName}
+            onNext={() => setSubStep("COUNTDOWN")}
+          />
+        )}
 
-      {subStep === "COUNTDOWN" && (
-        <Countdown onNext={() => setSubStep("GAME")} />
-      )}
+        {subStep === "COUNTDOWN" && (
+          <Countdown onNext={() => setSubStep("GAME")} />
+        )}
 
-      {subStep === "GAME" && (
-        <>
-          <main className="flex-1 flex flex-col px-[16px]">
-            <div className="flex items-center justify-between gap-[8px] h-[72px] bg-white rounded-[1000px] shadow-[0_0_20px_0_rgba(0,0,0,0.05)] pl-[12px] pr-[8px] mb-[16px]">
-              <div className="flex items-center justify-between gap-[8px]">
-                <img src={ImageIntroCharacter} className="w-[48px] h-[48px]" />
-                <div className="flex flex-col justify-center gap-[4px]">
-                  <div className="bg-[#F5F5F5] rounded-[100px] w-fit h-[18px] px-[6px] font-[700] text-[11px] text-[#8C8C8C] flex items-center">
-                    {round}Round
-                  </div>
-                  <p className="text-[19px] text-[#4A4A4A] font-one-pop">
-                    {currentPlayerName}
-                  </p>
-                </div>
-              </div>
-              <div className="flex gap-[4px] items-center h-[58px] bg-[#F8FAFA] rounded-[10000px] px-[10px]">
-                <div className="flex flex-col justify-center gap-[2px] w-[48px]">
-                  <p className="font-[600] text-[12px] text-[#8C8C8C] text-center">
-                    점수
-                  </p>
-                  <p className="text-[18px] text-[#F571A2] text-center font-one-pop">
-                    0
-                  </p>
-                </div>
-                <div className="border" />
-                <div className="flex flex-col justify-center gap-[2px] w-[80px]">
-                  <p className="font-[600] text-[12px] text-[#8C8C8C] text-center">
-                    남은 기회
-                  </p>
-                  <div className="flex gap-[2px] items-center justify-center">
-                    <IconTongue />
-                    <IconTongueGray />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="w-full h-[457px] pt-[40px] pb-[20px] px-[20px] bg-white rounded-[24px] shadow-[0_10px_40px_0_rgba(0,0,0,0.1)]">
-              <div className="h-full flex flex-col justify-between items-center text-center">
-                {playType === "timer" && (
-                  <>
-                    <div className="w-full px-[32px]">
-                      <div className="h-[12px] bg-[#F571A2] rounded-[100px] mb-[8px]" />
-                      <div className="flex gap-[4px] items-center justify-center">
-                        <IconAlarmClockFill width={16} height={16} />{" "}
-                        <p className="text-[13px] text-[#8C8C8C] font-one-pop">
-                          0:{playTime}
-                        </p>
-                      </div>
+        {subStep === "GAME" && (
+          <>
+            <main className="flex-1 flex flex-col px-[16px]">
+              <div className="flex items-center justify-between gap-[8px] h-[72px] bg-white rounded-[1000px] shadow-[0_0_20px_0_rgba(0,0,0,0.05)] pl-[12px] pr-[8px] mb-[16px]">
+                <div className="flex items-center justify-between gap-[8px]">
+                  <img
+                    src={ImageIntroCharacter}
+                    className="w-[48px] h-[48px]"
+                  />
+                  <div className="flex flex-col justify-center gap-[4px]">
+                    <div className="bg-[#F5F5F5] rounded-[100px] w-fit h-[18px] px-[6px] font-[700] text-[11px] text-[#8C8C8C] flex items-center">
+                      {round}Round
                     </div>
-                  </>
-                )}
-                {playType === "conscience" && <div />}
-                <p className="text-[48px] text-[#1F1F1F] font-one-pop">
-                  {GAME_TEXT_LIST[levelOfDifficulty][round - 1]}
-                </p>
-                <p className="text-[16px] text-[#BDBDBD] font-one-pop ">
-                  {round} / 10
-                </p>
+                    <p className="text-[19px] text-[#4A4A4A] font-one-pop">
+                      {currentPlayerName}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex gap-[4px] items-center h-[58px] bg-[#F8FAFA] rounded-[10000px] px-[10px]">
+                  <div className="flex flex-col justify-center gap-[2px] w-[48px]">
+                    <p className="font-[600] text-[12px] text-[#8C8C8C] text-center">
+                      점수
+                    </p>
+                    <p className="text-[18px] text-[#F571A2] text-center font-one-pop">
+                      0
+                    </p>
+                  </div>
+                  <div className="border" />
+                  <div className="flex flex-col justify-center gap-[2px] w-[80px]">
+                    <p className="font-[600] text-[12px] text-[#8C8C8C] text-center">
+                      남은 기회
+                    </p>
+                    <div className="flex gap-[2px] items-center justify-center">
+                      <IconTongue />
+                      <IconTongueGray />
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          </main>
 
-          <FixedBottom>
-            {playType === "timer" && (
-              <Button variant="primary" size="md" onClick={handleNextPlayer}>
-                성공!
-              </Button>
-            )}
+              <div className="w-full h-[457px] pt-[40px] pb-[20px] px-[20px] bg-white rounded-[24px] shadow-[0_10px_40px_0_rgba(0,0,0,0.1)]">
+                <div className="h-full flex flex-col justify-between items-center text-center">
+                  {playType === "timer" && (
+                    <>
+                      <div className="w-full px-[32px]">
+                        <div className="h-[12px] bg-[#F571A2] rounded-[100px] mb-[8px]" />
+                        <div className="flex gap-[4px] items-center justify-center">
+                          <IconAlarmClockFill width={16} height={16} />{" "}
+                          <p className="text-[13px] text-[#8C8C8C] font-one-pop">
+                            0:{playTime}
+                          </p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  {playType === "conscience" && <div />}
+                  <p className="text-[48px] text-[#1F1F1F] font-one-pop">
+                    {GAME_TEXT_LIST[levelOfDifficulty][round - 1]}
+                  </p>
+                  <p className="text-[16px] text-[#BDBDBD] font-one-pop ">
+                    {round} / 10
+                  </p>
+                </div>
+              </div>
+            </main>
 
-            {playType === "conscience" && (
-              <div className="flex items-center gap-[12px]">
-                <Button
-                  variant="secondary"
-                  size="md"
-                  onClick={handleNextPlayer}
-                  className="flex-1"
-                >
-                  꼬였어!
-                </Button>
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={handleNextPlayer}
-                  className="flex-1"
-                >
+            <FixedBottom>
+              {playType === "timer" && (
+                <Button variant="primary" size="md" onClick={handleNextPlayer}>
                   성공!
                 </Button>
-              </div>
-            )}
-          </FixedBottom>
-        </>
-      )}
-    </div>
+              )}
+
+              {playType === "conscience" && (
+                <div className="flex items-center gap-[12px]">
+                  <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={handleNextPlayer}
+                    className="flex-1"
+                  >
+                    꼬였어!
+                  </Button>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={handleNextPlayer}
+                    className="flex-1"
+                  >
+                    성공!
+                  </Button>
+                </div>
+              )}
+            </FixedBottom>
+          </>
+        )}
+      </div>
+
+      <ConfirmPopup
+        open={blockerState === "blocked"}
+        title="정말 게임을 종료할거야?"
+        description="지금까지 한 발음, 되돌릴 수 없어!"
+        okButtonLabel="계속하기"
+        cancelButtonLabel="종료하기"
+        okButtonClick={reset}
+        cancelButtonClick={proceed}
+      />
+    </>
   );
 }
 
