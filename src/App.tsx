@@ -1,21 +1,21 @@
-import { BrowserRouter } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
+import router from "./router";
 import AppEntry from "./containers/AppEntry";
-import AppRoutes from "./AppRoutes";
 
 function App() {
   const buildDate = new Date(__APP_BUILD_DATE__).toLocaleDateString();
 
   return (
-    <BrowserRouter>
+    <AppEntry>
+      {/* AppEntry wraps the entire routed application */}
       <div className="relative">
         <div className="absolute top-0 left-0 text-xs text-gray-500">
           Build Date👅: {buildDate}
         </div>
-        <AppEntry>
-          <AppRoutes />
-        </AppEntry>
+        <RouterProvider router={router} />{" "}
+        {/* All routes are now under RouterProvider */}
       </div>
-    </BrowserRouter>
+    </AppEntry>
   );
 }
 
