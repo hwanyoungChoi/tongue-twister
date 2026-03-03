@@ -24,7 +24,6 @@ export default function GamePlay() {
     proceed,
     reset,
   } = useBlocker(({ historyAction }) => historyAction === "POP");
-  console.log(blockerState);
 
   const players = useGameStore((state) => state.players);
   const levelOfDifficulty = useGameStore((state) => state.levelOfDifficulty);
@@ -179,7 +178,18 @@ export default function GamePlay() {
         okButtonLabel="계속하기"
         cancelButtonLabel="종료하기"
         okButtonClick={reset}
-        cancelButtonClick={proceed}
+        cancelButtonClick={() => {
+          /**
+           * 양심모드일 때는 로비로 보내버린다.
+           * play type setup 페이지가 타이머 후 자동 진행이므로
+           */
+          if (playType === "conscience") {
+            navigate(ROUTES.LOBBY, { replace: true });
+            return;
+          }
+
+          proceed!();
+        }}
       />
     </>
   );
