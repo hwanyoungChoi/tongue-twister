@@ -11,18 +11,22 @@ const buttonVariants = cva(
       variant: {
         default: "bg-primary text-primary-foreground hover:bg-primary/90",
 
-        // ✅ [추가 1] 게임 전용 핑크 (성공/시작)
+        // 게임 전용 핑크 (성공/시작)
         primary:
           "bg-gradient-to-b from-[#FF99C0] to-[#ED5890] text-white border-[3px] border-[#28323B] transition-transform active:scale-99 active:brightness-95 font-one-pop",
 
-        // ✅ [추가 2] 게임 전용 회색 (실패/꼬임)
+        // 게임 전용 회색 (실패/꼬임)
         secondary:
           "bg-gradient-to-b from-[#666666] to-[#4A4A4A] text-white border-[3px] border-[#28323B] transition-transform active:scale-99 active:brightness-90 font-one-pop",
+
+        // 테두리, 텍스트만 (컨펌 액션)
+        outline:
+          "bg-white text-#1F1F1F border-[3px] border-[#28323B] transition-transform active:scale-99 active:brightness-90 font-one-pop",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
 
-        // ✅ [추가 3] 게임 버튼 전용 사이즈 (높이 72px, 둥글기 20px, 폰트 25px, 행간 170%)
+        // 게임 버튼 전용 사이즈 (높이 72px, 둥글기 20px, 폰트 25px, 행간 170%)
         md: "h-[72px] w-full rounded-[20px] text-[28px] font-[400] leading-[170%]",
         sm: "h-[56px] w-full rounded-[16px] text-[22px] font-[400] leading-[170%]",
       },
