@@ -29,12 +29,16 @@ export default function PlayersBottomSheet({
   };
 
   const handleRemovePlayer = (index: number) => {
-    if (inputPlayers.length <= 2) return; // 게임 최소 인원 방어 로직 (2명)
+    if (inputPlayers.length < MIN_PLAYER_COUNT) {
+      return;
+    }
     setInputPlayers(inputPlayers.filter((_, i) => i !== index));
   };
 
   const handleAddPlayer = () => {
-    if (inputPlayers.length >= 10) return; // 최대 인원 제한 (필요시 조절)
+    if (inputPlayers.length > MAX_PLAYER_COUNT) {
+      return;
+    }
     setInputPlayers([...inputPlayers, `플레이어${inputPlayers.length + 1}`]);
   };
 
@@ -71,12 +75,14 @@ export default function PlayersBottomSheet({
             </div>
           ))}
 
-          <button
-            onClick={handleAddPlayer}
-            className="w-full flex items-center justify-center bg-[#F5F5F5] rounded-[12px] py-[14px] active:bg-[#E5E5E5] transition-colors"
-          >
-            <IconPlusCircleFill />
-          </button>
+          {inputPlayers.length < MAX_PLAYER_COUNT && (
+            <button
+              onClick={handleAddPlayer}
+              className="w-full flex items-center justify-center bg-[#F5F5F5] rounded-[12px] py-[14px] active:bg-[#E5E5E5] transition-colors"
+            >
+              <IconPlusCircleFill />
+            </button>
+          )}
         </div>
       }
       footer={
