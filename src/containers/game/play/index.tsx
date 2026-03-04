@@ -27,6 +27,8 @@ export default function GamePlay() {
     reset,
   } = useBlocker(({ historyAction }) => historyAction === "POP");
 
+  const isHistoryPop = blockerState === "blocked";
+
   const players = useGameStore((state) => state.players);
   const levelOfDifficulty = useGameStore((state) => state.levelOfDifficulty);
   const playType = useGameStore((state) => state.playType);
@@ -38,7 +40,30 @@ export default function GamePlay() {
 
   const currentPlayerName = players[currentPlayerIndex];
 
+  const {
+    start: startGameTimer,
+    pause: pauseGameTimer,
+    reset: resetGameTimer,
+    currentTime: gameTime,
+  } = useTimer({
+    initialTime: playTime * 1000,
+    onTimerEnd: () => alert("타임아웃"),
+  });
+
+  useEffect(() => {
+    if (subStep !== "GAME") {
+      return;
+    }
+    if (isHistoryPop) {
+      pauseGameTimer();
+    } else {
+      startGameTimer();
+    }
+  }, [isHistoryPop, pauseGameTimer, startGameTimer, subStep]);
+
   const handleNextPlayer = () => {
+    resetGameTimer();
+
     if (round < 10) {
       setRound((prev) => prev + 1);
       return;
@@ -68,11 +93,12 @@ export default function GamePlay() {
             currentPlayerIndex={currentPlayerIndex}
             currentPlayerName={currentPlayerName}
             onNext={() => setSubStep("COUNTDOWN")}
+            isPause={isHistoryPop}
           />
         )}
 
         {subStep === "COUNTDOWN" && (
-          <Countdown onNext={() => setSubStep("GAME")} />
+          <Countdown onNext={() => setSubStep("GAME")} isPause={isHistoryPop} />
         )}
 
         {subStep === "GAME" && (
@@ -124,7 +150,7 @@ export default function GamePlay() {
                         <div className="flex gap-[4px] items-center justify-center">
                           <IconAlarmClockFill width={16} height={16} />{" "}
                           <p className="text-[13px] text-[#8C8C8C] font-one-pop">
-                            0:{playTime}
+                            0:{formatMsToS(gameTime)}
                           </p>
                         </div>
                       </div>
@@ -174,7 +200,7 @@ export default function GamePlay() {
       </div>
 
       <ConfirmPopup
-        open={blockerState === "blocked"}
+        open={isHistoryPop}
         title="정말 게임을 종료할거야?"
         description="지금까지 한 발음, 되돌릴 수 없어!"
         okButtonLabel="계속하기"
@@ -201,19 +227,25 @@ function Intro({
   currentPlayerIndex,
   currentPlayerName,
   onNext,
+  isPause,
 }: {
   currentPlayerIndex: number;
   currentPlayerName: string;
   onNext: () => void;
+  isPause: boolean;
 }) {
-  const { start: startTimer } = useTimer({
+  const { start, pause } = useTimer({
     initialTime: 1000,
     onTimerEnd: () => onNext(),
   });
 
   useEffect(() => {
-    startTimer();
-  }, [startTimer]);
+    if (isPause) {
+      pause();
+    } else {
+      start();
+    }
+  }, [isPause, pause, start]);
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
@@ -233,15 +265,25 @@ function Intro({
   );
 }
 
-function Countdown({ onNext }: { onNext: () => void }) {
-  const { start: startTimer, currentTime } = useTimer({
+function Countdown({
+  onNext,
+  isPause,
+}: {
+  onNext: () => void;
+  isPause: boolean;
+}) {
+  const { start, pause, currentTime } = useTimer({
     initialTime: 3000,
     onTimerEnd: () => onNext(),
   });
 
   useEffect(() => {
-    startTimer();
-  }, [startTimer]);
+    if (isPause) {
+      pause();
+    } else {
+      start();
+    }
+  }, [isPause, pause, start]);
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-[24px]">
