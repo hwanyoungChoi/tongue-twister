@@ -152,7 +152,7 @@ export default function GamePlay() {
                         <div className="flex gap-[4px] items-center justify-center">
                           <IconAlarmClockFill width={16} height={16} />{" "}
                           <p className="text-[13px] text-[#8C8C8C] font-one-pop">
-                            0:{formatMsToS(gameTime)}
+                            0:{String(formatMsToS(gameTime)).padStart(2, "0")}
                           </p>
                         </div>
                       </div>
