@@ -13,6 +13,8 @@ import { GAME_TEXT_LIST } from "@/lib/constants";
 import { useBlocker, useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
 import ConfirmPopup from "@/components/common/ConfirmPopup";
+import useTimer from "@/hooks/useTimer";
+import { formatMsToS } from "@/lib/utils";
 
 type PlayStep = "INTRO" | "COUNTDOWN" | "GAME";
 
@@ -204,11 +206,14 @@ function Intro({
   currentPlayerName: string;
   onNext: () => void;
 }) {
-  useEffect(() => {
-    const timer = setTimeout(onNext, 1000);
+  const { start: startTimer } = useTimer({
+    initialTime: 1000,
+    onTimerEnd: () => onNext(),
+  });
 
-    return () => clearTimeout(timer);
-  }, [onNext]);
+  useEffect(() => {
+    startTimer();
+  }, [startTimer]);
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
@@ -229,20 +234,14 @@ function Intro({
 }
 
 function Countdown({ onNext }: { onNext: () => void }) {
-  const [countdown, setCountdown] = useState(3);
+  const { start: startTimer, currentTime } = useTimer({
+    initialTime: 3000,
+    onTimerEnd: () => onNext(),
+  });
 
   useEffect(() => {
-    let timer;
-
-    if (countdown > 0) {
-      timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-    } else {
-      // 동기적 호출이 아닌 setTimeout 콜백 내부에서 호출하여 에러 방지
-      timer = setTimeout(onNext, 0);
-    }
-
-    return () => clearTimeout(timer);
-  }, [countdown, onNext]);
+    startTimer();
+  }, [startTimer]);
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-[24px]">
@@ -254,7 +253,7 @@ function Countdown({ onNext }: { onNext: () => void }) {
         빠르게 말하기!
       </h1>
       <div className="w-[80px] h-[80px] bg-[#1F1F1F] text-white rounded-full flex items-center justify-center text-[40px] font-one-pop">
-        {countdown}
+        {formatMsToS(currentTime)}
       </div>
     </main>
   );

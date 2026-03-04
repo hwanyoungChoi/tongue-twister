@@ -9,6 +9,7 @@ import Lottie from "lottie-react";
 import useAppStore from "@/stores/useAppStore";
 import useSound from "use-sound";
 import { Button } from "@/components/ui/button";
+import useTimer from "@/hooks/useTimer";
 
 export default function AppEntry({ children }: { children: React.ReactNode }) {
   const [showSplash, setShowSplash] = useState(true);
@@ -37,6 +38,8 @@ export default function AppEntry({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+const MAX_SPLASH_TIME = 2000;
+
 interface SplashProps {
   onFinish: () => void;
 }
@@ -45,24 +48,22 @@ function Splash({ onFinish }: SplashProps) {
   const [splashStep, setSplashStep] = useState(1); // 1: first splash, 2: second splash
   const [isFinishedSplash, setIsFinishedSplash] = useState(false);
 
-  useEffect(() => {
-    let firstSplashTimer: number;
-    let secondSplashTimer: number;
-
-    // eslint-disable-next-line prefer-const
-    firstSplashTimer = setTimeout(() => {
+  const { start: startFirstSplashTimer } = useTimer({
+    initialTime: MAX_SPLASH_TIME,
+    onTimerEnd: () => {
       setSplashStep(2);
+      startSecondSplashTimer();
+    },
+  });
 
-      secondSplashTimer = setTimeout(() => {
-        setIsFinishedSplash(true);
-      }, 2000);
-    }, 2000);
+  const { start: startSecondSplashTimer } = useTimer({
+    initialTime: MAX_SPLASH_TIME,
+    onTimerEnd: () => setIsFinishedSplash(true),
+  });
 
-    return () => {
-      clearTimeout(firstSplashTimer);
-      clearTimeout(secondSplashTimer);
-    };
-  }, []);
+  useEffect(() => {
+    startFirstSplashTimer();
+  }, [startFirstSplashTimer]);
 
   return (
     <div className="min-h-dvh flex flex-col items-center justify-center font-one-pop bg-white">

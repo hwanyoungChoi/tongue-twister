@@ -11,6 +11,7 @@ import IconCheckCircle from "@/assets/icons/check_circle.svg?react";
 
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
+import useTimer from "@/hooks/useTimer";
 
 export default function GamePlayTypeSetup() {
   const playType = useGameStore((state) => state.playType);
@@ -81,13 +82,14 @@ function TimerSetup() {
 function ConscienceSetup() {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate(ROUTES.PLAY);
-    }, 1000);
+  const { start: startTimer } = useTimer({
+    initialTime: 1000,
+    onTimerEnd: () => navigate(ROUTES.PLAY),
+  });
 
-    return () => clearTimeout(timer);
-  }, [navigate]);
+  useEffect(() => {
+    startTimer();
+  }, [startTimer]);
 
   return (
     <div className="flex flex-[1] flex-col items-center justify-center font-one-pop bg-white -mt-[48px]">
