@@ -1,18 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import useGameStore from "@/stores/useGameStore";
 import Header from "@/components/common/Header";
+import FixedBottom from "@/components/common/FixedBottom";
+import ConfirmPopup from "@/components/common/ConfirmPopup";
+import Countdown from "./components/Countdown";
+import Intro from "./components/Intro";
 
 import ImageIntroCharacter from "@/assets/images/intro-character.png";
 import IconAlarmClockFill from "@/assets/icons/alarm_clock_fill.svg?react";
 import IconTongue from "@/assets/icons/tongue.svg?react";
 import IconTongueGray from "@/assets/icons/tongue_gray.svg?react";
 
-import FixedBottom from "@/components/common/FixedBottom";
 import { GAME_TEXT_LIST } from "@/lib/constants";
 import { useBlocker, useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
-import ConfirmPopup from "@/components/common/ConfirmPopup";
 import useTimer from "@/hooks/useTimer";
 import { formatMsToS } from "@/lib/utils";
 
@@ -220,83 +222,5 @@ export default function GamePlay() {
         }}
       />
     </>
-  );
-}
-
-function Intro({
-  currentPlayerIndex,
-  currentPlayerName,
-  onNext,
-  isPause,
-}: {
-  currentPlayerIndex: number;
-  currentPlayerName: string;
-  onNext: () => void;
-  isPause: boolean;
-}) {
-  const { start, pause } = useTimer({
-    initialTime: 1000,
-    onTimerEnd: () => onNext(),
-  });
-
-  useEffect(() => {
-    if (isPause) {
-      pause();
-    } else {
-      start();
-    }
-  }, [isPause, pause, start]);
-
-  return (
-    <main className="flex-1 flex flex-col items-center justify-center">
-      <h1 className="text-center text-[28px] text-[#1F1F1F] leading-[140%] font-one-pop">
-        긴장되지?
-        <br />
-        자, {currentPlayerIndex + 1}번 째 차례는
-        <br />
-        <span className="text-[#F571A2]">{currentPlayerName}</span> 너야!
-      </h1>
-      <img
-        src={ImageIntroCharacter}
-        alt="게임 인트로 캐릭터"
-        className="w-[160px] h-auto mt-[20px]"
-      />
-    </main>
-  );
-}
-
-function Countdown({
-  onNext,
-  isPause,
-}: {
-  onNext: () => void;
-  isPause: boolean;
-}) {
-  const { start, pause, currentTime } = useTimer({
-    initialTime: 3000,
-    onTimerEnd: () => onNext(),
-  });
-
-  useEffect(() => {
-    if (isPause) {
-      pause();
-    } else {
-      start();
-    }
-  }, [isPause, pause, start]);
-
-  return (
-    <main className="flex-1 flex flex-col items-center justify-center px-[24px]">
-      <h1 className="text-center text-[28px] text-[#1F1F1F] leading-[140%] mb-[40px] font-one-pop">
-        제한 시간 안에
-        <br />
-        꼬이지 않고
-        <br />
-        빠르게 말하기!
-      </h1>
-      <div className="w-[80px] h-[80px] bg-[#1F1F1F] text-white rounded-full flex items-center justify-center text-[40px] font-one-pop">
-        {formatMsToS(currentTime)}
-      </div>
-    </main>
   );
 }
