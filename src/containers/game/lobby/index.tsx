@@ -96,7 +96,7 @@ export default function GameLobby() {
               </div>
               {penalty && (
                 <>
-                  <div className="py-[12px] bg-[#F5F5F5] rounded-[12px] p-[14px] text-center text-[#1F1F1F] text-[20px] font-one-pop my-[12px]">
+                  <div className="py-[12px] bg-[#F5F5F5] rounded-[12px] p-[14px] text-center text-[#1F1F1F] text-[20px] font-one-pop my-[12px] break-all">
                     {penalty}
                   </div>
                   <p className="text-center text-[#8C8C8C] text-[13px] font-[500]">
