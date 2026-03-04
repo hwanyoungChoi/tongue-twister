@@ -55,6 +55,10 @@ function TimerSetup() {
               onClick={() => setPlayTime(option)}
             >
               {option}초
+              <p className="flex-1 text-right mr-[16px] text-[#8C8C8C] text-[13px] font-sans">
+                {option === 15 && "짧은 단어 추천"}
+                {option === 30 && "긴 문구 추천"}
+              </p>
               {isSelected ? <IconCheckCircleFill /> : <IconCheckCircle />}
             </button>
           );

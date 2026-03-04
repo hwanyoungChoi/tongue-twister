@@ -41,7 +41,10 @@ const useGameStore = create<GameState & GameAction>((set) => ({
   setPlayers: (newState) => set(() => ({ players: newState })),
   setPenalty: (newState) => set(() => ({ penalty: newState })),
   setLevelOfDifficulty: (newState) =>
-    set(() => ({ levelOfDifficulty: newState })),
+    set(() => ({
+      levelOfDifficulty: newState,
+      playTime: newState === "long" ? 30 : 15,
+    })),
   setPlayType: (newState) => set(() => ({ playType: newState })),
   setPlayTime: (newState) => set(() => ({ playTime: newState })),
 }));
