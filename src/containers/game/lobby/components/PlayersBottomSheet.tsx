@@ -11,6 +11,7 @@ import { useState } from "react";
 
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
+const MAX_PLAYER_NAME_LENGTH = 6;
 
 export default function PlayersBottomSheet({
   open,
@@ -22,7 +23,16 @@ export default function PlayersBottomSheet({
   // 저장 전 display용 입력값
   const [inputPlayers, setInputPlayers] = useState(players);
 
-  const handlePlayerNameChange = (index: number, newName: string) => {
+  const handlePlayerNameChange = (
+    index: number,
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const newName = e.target.value.replace(/\s/g, "").trim();
+
+    if (newName.length > MAX_PLAYER_NAME_LENGTH) {
+      return;
+    }
+
     const newPlayers = [...inputPlayers];
     newPlayers[index] = newName;
     setInputPlayers(newPlayers);
@@ -61,7 +71,7 @@ export default function PlayersBottomSheet({
               <input
                 type="text"
                 value={player}
-                onChange={(e) => handlePlayerNameChange(index, e.target.value)}
+                onChange={(e) => handlePlayerNameChange(index, e)}
                 className="flex-1 min-w-0 bg-transparent text-[18px] font-[600] text-[#333333] outline-none ml-[16px]"
                 placeholder={`플레이어${index + 1}`}
               />
