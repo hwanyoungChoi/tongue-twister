@@ -11,9 +11,7 @@ import useSound from "use-sound";
 import { Button } from "@/components/ui/button";
 
 export default function AppEntry({ children }: { children: React.ReactNode }) {
-  const [splashStep, setSplashStep] = useState(1); // 1: first splash, 2: second splash
-  const [isFinishedSplash, setIsFinishedSplash] = useState(false);
-  const [isReady, setIsReady] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
 
   const bgmEnabled = useAppStore((state) => state.bgmEnabled);
 
@@ -32,6 +30,21 @@ export default function AppEntry({ children }: { children: React.ReactNode }) {
     play();
   }, [bgmEnabled, pause, play]);
 
+  if (showSplash) {
+    return <Splash onFinish={() => setShowSplash(false)} />;
+  }
+
+  return <>{children}</>;
+}
+
+interface SplashProps {
+  onFinish: () => void;
+}
+
+function Splash({ onFinish }: SplashProps) {
+  const [splashStep, setSplashStep] = useState(1); // 1: first splash, 2: second splash
+  const [isFinishedSplash, setIsFinishedSplash] = useState(false);
+
   useEffect(() => {
     let firstSplashTimer: number;
     let secondSplashTimer: number;
@@ -41,7 +54,7 @@ export default function AppEntry({ children }: { children: React.ReactNode }) {
       setSplashStep(2);
 
       secondSplashTimer = setTimeout(() => {
-        setIsReady(true);
+        setIsFinishedSplash(true);
       }, 2000);
     }, 2000);
 
@@ -51,41 +64,37 @@ export default function AppEntry({ children }: { children: React.ReactNode }) {
     };
   }, []);
 
-  if (!isFinishedSplash) {
-    return (
-      <div className="min-h-dvh flex flex-col items-center justify-center font-one-pop bg-white">
-        {splashStep === 1 && <ImageLogo className="w-[163px] h-auto" />}
-        {splashStep === 2 && (
-          <>
-            <h1 className="text-center text-[28px] text-[#1F1F1F]">
-              실수 없이
-              <br />
-              말할 수 있겠어?
-            </h1>
-            <Lottie
-              animationData={LottieSplash}
-              loop
-              className="w-[186px] h-auto"
-            />
+  return (
+    <div className="min-h-dvh flex flex-col items-center justify-center font-one-pop bg-white">
+      {splashStep === 1 && <ImageLogo className="w-[163px] h-auto" />}
+      {splashStep === 2 && (
+        <>
+          <h1 className="text-center text-[28px] text-[#1F1F1F]">
+            실수 없이
+            <br />
+            말할 수 있겠어?
+          </h1>
+          <Lottie
+            animationData={LottieSplash}
+            loop
+            className="w-[186px] h-auto"
+          />
 
-            {isReady ? (
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={() => setIsFinishedSplash(true)}
-                className="mt-[20px] w-[167.5px]"
-              >
-                도전하기
-              </Button>
-            ) : (
-              // 영역 차지하고 있게 하기 위한 요소
-              <div className="mt-[20px] h-[56px]" />
-            )}
-          </>
-        )}
-      </div>
-    );
-  }
-
-  return <>{children}</>;
+          {isFinishedSplash ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={onFinish}
+              className="mt-[20px] w-[167.5px]"
+            >
+              도전하기
+            </Button>
+          ) : (
+            // 영역 차지하고 있게 하기 위한 요소
+            <div className="mt-[20px] h-[56px]" />
+          )}
+        </>
+      )}
+    </div>
+  );
 }
