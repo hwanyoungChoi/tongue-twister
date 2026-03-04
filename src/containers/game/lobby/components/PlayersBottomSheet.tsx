@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import IconMinusCircleFill from "@/assets/icons/minus_circle_fill.svg?react";
 import IconPlusCircleFill from "@/assets/icons/plus_circle_fill.svg?react";
 import useGameStore from "@/stores/useGameStore";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
@@ -22,6 +22,12 @@ export default function PlayersBottomSheet({
 
   // 저장 전 display용 입력값
   const [inputPlayers, setInputPlayers] = useState(players);
+
+  const playerListRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    playerListRef.current?.scrollTo(0, playerListRef.current?.scrollHeight);
+  }, [inputPlayers.length]);
 
   const handlePlayerNameChange = (
     index: number,
@@ -59,7 +65,10 @@ export default function PlayersBottomSheet({
       fixed
       title="게임 인원/닉네임 설정"
       content={
-        <div className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide max-h-[258px] min-h-[258px]">
+        <div
+          className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide max-h-[258px] min-h-[258px]"
+          ref={playerListRef}
+        >
           {inputPlayers.map((player, index) => (
             <div
               key={index}
