@@ -66,11 +66,11 @@ function Splash({ onFinish }: SplashProps) {
   }, [startFirstSplashTimer]);
 
   return (
-    <div className="min-h-dvh flex flex-col items-center justify-center font-one-pop bg-white">
+    <div className="min-h-dvh flex flex-col items-center justify-center font-np bg-white">
       {splashStep === 1 && <ImageLogo className="w-[163px] h-auto" />}
       {splashStep === 2 && (
         <>
-          <h1 className="text-center text-[28px] text-[#1F1F1F]">
+          <h1 className="text-center text-[26px] leading-[1.5] text-[#1F1F1F]">
             실수 없이
             <br />
             말할 수 있겠어?

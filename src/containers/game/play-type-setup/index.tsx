@@ -36,7 +36,7 @@ function TimerSetup() {
 
   return (
     <div className="relative h-full pb-[120px]">
-      <h1 className="text-center text-[28px] text-[#1F1F1F] font-one-pop mb-[20px] mt-[40px]">
+      <h1 className="text-center text-[26px] leading-[1.5] text-[#1F1F1F] font-np mb-[20px] mt-[40px]">
         잠깐! 잠깐!
         <br />
         10장의 카드를
@@ -50,7 +50,7 @@ function TimerSetup() {
             <button
               key={option}
               className={`
-              w-full flex items-center justify-between rounded-[12px] px-[16px] h-[56px] font-one-pop text-[20px]
+              w-full flex items-center justify-between rounded-[12px] px-[16px] h-[56px] font-np text-[18px]
               ${isSelected ? "bg-white text-[#1F1F1F] ring-inset ring-[2px] ring-[#1F1F1F]" : "bg-[#F5F5F5] text-[#BDBDBD] active:bg-[#E5E5E5]"}
             `}
               onClick={() => setPlayTime(option)}
@@ -92,8 +92,8 @@ function ConscienceSetup() {
   }, [startTimer]);
 
   return (
-    <div className="flex flex-[1] flex-col items-center justify-center font-one-pop bg-white -mt-[48px]">
-      <h1 className="text-center text-[28px] text-[#1F1F1F] font-one-pop">
+    <div className="flex flex-[1] flex-col items-center justify-center bg-white -mt-[48px]">
+      <h1 className="text-center text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
         친구가 잘 읽었는지
         <br />
         혀가 꼬여있는지

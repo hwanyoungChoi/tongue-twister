@@ -9,7 +9,7 @@ function App() {
     <AppEntry>
       {/* AppEntry wraps the entire routed application */}
       <div className="relative">
-        <div className="absolute top-0 right-0 text-xs text-gray-500 z-100 font-one-pop">
+        <div className="absolute top-0 right-0 text-xs text-gray-500 z-100 font-np">
           Ver. {buildDate}
         </div>
         <RouterProvider router={router} />{" "}

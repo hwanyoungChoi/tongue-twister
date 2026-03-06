@@ -12,17 +12,17 @@
 }
 
 @font-face {
-  font-family: "ONE Mobile POP";
-  src: url("/fonts/ONEMobilePOP.otf") format("opentype");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap; /* 텍스트가 안 보이는 현상 방지 */
+  font-family: "NationalPension";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2310@1.0/NPSfontExtraBold.woff2")
+    format("woff2");
+  font-weight: 800;
+  font-display: swap;
 }
 
 /* Tailwind 클래스에서 사용할 변수 등록 */
 @theme {
   --font-sans: "PretendardVariable", ui-sans-serif, system-ui;
-  --font-one-pop: "ONE Mobile POP", sans-serif;
+  --font-np: "NationalPension", sans-serif;
 }
 
 @theme inline {
@@ -145,5 +145,6 @@
   html {
     /* 16px을 기본 폰트 크기로 고정 */
     font-size: 16px;
+    line-height: 1.3;
   }
 }

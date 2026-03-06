@@ -49,7 +49,10 @@ export default function GamePlay() {
     currentTime: gameTime,
   } = useTimer({
     initialTime: playTime * 1000,
-    onTimerEnd: () => alert("타임아웃"),
+    onTimerEnd: () => {
+      console.log("타임아웃");
+      resetGameTimer();
+    },
   });
 
   useEffect(() => {
@@ -116,7 +119,7 @@ export default function GamePlay() {
                     <div className="bg-[#F5F5F5] rounded-[100px] w-fit h-[18px] px-[6px] font-[700] text-[11px] text-[#8C8C8C] flex items-center">
                       {round}Round
                     </div>
-                    <p className="text-[19px] text-[#4A4A4A] font-one-pop">
+                    <p className="text-[18px] text-[#4A4A4A] font-np">
                       {currentPlayerName}
                     </p>
                   </div>
@@ -126,7 +129,7 @@ export default function GamePlay() {
                     <p className="font-[600] text-[12px] text-[#8C8C8C] text-center">
                       점수
                     </p>
-                    <p className="text-[18px] text-[#F571A2] text-center font-one-pop">
+                    <p className="text-[18px] text-[#F571A2] text-center font-np">
                       0
                     </p>
                   </div>
@@ -151,7 +154,7 @@ export default function GamePlay() {
                         <div className="h-[12px] bg-[#F571A2] rounded-[100px] mb-[8px]" />
                         <div className="flex gap-[4px] items-center justify-center">
                           <IconAlarmClockFill width={16} height={16} />{" "}
-                          <p className="text-[13px] text-[#8C8C8C] font-one-pop">
+                          <p className="text-[13px] text-[#8C8C8C] font-np">
                             0:{String(formatMsToS(gameTime)).padStart(2, "0")}
                           </p>
                         </div>
@@ -159,10 +162,10 @@ export default function GamePlay() {
                     </>
                   )}
                   {playType === "conscience" && <div />}
-                  <p className="text-[48px] text-[#1F1F1F] font-one-pop">
+                  <p className="text-[40px] text-[#1F1F1F] font-np">
                     {GAME_TEXT_LIST[levelOfDifficulty][round - 1]}
                   </p>
-                  <p className="text-[16px] text-[#BDBDBD] font-one-pop ">
+                  <p className="text-[13px] text-[#BDBDBD] font-np">
                     {round} / 10
                   </p>
                 </div>

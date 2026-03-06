@@ -24,14 +24,14 @@ export default function Countdown({
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center px-[24px]">
-      <h1 className="text-center text-[28px] text-[#1F1F1F] leading-[140%] mb-[40px] font-one-pop">
+      <h1 className="text-center text-[26px] leading-[1.5] text-[#1F1F1F] leading-[140%] mb-[40px] font-np">
         제한 시간 안에
         <br />
         꼬이지 않고
         <br />
         빠르게 말하기!
       </h1>
-      <div className="w-[80px] h-[80px] bg-[#1F1F1F] text-white rounded-full flex items-center justify-center text-[40px] font-one-pop">
+      <div className="w-[80px] h-[80px] bg-[#1F1F1F] text-white rounded-full flex items-center justify-center text-[38px] font-np">
         {formatMsToS(currentTime)}
       </div>
     </main>

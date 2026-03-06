@@ -29,7 +29,7 @@ export default function Intro({
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
-      <h1 className="text-center text-[28px] text-[#1F1F1F] leading-[140%] font-one-pop">
+      <h1 className="text-center text-[26px] text-[#1F1F1F] leading-[1.5] font-np">
         긴장되지?
         <br />
         자, {currentPlayerIndex + 1}번 째 차례는

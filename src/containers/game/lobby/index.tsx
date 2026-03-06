@@ -71,7 +71,7 @@ export default function GameLobby() {
                   게임 인원/닉네임
                 </div>
                 <button
-                  className="font-one-pop text-[#F571A2] text-[18px] flex items-center"
+                  className="font-np text-[#F571A2] text-[16px] flex items-center"
                   onClick={() => setOpenPlayers(true)}
                 >
                   {players.length}명
@@ -96,7 +96,7 @@ export default function GameLobby() {
               </div>
               {penalty && (
                 <>
-                  <div className="py-[12px] bg-[#F5F5F5] rounded-[12px] p-[14px] text-center text-[#1F1F1F] text-[20px] font-one-pop my-[12px] break-all">
+                  <div className="py-[12px] bg-[#F5F5F5] rounded-[12px] p-[14px] text-center text-[#1F1F1F] text-[18px] font-np my-[12px] break-all">
                     {penalty}
                   </div>
                   <p className="text-center text-[#8C8C8C] text-[13px] font-[500]">
@@ -110,7 +110,7 @@ export default function GameLobby() {
                 <div className="font-bold text-[#4A4A4A] text-[16px]">
                   문구 길이
                 </div>
-                <div className="font-one-pop text-[#F571A2] text-[18px]">
+                <div className="font-np text-[#F571A2] text-[16px]">
                   {isLong ? "긴 문구" : "짧은 단어"}
                 </div>
               </div>
@@ -147,7 +147,7 @@ export default function GameLobby() {
                 <div className="font-bold text-[#4A4A4A] text-[16px]">
                   진행 방식
                 </div>
-                <div className="font-one-pop text-[#F571A2] text-[18px]">
+                <div className="font-np text-[#F571A2] text-[16px]">
                   {isTimer ? "타이머 모드" : "양심 모드"}
                 </div>
               </div>
