@@ -152,11 +152,13 @@ export default function GamePlay() {
                     <>
                       <div className="w-full px-[32px]">
                         <div className="h-[12px] bg-[#F571A2] rounded-[100px] mb-[8px]" />
-                        <div className="flex gap-[4px] items-center justify-center">
-                          <IconAlarmClockFill width={16} height={16} />{" "}
-                          <p className="text-[13px] text-[#8C8C8C] font-np">
-                            0:{String(formatMsToS(gameTime)).padStart(2, "0")}
-                          </p>
+                        <div className="flex justify-center">
+                          <div className="flex min-w-[50px] max-w-[50px] items-center justify-between">
+                            <IconAlarmClockFill width={16} height={16} />
+                            <p className="text-[13px] text-[#8C8C8C] font-np">
+                              {`${formatMsToS(gameTime)}초`}
+                            </p>
+                          </div>
                         </div>
                       </div>
                     </>
