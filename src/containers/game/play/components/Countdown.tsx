@@ -1,5 +1,6 @@
 import useTimer from "@/hooks/useTimer";
 import { formatMsToS } from "@/lib/utils";
+import useGameStore from "@/stores/useGameStore";
 import { useEffect } from "react";
 
 export default function Countdown({
@@ -22,14 +23,32 @@ export default function Countdown({
     }
   }, [isPause, pause, start]);
 
-  return (
-    <main className="flex-1 flex flex-col items-center justify-center px-[24px]">
-      <h1 className="text-center text-[26px] leading-[1.5] text-[#1F1F1F] leading-[140%] mb-[40px] font-np">
-        제한 시간 안에
+  const playType = useGameStore((state) => state.playType);
+  const playTime = useGameStore((state) => state.playTime);
+
+  const message =
+    playType === "timer" ? (
+      <>
+        <span className="text-[#ED5890]">{playTime}초</span> 안에
         <br />
         꼬이지 않고
         <br />
         빠르게 말하기!
+      </>
+    ) : (
+      <>
+        또박또박
+        <br />
+        잘 읽었으면
+        <br />
+        성공이야!
+      </>
+    );
+
+  return (
+    <main className="flex-1 flex flex-col items-center justify-center px-[24px]">
+      <h1 className="text-center text-[26px] leading-[1.5] text-[#1F1F1F] leading-[140%] mb-[40px] font-np">
+        {message}
       </h1>
       <div className="w-[80px] h-[80px] bg-[#1F1F1F] text-white rounded-full flex items-center justify-center text-[38px] font-np">
         {formatMsToS(currentTime)}
