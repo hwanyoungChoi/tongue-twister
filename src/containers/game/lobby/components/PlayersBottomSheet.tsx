@@ -40,7 +40,7 @@ export default function PlayersBottomSheet({
     }
 
     const newPlayers = [...inputPlayers];
-    newPlayers[index] = newName;
+    newPlayers[index].name = newName;
     setInputPlayers(newPlayers);
   };
 
@@ -55,7 +55,10 @@ export default function PlayersBottomSheet({
     if (inputPlayers.length > MAX_PLAYER_COUNT) {
       return;
     }
-    setInputPlayers([...inputPlayers, `플레이어${inputPlayers.length + 1}`]);
+
+    const newId = Math.max(...inputPlayers.map(({ id }) => id)) + 1;
+
+    setInputPlayers([...inputPlayers, { id: newId, name: `플레이어${newId}` }]);
   };
 
   return (
@@ -69,9 +72,9 @@ export default function PlayersBottomSheet({
           className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide max-h-[258px] min-h-[258px]"
           ref={playerListRef}
         >
-          {inputPlayers.map((player, index) => (
+          {inputPlayers.map(({ id, name }, index) => (
             <div
-              key={index}
+              key={id}
               className="flex items-center bg-[#F5F5F5] rounded-[12px] px-[16px] h-[56px]"
             >
               <span className="font-[900] text-[18px] text-[#333333] w-[24px] text-center">
@@ -79,7 +82,7 @@ export default function PlayersBottomSheet({
               </span>
               <input
                 type="text"
-                value={player}
+                value={name}
                 onChange={(e) => handlePlayerNameChange(index, e)}
                 className="flex-1 min-w-0 bg-transparent text-[18px] font-[600] text-[#333333] outline-none ml-[16px]"
                 placeholder={`플레이어${index + 1}`}

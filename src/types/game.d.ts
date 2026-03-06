@@ -7,3 +7,9 @@ export type GameLevelOfDifficulty = "long" | "short";
  * 진행 방식 - 타이머 | 양심
  */
 export type GamePlayType = "timer" | "conscience";
+
+export interface Player {
+  id: number;
+  name: string;
+  score?: number;
+}
