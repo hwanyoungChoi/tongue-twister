@@ -56,8 +56,7 @@ export default function PlayersBottomSheet({
       return;
     }
 
-    const lastId = inputPlayers[inputPlayers.length - 1].id;
-    const newId = lastId + 1;
+    const newId = Math.max(...inputPlayers.map(({ id }) => id)) + 1;
 
     setInputPlayers([...inputPlayers, { id: newId, name: `플레이어${newId}` }]);
   };
