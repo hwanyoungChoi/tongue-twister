@@ -40,7 +40,7 @@ export default function GamePlay() {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [round, setRound] = useState(1);
 
-  const currentPlayerName = players[currentPlayerIndex];
+  const currentPlayerName = players[currentPlayerIndex].name;
 
   const {
     start: startGameTimer,

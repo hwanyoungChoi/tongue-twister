@@ -1,11 +1,11 @@
-import type { GameLevelOfDifficulty, GamePlayType } from "@/types/game";
+import type { GameLevelOfDifficulty, GamePlayType, Player } from "@/types/game";
 import { create } from "zustand";
 
 interface GameState {
   /**
    * 게임 인원/닉네임
    */
-  players: string[];
+  players: Player[];
   /**
    * 벌칙 설정 (벌칙 없으면 꺼짐으로 판단)
    */
@@ -25,7 +25,7 @@ interface GameState {
 }
 
 interface GameAction {
-  setPlayers: (param: string[]) => void;
+  setPlayers: (param: Player[]) => void;
   setPenalty: (param: string) => void;
   setLevelOfDifficulty: (param: GameLevelOfDifficulty) => void;
   setPlayType: (param: GamePlayType) => void;
@@ -33,7 +33,16 @@ interface GameAction {
 }
 
 const useGameStore = create<GameState & GameAction>((set) => ({
-  players: ["플레이어1", "플레이어2"],
+  players: [
+    {
+      id: 1,
+      name: "플레이어1",
+    },
+    {
+      id: 2,
+      name: "플레이어2",
+    },
+  ],
   levelOfDifficulty: "long",
   playType: "timer",
   playTime: 30,
