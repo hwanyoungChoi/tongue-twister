@@ -17,6 +17,7 @@ import { useBlocker, useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
 import useTimer from "@/hooks/useTimer";
 import { formatMsToS } from "@/lib/utils";
+import TimeGauge from "./components/TimeGauge";
 
 type PlayStep = "INTRO" | "COUNTDOWN" | "GAME";
 
@@ -151,8 +152,10 @@ export default function GamePlay() {
                   {playType === "timer" && (
                     <>
                       <div className="w-full px-[32px]">
-                        <div className="h-[12px] bg-[#F571A2] rounded-[100px] mb-[8px]" />
-                        <div className="flex justify-center">
+                        <TimeGauge
+                          ratio={(gameTime / (playTime * 1000)) * 100}
+                        />
+                        <div className="flex justify-center mt-[8px]">
                           <div className="flex min-w-[50px] max-w-[50px] items-center justify-between">
                             <IconAlarmClockFill width={16} height={16} />
                             <p className="text-[13px] text-[#8C8C8C] font-np">
