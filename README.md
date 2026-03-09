@@ -1,3 +1,5 @@
+이 프로젝트는 Gemini Code Assist와의 코드 검토 및 Pull Request와 유사한 상호작용을 통해 개발되었습니다.
+
 ## Tongue-twister (TT)
 
 텅틀려!
