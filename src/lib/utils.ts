@@ -1,3 +1,3 @@
 export const formatMsToS = (ms: number) => {
-  return Math.floor(ms / 1000);
+  return Math.ceil(ms / 1000);
 };
