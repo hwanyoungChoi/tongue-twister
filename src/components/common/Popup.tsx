@@ -13,13 +13,24 @@ export interface PopupProps {
   onOpenChange: (open: boolean) => void;
   title: string;
   children: React.ReactNode;
+  width?: string;
+  height?: string;
 }
 
-export function Popup({ open, onOpenChange, title, children }: PopupProps) {
+export function Popup({
+  open,
+  onOpenChange,
+  title,
+  children,
+  width = "323px",
+  height = "auto",
+}: PopupProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      {/* w-[calc(100%-40px)]로 모바일에서 좌우 여백 확보, 모서리 둥글게 */}
-      <DialogContent className="w-[calc(100%-52px)] max-w-[323px] rounded-[20px] p-0 overflow-hidden gap-0 border-none">
+      <DialogContent
+        className="max-h-[calc(100%-80px)] rounded-[20px] p-0 gap-0 border-none"
+        style={{ minWidth: width, maxWidth: width, height }}
+      >
         {/* 커스텀 헤더 (좌측 타이틀, 우측 X 버튼) */}
         <DialogHeader className="flex flex-row items-center justify-between px-[24px] h-[74px]">
           <DialogTitle className="text-[21px] font-[700] text-[#1F1F1F]">
@@ -33,7 +44,7 @@ export function Popup({ open, onOpenChange, title, children }: PopupProps) {
         </DialogHeader>
 
         {/* 본문 영역 */}
-        <div className="px-[24px] pb-[16px]">{children}</div>
+        {children}
       </DialogContent>
     </Dialog>
   );
