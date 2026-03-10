@@ -14,7 +14,7 @@ export default function SettingPopup({
 
   return (
     <Popup open={open} onOpenChange={onOpenChange} title="설정">
-      <div className="flex flex-col">
+      <div className="flex flex-col px-[24px] pb-[16px]">
         <div className="flex items-center justify-between h-[56px] border-b border-gray-100">
           <span className="text-[16px] font-bold text-[#4A4A4A]">효과음</span>
           <Switch checked={soundEnabled} onCheckedChange={setSoundEnabled} />
