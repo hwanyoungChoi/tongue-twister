@@ -47,7 +47,7 @@ export default function PlayersBottomSheet({
   const handlePlayerNameFocus = (e: React.FocusEvent<HTMLInputElement>) => {
     // ⭐️ 10ms의 아주 짧은 지연을 주어 모바일 복사 패널이 뜨는 현상을 완벽 차단
     setTimeout(() => {
-      e.target.setSelectionRange(0, MAX_PLAYER_NAME_LENGTH);
+      e.target.setSelectionRange(0, e.target.value.length);
     }, 10);
   };
 
