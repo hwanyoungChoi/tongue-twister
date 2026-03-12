@@ -19,16 +19,15 @@ export default function useTimer({ initialTime, onTimerEnd }: UseTimerProps) {
     onTimerEndRef.current = onTimerEnd;
   }, [onTimerEnd]);
 
-  // ⭐️ 핵심 2: useCallback을 사용하여 화면이 다시 그려져도 타이머 함수가 튀지 않게 고정
-  const start = () => {
+  const start = useCallback(() => {
     if (!isRunning && remainingTimeRef.current > 0) {
       // 타이머가 시작되는 순간, '현실 시간 + 남은 시간'으로 목표 종료 시간을 못 박음
       expectedEndTimeRef.current = Date.now() + remainingTimeRef.current;
       setIsRunning(true);
     }
-  };
+  }, [isRunning]);
 
-  const pause = () => {
+  const pause = useCallback(() => {
     if (isRunning) {
       setIsRunning(false);
       // 일시정지하는 순간, 목표 종료 시간에서 현재 현실 시간을 빼서 정확한 남은 시간을 저장
@@ -40,7 +39,7 @@ export default function useTimer({ initialTime, onTimerEnd }: UseTimerProps) {
       }
       expectedEndTimeRef.current = null;
     }
-  };
+  }, [isRunning]);
 
   const reset = useCallback(() => {
     setIsRunning(false);
