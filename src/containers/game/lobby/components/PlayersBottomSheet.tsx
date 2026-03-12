@@ -117,7 +117,15 @@ export default function PlayersBottomSheet({
                   value={name}
                   onChange={(e) => handlePlayerNameChange(index, e)}
                   onFocus={(e) => handlePlayerNameFocus(index, e)}
-                  onBlur={() => setFocusedPlayerIndex(undefined)}
+                  onBlur={(e) => {
+                    // ⭐️ 핵심: 포커스가 이동할 다음 목적지(relatedTarget)가 'INPUT'이라면
+                    // 어차피 곧바로 새로운 onFocus가 실행될 테니 undefined로 초기화하지 않습니다!
+                    if (e.relatedTarget?.tagName === "INPUT") {
+                      return;
+                    }
+
+                    setFocusedPlayerIndex(undefined);
+                  }}
                   className="flex-1 min-w-0 bg-transparent text-[18px] font-[600] text-[#333333] outline-none ml-[12px]"
                 />
                 <button
