@@ -70,7 +70,9 @@ export default function GamePlay() {
   // ⭐️ 시간 초과 처리 (버그 1 완벽 해결)
   const handleTimeout = () => {
     // 이미 패널티 처리 중이라면 절대 중복 실행 안 됨!
-    if (isPenaltyRef.current) return;
+    if (isPenaltyRef.current) {
+      return;
+    }
     isPenaltyRef.current = true; // 0.001초 만에 자물쇠 잠금
 
     pauseGameTimer();
@@ -124,7 +126,9 @@ export default function GamePlay() {
   }, [isButtonDisabled, playType, resetGameTimer, startGameTimer]);
 
   useEffect(() => {
-    if (subStep !== "GAME") return;
+    if (subStep !== "GAME") {
+      return;
+    }
 
     // 팝업이 떴거나, 버튼이 잠겼을(패널티 대기 중) 때는 타이머 정지
     if (isHistoryPop || isButtonDisabled) {
@@ -165,7 +169,9 @@ export default function GamePlay() {
   };
 
   const handleSuccess = () => {
-    if (isPenaltyRef.current) return; // 연타 방어
+    if (isPenaltyRef.current) {
+      return; // 연타 방어
+    }
 
     setPlayerStats((prev) =>
       prev.map((stat, idx) =>
@@ -181,7 +187,9 @@ export default function GamePlay() {
   };
 
   const handleFail = () => {
-    if (isPenaltyRef.current) return;
+    if (isPenaltyRef.current) {
+      return;
+    }
     isPenaltyRef.current = true; // 자물쇠 잠금
 
     setPlayerStats((prev) =>
