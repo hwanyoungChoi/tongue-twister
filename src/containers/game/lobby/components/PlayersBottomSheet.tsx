@@ -10,6 +10,7 @@ import IconCheck from "@/assets/icons/check.svg?react";
 import useGameStore from "@/stores/useGameStore";
 import { useEffect, useRef, useState } from "react";
 import { PLAYER_COLOR_LIST } from "@/lib/constants";
+import { toast } from "sonner";
 
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
@@ -144,17 +145,17 @@ export default function PlayersBottomSheet({
                 focusedPlayerIndex !== undefined &&
                 inputPlayers[focusedPlayerIndex].color === color;
 
-              const usedColor = inputPlayers.some((p) => p.color === color);
+              const isColorUsed = inputPlayers.some((p) => p.color === color);
 
               /**
                * 사용 중인 컬러는 투명도 처리, 단 현재 선택된 플레이어 컬러면 투명도 없이 표시
                * 4D는 opacity 30%이고, icon 투명도에 영향 주지 않기 위함
                */
               const backgroundColor =
-                usedColor && !isFocusedPlayerColor ? `${color}4D` : color;
+                isColorUsed && !isFocusedPlayerColor ? `${color}4D` : color;
 
               return (
-                <div
+                <button
                   className="flex items-center justify-center w-[24px] h-[24px] rounded-[4px]"
                   style={{
                     backgroundColor,
@@ -167,8 +168,8 @@ export default function PlayersBottomSheet({
                       return;
                     }
 
-                    if (usedColor) {
-                      alert("이미 선택된 색상이야. 다른 색상을 선택해!");
+                    if (isColorUsed) {
+                      toast("이미 선택된 색상이야. 다른 색상을 선택해!");
                       return;
                     }
 
@@ -182,7 +183,7 @@ export default function PlayersBottomSheet({
                   }}
                 >
                   {isFocusedPlayerColor && <IconCheck />}
-                </div>
+                </button>
               );
             })}
           </div>
