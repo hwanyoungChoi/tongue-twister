@@ -1,3 +1,4 @@
+import { PLAYER_COLOR_LIST } from "@/lib/constants";
 import type { GameLevelOfDifficulty, GamePlayType, Player } from "@/types/game";
 import { create } from "zustand";
 
@@ -37,10 +38,12 @@ const useGameStore = create<GameState & GameAction>((set) => ({
     {
       id: 1,
       name: "플레이어1",
+      color: PLAYER_COLOR_LIST[0],
     },
     {
       id: 2,
       name: "플레이어2",
+      color: PLAYER_COLOR_LIST[1],
     },
   ],
   levelOfDifficulty: "long",
