@@ -73,9 +73,9 @@ export default function PlayersBottomSheet({
 
     const id = Math.max(...inputPlayers.map(({ id }) => id)) + 1;
     const name = `플레이어${id}`;
-    const color =
-      PLAYER_COLOR_LIST.find((c) => !inputPlayers.some((p) => p.color === c)) ??
-      "";
+    const color = PLAYER_COLOR_LIST.find(
+      (c) => !inputPlayers.some((p) => p.color === c),
+    )!;
 
     setInputPlayers([
       ...inputPlayers,
@@ -172,8 +172,12 @@ export default function PlayersBottomSheet({
                       return;
                     }
 
-                    const newPlayers = [...inputPlayers];
-                    newPlayers[focusedPlayerIndex].color = color;
+                    const newPlayers = inputPlayers.map((p, i) => {
+                      if (i === focusedPlayerIndex) {
+                        return { ...p, color };
+                      }
+                      return p;
+                    });
                     setInputPlayers(newPlayers);
                   }}
                 >
