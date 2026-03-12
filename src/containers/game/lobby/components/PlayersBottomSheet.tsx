@@ -169,17 +169,7 @@ export default function PlayersBottomSheet({
                     }
 
                     if (isColorUsed) {
-                      toast("이미 선택된 색상이야. 다른 색상을 선택해!", {
-                        id: "color-warning-toast",
-                        unstyled: true,
-                        classNames: {
-                          toast:
-                            "bg-[#000000CC] rounded-[8px] px-[20px] py-[9.5px] mb-[110px]",
-                          title: "text-[16px] text-white text-center",
-                        },
-                        duration: 1000,
-                        position: "bottom-center",
-                      });
+                      toast("이미 선택된 색상이야. 다른 색상을 선택해!");
                       return;
                     }
 

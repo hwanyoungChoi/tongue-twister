@@ -1,7 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import AppEntry from "./containers/AppEntry";
-import { Toaster } from "sonner";
+import { Toaster } from "./components/ui/sonner";
 
 function App() {
   const buildDate = new Date(__APP_BUILD_DATE__).toLocaleDateString();
