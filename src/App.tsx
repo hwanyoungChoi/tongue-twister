@@ -1,6 +1,7 @@
 import { RouterProvider } from "react-router-dom";
 import router from "./router";
 import AppEntry from "./containers/AppEntry";
+import { Toaster } from "sonner";
 
 function App() {
   const buildDate = new Date(__APP_BUILD_DATE__).toLocaleDateString();
@@ -14,6 +15,7 @@ function App() {
         </div>
         <RouterProvider router={router} />{" "}
         {/* All routes are now under RouterProvider */}
+        <Toaster />
       </div>
     </AppEntry>
   );
