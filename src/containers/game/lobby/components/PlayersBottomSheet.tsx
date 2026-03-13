@@ -162,7 +162,6 @@ export default function PlayersBottomSheet({
                 isColorUsed && !isFocusedPlayerColor
                   ? `color-mix(in srgb, var(--${color}) 30%, transparent)`
                   : `var(--${color})`;
-              console.log(backgroundColor);
 
               return (
                 <button
