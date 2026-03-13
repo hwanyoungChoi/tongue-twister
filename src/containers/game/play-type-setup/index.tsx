@@ -85,7 +85,7 @@ function ConscienceSetup() {
   const navigate = useNavigate();
 
   const { start: startTimer } = useTimer({
-    initialTime: 1000,
+    initialTime: 2000,
     onTimerEnd: () => navigate(ROUTES.PLAY),
   });
 

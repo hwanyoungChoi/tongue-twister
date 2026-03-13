@@ -17,7 +17,7 @@ export default function Intro({
   isPause: boolean;
 }) {
   const { start, pause } = useTimer({
-    initialTime: 1000,
+    initialTime: 2000,
     onTimerEnd: () => onNext(),
   });
 
