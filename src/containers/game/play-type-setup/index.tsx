@@ -5,13 +5,15 @@ import { Button } from "@/components/ui/button";
 import Header from "@/components/common/Header";
 import FixedBottom from "@/components/common/FixedBottom";
 
-import ImageIntroCharacter from "@/assets/images/intro-character.png";
+import LottiePlayerCircle1DefaultPink from "@/assets/lotties/player_circle1/player_circle1_default_pink.json";
+
 import IconCheckCircleFill from "@/assets/icons/check_circle_fill.svg?react";
 import IconCheckCircle from "@/assets/icons/check_circle.svg?react";
 
 import { useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
 import useTimer from "@/hooks/useTimer";
+import Lottie from "lottie-react";
 
 export default function GamePlayTypeSetup() {
   const playType = useGameStore((state) => state.playType);
@@ -99,9 +101,8 @@ function ConscienceSetup() {
         혀가 꼬여있는지
         <br />잘 감시하라구~!
       </h1>
-      <img
-        src={ImageIntroCharacter}
-        alt="게임 인트로 캐릭터"
+      <Lottie
+        animationData={LottiePlayerCircle1DefaultPink}
         className="w-[160px] h-auto mt-[20px]"
       />
     </div>
