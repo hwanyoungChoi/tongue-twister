@@ -110,7 +110,7 @@ export default function PlayersBottomSheet({
                 </span>
                 <div
                   className="w-[20px] h-[20px] rounded-[4px]"
-                  style={{ backgroundColor: color }}
+                  style={{ backgroundColor: `var(--${color})` }}
                 />
                 <input
                   type="text"
@@ -157,10 +157,11 @@ export default function PlayersBottomSheet({
 
               /**
                * 사용 중인 컬러는 투명도 처리, 단 현재 선택된 플레이어 컬러면 투명도 없이 표시
-               * 4D는 opacity 30%이고, icon 투명도에 영향 주지 않기 위함
                */
               const backgroundColor =
-                isColorUsed && !isFocusedPlayerColor ? `${color}4D` : color;
+                isColorUsed && !isFocusedPlayerColor
+                  ? `color-mix(in srgb, var(--${color}) 30%, transparent)`
+                  : `var(--${color})`;
 
               return (
                 <button
