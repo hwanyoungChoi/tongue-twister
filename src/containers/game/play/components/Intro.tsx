@@ -1,16 +1,18 @@
 import useTimer from "@/hooks/useTimer";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
-import ImageIntroCharacter from "@/assets/images/intro-character.png";
+import type { Player } from "@/types/game";
+import Lottie from "lottie-react";
+import { getLottieData } from "@/lib/utils";
 
 export default function Intro({
   currentPlayerIndex,
-  currentPlayerName,
+  currentPlayer,
   onNext,
   isPause,
 }: {
   currentPlayerIndex: number;
-  currentPlayerName: string;
+  currentPlayer: Player;
   onNext: () => void;
   isPause: boolean;
 }) {
@@ -27,6 +29,18 @@ export default function Intro({
     }
   }, [isPause, pause, start]);
 
+  const { name, color } = currentPlayer;
+
+  // ⭐️ 핵심: 리렌더링(타이머 틱 등) 시 Lottie가 무작위로 계속 바뀌는 것을 방어합니다.
+  const randomLottieType = useMemo(() => {
+    const lottieTypes = ["player_circle1", "player_circle2"];
+
+    // eslint-disable-next-line
+    const randomIndex = Math.floor(Math.random() * lottieTypes.length);
+
+    return lottieTypes[randomIndex];
+  }, [currentPlayerIndex]); // 플레이어의 인덱스(턴)가 넘어갈 때만 새로운 랜덤값을 뽑습니다.
+
   return (
     <main className="flex-1 flex flex-col items-center justify-center">
       <h1 className="text-center text-[26px] text-[#1F1F1F] leading-[1.5] font-np">
@@ -34,11 +48,10 @@ export default function Intro({
         <br />
         자, {currentPlayerIndex + 1}번 째 차례는
         <br />
-        <span className="text-[#F571A2]">{currentPlayerName}</span> 너야!
+        <span className="text-[#F571A2]">{name}</span> 너야!
       </h1>
-      <img
-        src={ImageIntroCharacter}
-        alt="게임 인트로 캐릭터"
+      <Lottie
+        animationData={getLottieData(randomLottieType, color)}
         className="w-[160px] h-auto mt-[20px]"
       />
     </main>

@@ -63,6 +63,7 @@ export default function GamePlay() {
     earnedScore: number;
   } | null>(null);
 
+  const currentPlayer = players[currentPlayerIndex];
   const currentPlayerName = players[currentPlayerIndex].name;
   const currentLife = playerStats[currentPlayerIndex].life;
   const currentScore = playerStats[currentPlayerIndex].score;
@@ -250,7 +251,7 @@ export default function GamePlay() {
         {subStep === "INTRO" && (
           <Intro
             currentPlayerIndex={currentPlayerIndex}
-            currentPlayerName={currentPlayerName}
+            currentPlayer={currentPlayer}
             onNext={() => setSubStep("COUNTDOWN")}
             isPause={isHistoryPop}
           />
