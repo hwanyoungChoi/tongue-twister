@@ -67,6 +67,17 @@
 }
 
 :root {
+  --default_pink: #ff99c0;
+  --red: #f88186;
+  --orange: #fda55d;
+  --yellow: #fedc7b;
+  --lime: #d8e84e;
+  --emerald: #53e08c;
+  --sky: #80cae5;
+  --blue: #7fabff;
+  --lavender: #d6bff3;
+  --gray: #bababa;
+
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

@@ -78,14 +78,14 @@ export const GAME_TEXT_LIST = {
 };
 
 export const PLAYER_COLOR_LIST = [
-  "#FF99C0",
-  "#F88186",
-  "#FDA55D",
-  "#FEDC7B",
-  "#D8E84E",
-  "#53E08C",
-  "#80CAE5",
-  "#7FABFF",
-  "#D6BFF3",
-  "#BABABA",
+  "default_pink",
+  "red",
+  "orange",
+  "yellow",
+  "lime",
+  "emerald",
+  "sky",
+  "blue",
+  "lavender",
+  "gray",
 ];
