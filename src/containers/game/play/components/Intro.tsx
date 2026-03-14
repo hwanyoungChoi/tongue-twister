@@ -5,6 +5,19 @@ import type { Player } from "@/types/game";
 import Lottie from "lottie-react";
 import { getLottieData } from "@/lib/utils";
 
+const KOREAN_ORDINALS = [
+  "첫 번째",
+  "두 번째",
+  "세 번째",
+  "네 번째",
+  "다섯 번째",
+  "여섯 번째",
+  "일곱 번째",
+  "여덟 번째",
+  "아홉 번째",
+  "열 번째",
+];
+
 export default function Intro({
   currentPlayerIndex,
   currentPlayer,
@@ -46,7 +59,7 @@ export default function Intro({
       <h1 className="text-center text-[26px] text-[#1F1F1F] leading-[1.5] font-np">
         긴장되지?
         <br />
-        자, {currentPlayerIndex + 1}번 째 차례는
+        자, {KOREAN_ORDINALS[currentPlayerIndex]} 차례는
         <br />
         <span className="text-[#F571A2]">{name}</span> 너야!
       </h1>
