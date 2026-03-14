@@ -5,6 +5,33 @@ import type { Player } from "@/types/game";
 import Lottie from "lottie-react";
 import { getLottieData } from "@/lib/utils";
 
+function formatPlayerIndex(index: number) {
+  switch (index) {
+    case 0:
+      return "첫 번째";
+    case 1:
+      return "두 번째";
+    case 2:
+      return "세 번째";
+    case 3:
+      return "네 번째";
+    case 4:
+      return "다섯 번째";
+    case 5:
+      return "여섯 번째";
+    case 6:
+      return "일곱 번째";
+    case 7:
+      return "여덟 번째";
+    case 8:
+      return "아홉 번째";
+    case 9:
+      return "열 번째";
+    default:
+      return "";
+  }
+}
+
 export default function Intro({
   currentPlayerIndex,
   currentPlayer,
@@ -46,7 +73,7 @@ export default function Intro({
       <h1 className="text-center text-[26px] text-[#1F1F1F] leading-[1.5] font-np">
         긴장되지?
         <br />
-        자, {currentPlayerIndex + 1}번 째 차례는
+        자, {formatPlayerIndex(currentPlayerIndex)} 차례는
         <br />
         <span className="text-[#F571A2]">{name}</span> 너야!
       </h1>
