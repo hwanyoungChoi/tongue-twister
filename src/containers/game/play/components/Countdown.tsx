@@ -46,7 +46,7 @@ export default function Countdown({
     );
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center px-[24px]">
+    <main className="flex-1 flex flex-col items-center justify-center px-[24px] -mt-[48px]">
       <h1 className="text-center text-[26px] leading-[1.5] text-[#1F1F1F] leading-[140%] mb-[40px] font-np">
         {message}
       </h1>

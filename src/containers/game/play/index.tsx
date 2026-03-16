@@ -55,7 +55,7 @@ export default function GamePlay() {
   return (
     <>
       <div
-        className={`flex flex-col min-h-dvh ${isPlayingOrResult ? "bg-[#F8FAFA]" : "bg-white -mt-[48px]"}`}
+        className={`flex flex-col min-h-dvh ${isPlayingOrResult ? "bg-[#F8FAFA]" : "bg-white"}`}
       >
         <Header type={isPlayingOrResult ? "play" : "back"} />
 

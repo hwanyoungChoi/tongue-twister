@@ -55,7 +55,7 @@ export default function Intro({
   }, [currentPlayerIndex]); // 플레이어의 인덱스(턴)가 넘어갈 때만 새로운 랜덤값을 뽑습니다.
 
   return (
-    <main className="flex-1 flex flex-col items-center justify-center">
+    <main className="flex-1 flex flex-col items-center justify-center -mt-[48px]">
       <h1 className="text-center text-[26px] text-[#1F1F1F] leading-[1.5] font-np">
         긴장되지?
         <br />
