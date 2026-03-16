@@ -35,24 +35,24 @@ export default function PlayersBottomSheet({
       return;
     }
     const inputs = playerListRef.current.querySelectorAll("input");
-    const lastInput = inputs[inputs.length - 1] as HTMLInputElement;
+    const lastInputNode = inputs[inputs.length - 1];
 
-    if (lastInput) {
-      lastInput.focus();
-      lastInput.setSelectionRange(0, lastInput.value.length);
+    if (lastInputNode instanceof HTMLInputElement) {
+      lastInputNode.focus();
+      lastInputNode.setSelectionRange(0, lastInputNode.value.length);
     }
   };
 
   useEffect(() => {
     playerListRef.current?.scrollTo(0, playerListRef.current?.scrollHeight);
 
-    if (inputPlayers.length > prevLengthRef.current) {
+    const hasPlayerAdded = inputPlayers.length > prevLengthRef.current;
+    prevLengthRef.current = inputPlayers.length;
+
+    if (hasPlayerAdded) {
       const timer = setTimeout(focusLastInput, 50);
-      prevLengthRef.current = inputPlayers.length;
       return () => clearTimeout(timer);
     }
-
-    prevLengthRef.current = inputPlayers.length;
   }, [inputPlayers.length]);
 
   useEffect(() => {
