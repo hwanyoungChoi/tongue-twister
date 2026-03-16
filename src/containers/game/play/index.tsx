@@ -57,8 +57,14 @@ export default function GamePlay() {
   const currentSentence =
     GAME_TEXT_LIST[levelOfDifficulty][round - 1][sequence - 1];
 
-  const oneLifeLoseLottie = useRandomLottie(ONE_LIFE_LOSE_LOTTIE_TYPES);
-  const twoLifeLoseLottie = useRandomLottie(TWO_LIFE_LOSE_LOTTIE_TYPES);
+  const oneLifeLoseLottie = useRandomLottie(
+    ONE_LIFE_LOSE_LOTTIE_TYPES,
+    currentPlayerIndex,
+  );
+  const twoLifeLoseLottie = useRandomLottie(
+    TWO_LIFE_LOSE_LOTTIE_TYPES,
+    currentPlayerIndex,
+  );
 
   return (
     <>
@@ -169,23 +175,8 @@ export default function GamePlay() {
                           )}
                         </h2>
                       )}
-                      {turnResult.type === "FAIL" && (
-                        <>
-                          <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
-                            저런.. 이제
-                            <br />
-                            남은 기회는 없어..
-                          </h2>
-                          <Lottie
-                            animationData={getLottieData(
-                              twoLifeLoseLottie,
-                              currentPlayer.color,
-                            )}
-                            className="-mt-[30px] h-[320px]"
-                          />
-                        </>
-                      )}
-                      {turnResult.type === "TIMEOUT" && (
+                      {(turnResult.type === "FAIL" ||
+                        turnResult.type === "TIMEOUT") && (
                         <>
                           <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
                             저런.. 이제
