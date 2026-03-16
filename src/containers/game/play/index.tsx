@@ -17,13 +17,16 @@ import TopBar from "./components/TopBar";
 import useGame from "@/hooks/useGame";
 
 import IconAlarmClockFill from "@/assets/icons/alarm_clock_fill.svg?react";
-import ImageClearTimerCharacter from "@/assets/images/game/clear_timer_character.svg?react";
-import ImageClearConscienceCharacter from "@/assets/images/game/clear_conscience_character.svg?react";
 import useRandomLottie from "@/hooks/useRandomLottie";
 import Lottie from "lottie-react";
 
 const ONE_LIFE_LOSE_LOTTIE_TYPES = ["one_life_lose_1", "one_life_lose_2"];
 const TWO_LIFE_LOSE_LOTTIE_TYPES = ["two_life_lose_1", "two_life_lose_2"];
+const CONFIRM_SCORE_LOTTIE_TYPES = [
+  "confirm_score_1",
+  "confirm_score_2",
+  "confirm_score_3",
+];
 
 export default function GamePlay() {
   const navigate = useNavigate();
@@ -63,6 +66,10 @@ export default function GamePlay() {
   );
   const twoLifeLoseLottie = useRandomLottie(
     TWO_LIFE_LOSE_LOTTIE_TYPES,
+    currentPlayerIndex,
+  );
+  const confirmScoreLottie = useRandomLottie(
+    CONFIRM_SCORE_LOTTIE_TYPES,
     currentPlayerIndex,
   );
 
@@ -162,7 +169,13 @@ export default function GamePlay() {
                               <span className="text-[#F571A2]">
                                 추가 {turnResult.earnedScore - sequence}점 획득!
                               </span>
-                              <ImageClearTimerCharacter />
+                              <Lottie
+                                animationData={getLottieData(
+                                  confirmScoreLottie,
+                                  currentPlayer.color,
+                                )}
+                                className="-mt-[30px] h-[320px]"
+                              />
                             </>
                           ) : (
                             <>
@@ -170,7 +183,13 @@ export default function GamePlay() {
                               <span className="text-[#F571A2]">
                                 {turnResult.earnedScore}점 획득!
                               </span>
-                              <ImageClearConscienceCharacter />
+                              <Lottie
+                                animationData={getLottieData(
+                                  confirmScoreLottie,
+                                  currentPlayer.color,
+                                )}
+                                className="-mt-[30px] h-[320px]"
+                              />
                             </>
                           )}
                         </h2>
