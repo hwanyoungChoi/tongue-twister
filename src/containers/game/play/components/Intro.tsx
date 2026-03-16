@@ -1,9 +1,10 @@
 import useTimer from "@/hooks/useTimer";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 
 import type { Player } from "@/types/game";
 import Lottie from "lottie-react";
 import { getLottieData } from "@/lib/utils";
+import useRandomLottie from "@/hooks/useRandomLottie";
 
 const KOREAN_ORDINALS = [
   "첫 번째",
@@ -44,15 +45,10 @@ export default function Intro({
 
   const { name, color } = currentPlayer;
 
-  // ⭐️ 핵심: 리렌더링(타이머 틱 등) 시 Lottie가 무작위로 계속 바뀌는 것을 방어합니다.
-  const randomLottieType = useMemo(() => {
-    const lottieTypes = ["player_circle1", "player_circle2"];
-
-    // eslint-disable-next-line
-    const randomIndex = Math.floor(Math.random() * lottieTypes.length);
-
-    return lottieTypes[randomIndex];
-  }, [currentPlayerIndex]); // 플레이어의 인덱스(턴)가 넘어갈 때만 새로운 랜덤값을 뽑습니다.
+  const lottie = useRandomLottie(
+    ["player_circle1", "player_circle2"],
+    currentPlayerIndex,
+  );
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center -mt-[48px]">
@@ -64,7 +60,7 @@ export default function Intro({
         <span className="text-[#F571A2]">{name}</span> 너야!
       </h1>
       <Lottie
-        animationData={getLottieData(randomLottieType, color)}
+        animationData={getLottieData(lottie, color)}
         className="w-[160px] h-auto mt-[20px]"
       />
     </main>
