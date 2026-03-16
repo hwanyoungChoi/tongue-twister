@@ -25,7 +25,6 @@ export default function useGame(isHistoryPop: boolean) {
   const [penaltyState, setPenaltyState] = useState<"FAIL" | "TIMEOUT" | null>(
     null,
   );
-  const [successDelay, setSuccessDelay] = useState(false);
 
   const isPenaltyRef = useRef(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
@@ -115,29 +114,11 @@ export default function useGame(isHistoryPop: boolean) {
     };
   }, [penaltyState, playType, resetGameTimer, startGameTimer]);
 
-  // ⭐️ 성공 시 1초 대기 후 다음 문장으로 이동
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    if (successDelay) {
-      timeoutId = setTimeout(() => {
-        setSequence((prev) => prev + 1);
-        setSuccessDelay(false);
-        setIsButtonDisabled(false);
-        isPenaltyRef.current = false;
-
-        // 성공 시에도 타이머를 꽉 채우고 싶다면 여기에 resetGameTimer() 호출
-      }, 1000); // 1초 대기
-    }
-    return () => {
-      if (timeoutId) clearTimeout(timeoutId);
-    };
-  }, [successDelay]);
-
   // ⭐️ 타이머 동기화 (팝업, 패널티, 성공대기 중일 땐 타이머 멈춤)
   useEffect(() => {
     if (subStep !== "GAME") return;
 
-    if (isHistoryPop || penaltyState || successDelay) {
+    if (isHistoryPop || penaltyState) {
       pauseGameTimer();
     } else {
       if (playType === "timer") startGameTimer();
@@ -145,7 +126,6 @@ export default function useGame(isHistoryPop: boolean) {
   }, [
     isHistoryPop,
     penaltyState,
-    successDelay,
     pauseGameTimer,
     startGameTimer,
     subStep,
@@ -153,10 +133,6 @@ export default function useGame(isHistoryPop: boolean) {
   ]);
 
   const handleSuccess = () => {
-    if (isPenaltyRef.current) return;
-    isPenaltyRef.current = true;
-    setIsButtonDisabled(true);
-
     setPlayerStats((prev) =>
       prev.map((stat, idx) =>
         idx === currentPlayerIndex ? { ...stat, score: stat.score + 1 } : stat,
@@ -166,7 +142,7 @@ export default function useGame(isHistoryPop: boolean) {
     if (sequence === MAX_SEQUENCE) {
       handleTurnEnd("CLEAR", gameTime);
     } else {
-      setSuccessDelay(true); // 1초 대기 트리거 발동
+      setSequence((prev) => prev + 1);
     }
   };
 
@@ -197,7 +173,6 @@ export default function useGame(isHistoryPop: boolean) {
     setIsButtonDisabled(false);
     isPenaltyRef.current = false;
     setPenaltyState(null);
-    setSuccessDelay(false);
 
     let nextIndex = currentPlayerIndex + 1;
     let nextRound = round;
