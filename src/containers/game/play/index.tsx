@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import useGameStore from "@/stores/useGameStore";
 import ROUTES from "@/lib/routes";
 import { GAME_TEXT_LIST } from "@/lib/constants";
-import { formatMsToS } from "@/lib/utils";
+import { formatMsToS, getLottieData } from "@/lib/utils";
 
 import Header from "@/components/common/Header";
 import FixedBottom from "@/components/common/FixedBottom";
@@ -19,6 +19,11 @@ import useGame from "@/hooks/useGame";
 import IconAlarmClockFill from "@/assets/icons/alarm_clock_fill.svg?react";
 import ImageClearTimerCharacter from "@/assets/images/game/clear_timer_character.svg?react";
 import ImageClearConscienceCharacter from "@/assets/images/game/clear_conscience_character.svg?react";
+import useRandomLottie from "@/hooks/useRandomLottie";
+import Lottie from "lottie-react";
+
+const ONE_LIFE_LOSE_LOTTIE_TYPES = ["one_life_lose_1", "one_life_lose_2"];
+const TWO_LIFE_LOSE_LOTTIE_TYPES = ["two_life_lose_1", "two_life_lose_2"];
 
 export default function GamePlay() {
   const navigate = useNavigate();
@@ -51,6 +56,9 @@ export default function GamePlay() {
   const isPlayingOrResult = subStep === "GAME" || subStep === "TURN_RESULT";
   const currentSentence =
     GAME_TEXT_LIST[levelOfDifficulty][round - 1][sequence - 1];
+
+  const oneLifeLoseLottie = useRandomLottie(ONE_LIFE_LOSE_LOTTIE_TYPES);
+  const twoLifeLoseLottie = useRandomLottie(TWO_LIFE_LOSE_LOTTIE_TYPES);
 
   return (
     <>
@@ -116,7 +124,13 @@ export default function GamePlay() {
                           남은 기회는{" "}
                           <span className="text-[#F571A2]">한 번</span>이다?
                         </h2>
-                        <div /> {/* flex-between 간격 유지를 위한 빈 태그 */}
+                        <Lottie
+                          animationData={getLottieData(
+                            oneLifeLoseLottie,
+                            currentPlayer.color,
+                          )}
+                          className="-mt-[30px] h-[320px]"
+                        />
                       </>
                     ) : (
                       <>
@@ -156,18 +170,36 @@ export default function GamePlay() {
                         </h2>
                       )}
                       {turnResult.type === "FAIL" && (
-                        <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
-                          저런.. 이제
-                          <br />
-                          남은 기회는 없어..
-                        </h2>
+                        <>
+                          <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
+                            저런.. 이제
+                            <br />
+                            남은 기회는 없어..
+                          </h2>
+                          <Lottie
+                            animationData={getLottieData(
+                              twoLifeLoseLottie,
+                              currentPlayer.color,
+                            )}
+                            className="-mt-[30px] h-[320px]"
+                          />
+                        </>
                       )}
                       {turnResult.type === "TIMEOUT" && (
-                        <h2 className="text-[28px] font-bold text-[#1F1F1F] font-np leading-[140%]">
-                          저런.. 이제
-                          <br />
-                          남은 기회는 없어..
-                        </h2>
+                        <>
+                          <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
+                            저런.. 이제
+                            <br />
+                            남은 기회는 없어..
+                          </h2>
+                          <Lottie
+                            animationData={getLottieData(
+                              twoLifeLoseLottie,
+                              currentPlayer.color,
+                            )}
+                            className="-mt-[30px] h-[320px]"
+                          />
+                        </>
                       )}
                     </div>
                   )
