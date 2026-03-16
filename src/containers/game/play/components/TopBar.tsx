@@ -1,22 +1,21 @@
-// src/containers/GamePlay/components/GameTopBar.tsx
 import ImageIntroCharacter from "@/assets/images/intro-character.png";
 import IconTongue from "@/assets/icons/tongue.svg?react";
 import IconTongueGray from "@/assets/icons/tongue_gray.svg?react";
 import { MAX_LIFE } from "@/lib/constants";
 
-interface GameTopBarProps {
+interface TopBarProps {
   round: number;
   playerName: string;
   score: number;
   life: number;
 }
 
-export default function GameTopBar({
+export default function TopBar({
   round,
   playerName,
   score,
   life,
-}: GameTopBarProps) {
+}: TopBarProps) {
   return (
     <div className="flex items-center justify-between gap-[8px] h-[72px] bg-white rounded-[1000px] shadow-[0_0_20px_0_rgba(0,0,0,0.05)] pl-[12px] pr-[8px] mb-[16px]">
       <div className="flex items-center justify-between gap-[8px]">

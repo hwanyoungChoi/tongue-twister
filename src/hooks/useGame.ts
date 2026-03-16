@@ -1,4 +1,3 @@
-// src/hooks/useGameLogic.ts
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useGameStore from "@/stores/useGameStore";
@@ -9,7 +8,7 @@ import { MAX_LIFE, MAX_SEQUENCE, MAX_ROUND } from "@/lib/constants";
 export type PlayStep = "INTRO" | "COUNTDOWN" | "GAME" | "TURN_RESULT";
 export type TurnResultType = "CLEAR" | "FAIL" | "TIMEOUT";
 
-export default function useGameLogic(isHistoryPop: boolean) {
+export default function useGame(isHistoryPop: boolean) {
   const navigate = useNavigate();
 
   const players = useGameStore((state) => state.players);

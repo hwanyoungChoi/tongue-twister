@@ -88,7 +88,7 @@ export default function GamePlay() {
               <div className="w-full h-[457px] pt-[40px] pb-[20px] px-[20px] bg-white rounded-[24px] shadow-[0_10px_40px_0_rgba(0,0,0,0.1)]">
                 {subStep === "GAME" ? (
                   <div className="h-full flex flex-col justify-between items-center text-center">
-                    {playType === "timer" && (
+                    {playType === "timer" ? (
                       <div className="w-full px-[32px]">
                         <TimeGauge
                           ratio={(gameTime / (playTime * 1000)) * 100}
@@ -100,6 +100,9 @@ export default function GamePlay() {
                           </div>
                         </div>
                       </div>
+                    ) : (
+                      // 빈 영역 유지위함
+                      <div />
                     )}
                     <p className="text-[40px] text-[#1F1F1F] font-np leading-[140%]">
                       {currentSentence}
