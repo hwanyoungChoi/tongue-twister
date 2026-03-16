@@ -37,6 +37,7 @@ export default function GamePlay() {
     subStep,
     currentPlayer,
     currentPlayerName,
+    currentPlayerIndex,
     currentLife,
     currentScore,
     sequence,
@@ -59,7 +60,7 @@ export default function GamePlay() {
 
         {subStep === "INTRO" && (
           <Intro
-            currentPlayerIndex={currentPlayer.id} // 필요시 인덱스 조정
+            currentPlayerIndex={currentPlayerIndex}
             currentPlayer={currentPlayer}
             onNext={() => actions.setSubStep("COUNTDOWN")}
             isPause={isHistoryPop}

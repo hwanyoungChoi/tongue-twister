@@ -89,3 +89,7 @@ export const PLAYER_COLOR_LIST = [
   "lavender",
   "gray",
 ];
+
+export const MAX_ROUND = 3;
+export const MAX_SEQUENCE = 10;
+export const MAX_LIFE = 2;

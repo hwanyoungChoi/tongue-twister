@@ -2,6 +2,7 @@
 import ImageIntroCharacter from "@/assets/images/intro-character.png";
 import IconTongue from "@/assets/icons/tongue.svg?react";
 import IconTongueGray from "@/assets/icons/tongue_gray.svg?react";
+import { MAX_LIFE } from "@/lib/constants";
 
 interface GameTopBarProps {
   round: number;
@@ -46,8 +47,9 @@ export default function GameTopBar({
             남은 기회
           </p>
           <div className="flex gap-[2px] items-center justify-center">
-            {life >= 1 ? <IconTongue /> : <IconTongueGray />}
-            {life >= 2 ? <IconTongue /> : <IconTongueGray />}
+            {Array.from({ length: MAX_LIFE }).map((_, i) =>
+              life > i ? <IconTongue key={i} /> : <IconTongueGray key={i} />,
+            )}
           </div>
         </div>
       </div>

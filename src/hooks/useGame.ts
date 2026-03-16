@@ -4,13 +4,10 @@ import { useNavigate } from "react-router-dom";
 import useGameStore from "@/stores/useGameStore";
 import useTimer from "@/hooks/useTimer";
 import ROUTES from "@/lib/routes";
+import { MAX_LIFE, MAX_SEQUENCE, MAX_ROUND } from "@/lib/constants";
 
 export type PlayStep = "INTRO" | "COUNTDOWN" | "GAME" | "TURN_RESULT";
 export type TurnResultType = "CLEAR" | "FAIL" | "TIMEOUT";
-
-const MAX_ROUND = 3;
-const MAX_SEQUENCE = 10;
-const MAX_LIFE = 2;
 
 export default function useGameLogic(isHistoryPop: boolean) {
   const navigate = useNavigate();
@@ -62,7 +59,9 @@ export default function useGameLogic(isHistoryPop: boolean) {
 
   // ⭐️ 시간 초과 (버그 수정 완료: 무조건 결과창 띄움)
   const handleTimeout = () => {
-    if (isPenaltyRef.current) return;
+    if (isPenaltyRef.current) {
+      return;
+    }
     isPenaltyRef.current = true;
 
     pauseGameTimer();
@@ -86,7 +85,9 @@ export default function useGameLogic(isHistoryPop: boolean) {
 
   // ⭐️ 타이머 상태 동기화 (팝업이 뜨면 멈춤)
   useEffect(() => {
-    if (subStep !== "GAME") return;
+    if (subStep !== "GAME") {
+      return;
+    }
     if (isHistoryPop || isButtonDisabled) {
       pauseGameTimer();
     } else {
@@ -121,7 +122,10 @@ export default function useGameLogic(isHistoryPop: boolean) {
   }, [isButtonDisabled, playType, resetGameTimer, startGameTimer]);
 
   const handleSuccess = () => {
-    if (isPenaltyRef.current) return;
+    if (isPenaltyRef.current) {
+      return;
+    }
+    isPenaltyRef.current = true;
 
     setPlayerStats((prev) =>
       prev.map((stat, idx) =>
@@ -138,7 +142,9 @@ export default function useGameLogic(isHistoryPop: boolean) {
 
   // ⭐️ 양심 모드 실패 (버그 수정 완료: 무조건 결과창 띄움)
   const handleFail = () => {
-    if (isPenaltyRef.current) return;
+    if (isPenaltyRef.current) {
+      return;
+    }
     isPenaltyRef.current = true;
 
     setPlayerStats((prev) =>
@@ -167,14 +173,16 @@ export default function useGameLogic(isHistoryPop: boolean) {
     let nextIndex = currentPlayerIndex + 1;
     let nextRound = round;
 
-    while (nextIndex < players.length && playerStats[nextIndex].life <= 0)
+    while (nextIndex < players.length && playerStats[nextIndex].life <= 0) {
       nextIndex++;
+    }
 
     if (nextIndex >= players.length) {
       nextRound++;
       nextIndex = 0;
-      while (nextIndex < players.length && playerStats[nextIndex].life <= 0)
+      while (nextIndex < players.length && playerStats[nextIndex].life <= 0) {
         nextIndex++;
+      }
     }
 
     if (nextRound > MAX_ROUND || nextIndex >= players.length) {
@@ -191,6 +199,7 @@ export default function useGameLogic(isHistoryPop: boolean) {
       subStep,
       currentPlayer,
       currentPlayerName: currentPlayer.name,
+      currentPlayerIndex: currentPlayerIndex,
       currentLife,
       currentScore,
       sequence,
