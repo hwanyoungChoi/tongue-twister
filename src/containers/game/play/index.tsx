@@ -1,3 +1,4 @@
+// src/containers/GamePlay/index.tsx (혹은 play/index.tsx)
 import { useBlocker, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import useGameStore from "@/stores/useGameStore";
@@ -30,7 +31,6 @@ export default function GamePlay() {
   } = useBlocker(({ historyAction }) => historyAction === "POP");
   const isHistoryPop = blockerState === "blocked";
 
-  // ⭐️ 로직을 단 한 줄로 분리!
   const { gameState, actions } = useGame(isHistoryPop);
 
   const {
@@ -45,6 +45,7 @@ export default function GamePlay() {
     gameTime,
     turnResult,
     isButtonDisabled,
+    penaltyState, // ⭐️ 훅에서 넘어온 패널티 상태
   } = gameState;
 
   const isPlayingOrResult = subStep === "GAME" || subStep === "TURN_RESULT";
@@ -77,7 +78,6 @@ export default function GamePlay() {
         {isPlayingOrResult && (
           <>
             <main className="flex-1 flex flex-col px-[16px]">
-              {/* ⭐️ 상단 바 분리 완료 */}
               <TopBar
                 round={round}
                 playerName={currentPlayerName}
@@ -88,6 +88,7 @@ export default function GamePlay() {
               <div className="w-full h-[457px] pt-[40px] pb-[20px] px-[20px] bg-white rounded-[24px] shadow-[0_10px_40px_0_rgba(0,0,0,0.1)]">
                 {subStep === "GAME" ? (
                   <div className="h-full flex flex-col justify-between items-center text-center">
+                    {/* 상단: 타이머 영역 */}
                     {playType === "timer" ? (
                       <div className="w-full px-[32px]">
                         <TimeGauge
@@ -101,20 +102,37 @@ export default function GamePlay() {
                         </div>
                       </div>
                     ) : (
-                      // 빈 영역 유지위함
                       <div />
                     )}
-                    <p className="text-[40px] text-[#1F1F1F] font-np leading-[140%]">
-                      {currentSentence}
-                    </p>
-                    <p className="text-[13px] text-[#BDBDBD] font-np">
-                      {sequence} / 10
-                    </p>
+
+                    {/* 중앙: 게임 문장 OR 패널티 문구 교체 영역 */}
+                    {penaltyState ? (
+                      <>
+                        <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
+                          {penaltyState === "FAIL"
+                            ? "혀가 꼬였어!"
+                            : "시간이 부족했니!"}
+                          <br />
+                          남은 기회는{" "}
+                          <span className="text-[#F571A2]">한 번</span>이다?
+                        </h2>
+                        <div /> {/* flex-between 간격 유지를 위한 빈 태그 */}
+                      </>
+                    ) : (
+                      <>
+                        <p className="text-[40px] text-[#1F1F1F] font-np leading-[140%]">
+                          {currentSentence}
+                        </p>
+                        <p className="text-[13px] text-[#BDBDBD] font-np">
+                          {sequence} / 10
+                        </p>
+                      </>
+                    )}
                   </div>
                 ) : (
                   turnResult && (
                     <div className="h-full flex flex-col justify-center items-center text-center pt-[20px]">
-                      {/* 결과창 UI 영역 */}
+                      {/* 완전 종료 결과창 UI 영역 */}
                       {turnResult.type === "CLEAR" && (
                         <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
                           {playType === "timer" ? (
@@ -139,38 +157,16 @@ export default function GamePlay() {
                       )}
                       {turnResult.type === "FAIL" && (
                         <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
-                          {currentLife > 0 ? (
-                            <>
-                              혀가 꼬였어!
-                              <br />
-                              남은 기회는{" "}
-                              <span className="text-[#F571A2]">한 번</span>이다?
-                            </>
-                          ) : (
-                            <>
-                              저런.. 이제
-                              <br />
-                              남은 기회는 없어..
-                            </>
-                          )}
+                          저런.. 이제
+                          <br />
+                          남은 기회는 없어..
                         </h2>
                       )}
                       {turnResult.type === "TIMEOUT" && (
                         <h2 className="text-[28px] font-bold text-[#1F1F1F] font-np leading-[140%]">
-                          {currentLife > 0 ? (
-                            <>
-                              시간이 부족했니!
-                              <br />
-                              남은 기회는{" "}
-                              <span className="text-[#F571A2]">한 번</span>이다?
-                            </>
-                          ) : (
-                            <>
-                              저런.. 이제
-                              <br />
-                              남은 기회는 없어..
-                            </>
-                          )}
+                          저런.. 이제
+                          <br />
+                          남은 기회는 없어..
                         </h2>
                       )}
                     </div>
@@ -188,7 +184,7 @@ export default function GamePlay() {
                       size="md"
                       onClick={actions.handleSuccess}
                       className="w-full"
-                      disabled={isButtonDisabled}
+                      disabled={isButtonDisabled} // ⭐️ 2초 동안 버튼이 얌전히 비활성화됨
                     >
                       성공!
                     </Button>
@@ -220,16 +216,10 @@ export default function GamePlay() {
                 <Button
                   variant="primary"
                   size="md"
-                  onClick={
-                    currentLife > 0 && turnResult?.type !== "CLEAR"
-                      ? actions.handleRetry
-                      : actions.handleNextPlayer
-                  }
+                  onClick={actions.handleNextPlayer}
                   className="w-full"
                 >
-                  {currentLife > 0 && turnResult?.type !== "CLEAR"
-                    ? "다시 도전하기"
-                    : "다음 플레이어 시작"}
+                  다음 플레이어 시작
                 </Button>
               )}
             </FixedBottom>
