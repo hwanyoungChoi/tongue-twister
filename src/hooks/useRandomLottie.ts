@@ -6,7 +6,7 @@ import { useMemo } from "react";
  * @param trigger 이 값이 변경될 때만 새로운 랜덤값을 다시 뽑음
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function useRandomLottie(types: string[], trigger: any) {
+export default function useRandomLottie(types: string[], trigger?: any) {
   return useMemo(() => {
     // eslint-disable-next-line
     const randomIndex = Math.floor(Math.random() * types.length);
