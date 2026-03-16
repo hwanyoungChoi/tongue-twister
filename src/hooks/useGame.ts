@@ -64,7 +64,9 @@ export default function useGame(isHistoryPop: boolean) {
 
   // ⭐️ 시간 초과 (목숨 남았으면 2초 패널티 화면 띄움)
   const handleTimeout = () => {
-    if (isPenaltyRef.current) return;
+    if (isPenaltyRef.current) {
+      return;
+    }
     isPenaltyRef.current = true;
 
     pauseGameTimer();
@@ -105,8 +107,6 @@ export default function useGame(isHistoryPop: boolean) {
           resetGameTimer(); // 타이머 시간 꽉 채워서
           startGameTimer(); // 재시작
         }
-
-        setSequence((prev) => prev + 1);
       }, 2000); // 2초 대기
     }
     return () => {
@@ -116,7 +116,9 @@ export default function useGame(isHistoryPop: boolean) {
 
   // ⭐️ 타이머 동기화 (팝업, 패널티, 성공대기 중일 땐 타이머 멈춤)
   useEffect(() => {
-    if (subStep !== "GAME") return;
+    if (subStep !== "GAME") {
+      return;
+    }
 
     if (isHistoryPop || penaltyState) {
       pauseGameTimer();
@@ -148,7 +150,9 @@ export default function useGame(isHistoryPop: boolean) {
 
   // ⭐️ 양심 모드 실패 (목숨 남았으면 2초 패널티 화면 띄움)
   const handleFail = () => {
-    if (isPenaltyRef.current) return;
+    if (isPenaltyRef.current) {
+      return;
+    }
     isPenaltyRef.current = true;
 
     pauseGameTimer();
