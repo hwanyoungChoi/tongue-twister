@@ -19,6 +19,8 @@ const KOREAN_ORDINALS = [
   "열 번째",
 ];
 
+const LOTTIE_TYPES = ["player_circle1", "player_circle2"];
+
 export default function Intro({
   currentPlayerIndex,
   currentPlayer,
@@ -45,10 +47,7 @@ export default function Intro({
 
   const { name, color } = currentPlayer;
 
-  const lottie = useRandomLottie(
-    ["player_circle1", "player_circle2"],
-    currentPlayerIndex,
-  );
+  const lottie = useRandomLottie(LOTTIE_TYPES, currentPlayerIndex);
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center -mt-[48px]">
