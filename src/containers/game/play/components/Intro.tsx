@@ -47,14 +47,20 @@ export default function Intro({
 
   const { name, color } = currentPlayer;
 
+  const isFirst = currentPlayerIndex === 0;
+  const firstLabel = isFirst ? "긴장되지?" : "앞에서 하는 거 잘 봤지?";
+  const secondLabel = isFirst
+    ? `자, ${KOREAN_ORDINALS[currentPlayerIndex]} 차례는`
+    : `${KOREAN_ORDINALS[currentPlayerIndex]} 차례`;
+
   const lottie = useRandomLottie(LOTTIE_TYPES, currentPlayerIndex);
 
   return (
     <main className="flex-1 flex flex-col items-center justify-center -mt-[48px]">
       <h1 className="text-center text-[26px] text-[#1F1F1F] leading-[1.5] font-np">
-        긴장되지?
+        {firstLabel}
         <br />
-        자, {KOREAN_ORDINALS[currentPlayerIndex]} 차례는
+        {secondLabel}
         <br />
         <span className="text-[#F571A2]">{name}</span> 너야!
       </h1>
