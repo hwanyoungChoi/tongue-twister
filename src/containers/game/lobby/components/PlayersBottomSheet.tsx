@@ -55,13 +55,6 @@ export default function PlayersBottomSheet({
     }
   }, [inputPlayers.length]);
 
-  useEffect(() => {
-    if (open) {
-      const timer = setTimeout(focusLastInput, 100);
-      return () => clearTimeout(timer);
-    }
-  }, [open]);
-
   const handlePlayerNameChange = (
     index: number,
     e: React.ChangeEvent<HTMLInputElement>,
