@@ -104,6 +104,9 @@ export default function PlayersBottomSheet({
       onOpenChange={onOpenChange}
       fixed
       title="게임 인원/닉네임 설정"
+      contentStyle={{
+        height: "90dvh",
+      }}
       content={
         <>
           <div

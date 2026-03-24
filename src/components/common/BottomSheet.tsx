@@ -17,6 +17,7 @@ export interface BottomSheetProps {
   title?: string;
   content?: React.ReactNode;
   footer?: React.ReactNode;
+  contentStyle?: React.CSSProperties;
 }
 
 export function BottomSheet({
@@ -27,6 +28,7 @@ export function BottomSheet({
   title,
   content,
   footer,
+  contentStyle,
 }: BottomSheetProps) {
   return (
     <Drawer
@@ -35,7 +37,10 @@ export function BottomSheet({
       fixed={fixed}
       onOpenChange={onOpenChange}
     >
-      <DrawerContent className="rounded-t-[20px] max-w-[480px] min-w-[375px] mx-auto">
+      <DrawerContent
+        className="rounded-t-[20px] max-w-[480px] min-w-[375px] mx-auto"
+        style={contentStyle}
+      >
         {/* 헤더: 타이틀 & 닫기 버튼 */}
         <DrawerHeader className="relative flex flex-row items-center justify-between px-[24px] h-[74px]">
           <DrawerTitle className="text-[21px] font-bold text-[#1F1F1F] text-left">
