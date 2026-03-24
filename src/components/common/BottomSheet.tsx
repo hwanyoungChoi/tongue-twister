@@ -22,7 +22,7 @@ export interface BottomSheetProps {
 export function BottomSheet({
   open,
   onOpenChange,
-  dismissible,
+  dismissible = false,
   fixed,
   title,
   content,
@@ -42,7 +42,10 @@ export function BottomSheet({
             {title}
           </DrawerTitle>
           <DrawerClose asChild>
-            <button className="text-gray-400 hover:text-gray-600">
+            <button
+              className="text-gray-400 hover:text-gray-600"
+              onClick={() => onOpenChange(false)}
+            >
               <IconX className="w-6 h-6" />
             </button>
           </DrawerClose>
