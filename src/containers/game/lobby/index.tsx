@@ -26,6 +26,7 @@ import { useNavigate } from "react-router-dom";
 import ROUTES from "@/lib/routes";
 import useSound from "use-sound";
 import useAppStore from "@/stores/useAppStore";
+import Tooltip from "@/components/common/Tooltip";
 
 export default function GameLobby() {
   const soundEnabled = useAppStore((state) => state.soundEnabled);
@@ -87,7 +88,9 @@ export default function GameLobby() {
               <div className="flex items-center justify-between ">
                 <div className="font-bold text-[#4A4A4A] text-[16px] flex items-center gap-[4px]">
                   벌칙 설정
-                  <IconQuestionFill width={20} height={20} />
+                  <Tooltip message="긴장감 200%! 벌칙을 정해볼까요?">
+                    <IconQuestionFill width={20} height={20} />
+                  </Tooltip>
                 </div>
                 <Switch
                   onClick={() => setOpenPenlaty(true)}
