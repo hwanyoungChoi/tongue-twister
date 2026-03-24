@@ -122,7 +122,7 @@ export default function PlayersBottomSheet({
       content={
         <>
           <div
-            className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide max-h-[258px] min-h-[258px]"
+            className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide h-full"
             ref={playerListRef}
           >
             {inputPlayers.map(({ id, name, color }, index) => (
