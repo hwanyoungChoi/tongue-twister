@@ -70,6 +70,18 @@ export default function PlayersBottomSheet({
     setInputPlayers(newPlayers);
   };
 
+  const handlePlayerNameFocus = (
+    index: number,
+    e: React.FocusEvent<HTMLInputElement>,
+  ) => {
+    // ⭐️ 10ms의 아주 짧은 지연을 주어 모바일 복사 패널이 뜨는 현상을 완벽 차단
+    setTimeout(() => {
+      e.target.setSelectionRange(0, e.target.value.length);
+    }, 10);
+
+    setFocusedPlayerIndex(index);
+  };
+
   const handleRemovePlayer = (index: number) => {
     if (inputPlayers.length < MIN_PLAYER_COUNT) {
       return;
@@ -129,7 +141,7 @@ export default function PlayersBottomSheet({
                   type="text"
                   value={name}
                   onChange={(e) => handlePlayerNameChange(index, e)}
-                  onFocus={() => setFocusedPlayerIndex(index)}
+                  onFocus={(e) => handlePlayerNameFocus(index, e)}
                   onBlur={(e) => {
                     // ⭐️ 핵심: 포커스가 이동할 다음 목적지(relatedTarget)가 'INPUT'이라면
                     // 어차피 곧바로 새로운 onFocus가 실행될 테니 undefined로 초기화하지 않습니다!
