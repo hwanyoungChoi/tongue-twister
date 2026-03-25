@@ -36,7 +36,7 @@ export default function PlayerColorPopover({
       {/* 2. 팔레트 본문: 누른 박스 바로 아래(bottom)에 등장 */}
       <PopoverContent
         side="bottom"
-        align="start"
+        align="center"
         sideOffset={8}
         collisionPadding={16}
         className="w-auto px-[12px] py-[19px] rounded-[12px] bg-white border-[1px] border-[#BDBDBD]"
