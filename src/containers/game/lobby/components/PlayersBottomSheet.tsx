@@ -6,11 +6,10 @@ import { Button } from "@/components/ui/button";
 
 import IconMinusCircleFill from "@/assets/icons/minus_circle_fill.svg?react";
 import IconPlusCircleFill from "@/assets/icons/plus_circle_fill.svg?react";
-import IconCheck from "@/assets/icons/check.svg?react";
 import useGameStore from "@/stores/useGameStore";
 import { useEffect, useRef, useState } from "react";
 import { PLAYER_COLOR_LIST } from "@/lib/constants";
-import { toast } from "sonner";
+import PlayerColorPopover from "./PlayerColorPopover";
 
 const MIN_PLAYER_COUNT = 2;
 const MAX_PLAYER_COUNT = 10;
@@ -25,7 +24,6 @@ export default function PlayersBottomSheet({
 
   // 저장 전 display용 입력값
   const [inputPlayers, setInputPlayers] = useState(players);
-  const [focusedPlayerIndex, setFocusedPlayerIndex] = useState<number>();
 
   const playerListRef = useRef<HTMLDivElement>(null);
   const prevLengthRef = useRef(inputPlayers.length);
@@ -70,6 +68,13 @@ export default function PlayersBottomSheet({
     setInputPlayers(newPlayers);
   };
 
+  const handlePlayerNameFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    // ⭐️ 10ms의 아주 짧은 지연을 주어 모바일 복사 패널이 뜨는 현상을 완벽 차단
+    setTimeout(() => {
+      e.target.setSelectionRange(0, e.target.value.length);
+    }, 10);
+  };
+
   const handleRemovePlayer = (index: number) => {
     if (inputPlayers.length < MIN_PLAYER_COUNT) {
       return;
@@ -98,16 +103,27 @@ export default function PlayersBottomSheet({
     ]);
   };
 
+  const handlePlayerColorChange = (index: number, newColor: string) => {
+    setInputPlayers((prevInputPlayers) =>
+      prevInputPlayers.map((p, i) =>
+        i === index ? { ...p, color: newColor } : p,
+      ),
+    );
+  };
+
   return (
     <BottomSheet
       open={open}
       onOpenChange={onOpenChange}
       fixed
       title="게임 인원/닉네임 설정"
+      contentStyle={{
+        height: "90dvh",
+      }}
       content={
         <>
           <div
-            className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide max-h-[258px] min-h-[258px]"
+            className="px-[24px] space-y-[12px] overflow-y-auto scrollbar-hide h-full"
             ref={playerListRef}
           >
             {inputPlayers.map(({ id, name, color }, index) => (
@@ -118,23 +134,23 @@ export default function PlayersBottomSheet({
                 <span className="font-[900] text-[18px] text-[#333333] w-[24px] text-center mr-[16px]">
                   {index + 1}
                 </span>
-                <div
-                  className="w-[20px] h-[20px] rounded-[4px]"
-                  style={{ backgroundColor: `var(--${color})` }}
+                <PlayerColorPopover
+                  playerIndex={index}
+                  currentColor={color}
+                  allPlayers={inputPlayers}
+                  onColorChange={handlePlayerColorChange}
                 />
                 <input
                   type="text"
                   value={name}
                   onChange={(e) => handlePlayerNameChange(index, e)}
-                  onFocus={() => setFocusedPlayerIndex(index)}
+                  onFocus={handlePlayerNameFocus}
                   onBlur={(e) => {
                     // ⭐️ 핵심: 포커스가 이동할 다음 목적지(relatedTarget)가 'INPUT'이라면
                     // 어차피 곧바로 새로운 onFocus가 실행될 테니 undefined로 초기화하지 않습니다!
                     if (e.relatedTarget?.tagName === "INPUT") {
                       return;
                     }
-
-                    setFocusedPlayerIndex(undefined);
                   }}
                   className="flex-1 min-w-0 bg-transparent text-[18px] font-[600] text-[#333333] outline-none ml-[12px]"
                 />
@@ -156,55 +172,6 @@ export default function PlayersBottomSheet({
                 <IconPlusCircleFill />
               </button>
             )}
-          </div>
-          <div className="px-[24px] mt-[24px] flex items-center justify-between">
-            {PLAYER_COLOR_LIST.map((color) => {
-              const isFocusedPlayerColor =
-                focusedPlayerIndex !== undefined &&
-                inputPlayers[focusedPlayerIndex].color === color;
-
-              const isColorUsed = inputPlayers.some((p) => p.color === color);
-
-              /**
-               * 사용 중인 컬러는 투명도 처리, 단 현재 선택된 플레이어 컬러면 투명도 없이 표시
-               */
-              const backgroundColor =
-                isColorUsed && !isFocusedPlayerColor
-                  ? `color-mix(in srgb, var(--${color}) 30%, transparent)`
-                  : `var(--${color})`;
-
-              return (
-                <button
-                  className="flex items-center justify-center w-[24px] h-[24px] rounded-[4px]"
-                  style={{
-                    backgroundColor,
-                  }}
-                  key={color}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-
-                    if (focusedPlayerIndex === undefined) {
-                      return;
-                    }
-
-                    if (isColorUsed) {
-                      toast("이미 선택된 색상이야. 다른 색상을 선택해!");
-                      return;
-                    }
-
-                    const newPlayers = inputPlayers.map((p, i) => {
-                      if (i === focusedPlayerIndex) {
-                        return { ...p, color };
-                      }
-                      return p;
-                    });
-                    setInputPlayers(newPlayers);
-                  }}
-                >
-                  {isFocusedPlayerColor && <IconCheck />}
-                </button>
-              );
-            })}
           </div>
         </>
       }
