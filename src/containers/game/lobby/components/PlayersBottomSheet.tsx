@@ -26,31 +26,9 @@ export default function PlayersBottomSheet({
   const [inputPlayers, setInputPlayers] = useState(players);
 
   const playerListRef = useRef<HTMLDivElement>(null);
-  const prevLengthRef = useRef(inputPlayers.length);
-
-  const focusLastInput = () => {
-    if (!playerListRef.current) {
-      return;
-    }
-    const inputs = playerListRef.current.querySelectorAll("input");
-    const lastInputNode = inputs[inputs.length - 1];
-
-    if (lastInputNode instanceof HTMLInputElement) {
-      lastInputNode.focus();
-      lastInputNode.setSelectionRange(0, lastInputNode.value.length);
-    }
-  };
 
   useEffect(() => {
     playerListRef.current?.scrollTo(0, playerListRef.current?.scrollHeight);
-
-    const hasPlayerAdded = inputPlayers.length > prevLengthRef.current;
-    prevLengthRef.current = inputPlayers.length;
-
-    if (hasPlayerAdded) {
-      const timer = setTimeout(focusLastInput, 50);
-      return () => clearTimeout(timer);
-    }
   }, [inputPlayers.length]);
 
   const handlePlayerNameChange = (
