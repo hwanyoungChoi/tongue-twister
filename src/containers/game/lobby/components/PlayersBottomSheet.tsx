@@ -104,9 +104,11 @@ export default function PlayersBottomSheet({
   };
 
   const handlePlayerColorChange = (index: number, newColor: string) => {
-    const newPlayers = [...inputPlayers];
-    newPlayers[index].color = newColor;
-    setInputPlayers(newPlayers);
+    setInputPlayers((prevInputPlayers) =>
+      prevInputPlayers.map((p, i) =>
+        i === index ? { ...p, color: newColor } : p,
+      ),
+    );
   };
 
   return (
