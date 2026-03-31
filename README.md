@@ -1,123 +1,251 @@
-이 프로젝트는 Gemini Code Assist와의 코드 검토 및 Pull Request와 유사한 상호작용을 통해 개발되었습니다.
+# 혀가 꼬이네! (Tongue Twister) 👅
 
-## Tongue-twister (TT)
+> **"실수 없이 말할 수 있겠어?"**
 
-텅틀려!
+![Thumbnail](./public/images/thumbnail.png)
 
-**"실수 없이 말할 수 있겠어?"**
+친구들과 함께 즐기는 **한국어 잰말놀이 모바일 웹 게임**입니다.
+긴장감 넘치는 타이머 모드와 양심에 맡기는 양심 모드로 누가 발음 챔피언인지 겨뤄보세요!
 
-![Alt text](./public/images/thumbnail.png)
+<br/>
 
-## 프로젝트 개요 (Project Overview)
+## ✨ 주요 기능
 
-본 프로젝트는 모바일 웹 환경에 최적화된 고품질의 잰말놀이 게임을 구현하는 것을 목표로 합니다.
-사용자 중심의 간결한 흐름, 높은 수준의 UI 연출, 그리고 부드러운 애니메이션을 핵심 가치로 삼아, 직관적이고 몰입감 있는 게임 경험을 제공합니다.
+### 🎮 두 가지 게임 모드
 
-## 게임 규칙 (Game Rules)
+| 타이머 모드 ⏱ | 양심 모드 ⏳ |
+|:---:|:---:|
+| 제한 시간 내 정확히 읽기 | 시간 제한 없는 자율형 |
+| 남은 시간 = 보너스 점수! | 스스로 성공/실패 판단 |
+| 긴장감 MAX | 친구들의 양심 테스트 |
 
-### 1. 게임 구성
+### 🎯 게임 시스템
+- **2~10명** 플레이어 지원
+- 플레이어별 **커스텀 닉네임** & **10가지 테마 색상**
+- **라이프 시스템** (2개의 기회)
+- **3라운드 × 10문제** 구성
+- **벌칙 설정** 기능으로 긴장감 200%!
 
-- **플레이어 수**: 2~10명 (기본값 10명)
-- **카드 구성**: 1세트당 10장의 잰말놀이 카드
-- **총 라운드**: 3라운드 (총 30장 카드 소진)
+### 📱 모바일 최적화
+- 네이티브 앱과 유사한 **매끄러운 UX**
+- 텍스트 선택/드래그 비활성화
+- 더블탭 확대 방지 & 롱프레스 메뉴 비활성화
 
-### 2. 게임 모드
+<br/>
 
-#### ⏱ 타이머 모드 (시간 제한 경쟁형)
+## 🛠 기술 스택
 
-- 각 카드마다 제한 시간 설정 (예: 3초).
-- 플레이어는 주어진 시간 내 문장을 정확히 읽고 '통과' 버튼 클릭.
-- 시간 내 통과하지 못하면 자동으로 목숨 -1.
-- 1인당 목숨 2개, 2개 이상 소진 시 자동 탈락.
-- **점수**: 성공 시 각 라운드의 남은 시간 초가 점수로 환산.
-- **승리**: 탈락하지 않은 플레이어 중 남은 초가 가장 많은 플레이어가 1등.
-- **벌칙 대상**: 탈락자 중 가장 먼저 탈락한 플레이어.
+### Frontend
+| 분류 | 기술 |
+|------|------|
+| **Framework** | React 19, TypeScript |
+| **Build Tool** | Vite 7 |
+| **Styling** | Tailwind CSS v4, CVA (Class Variance Authority) |
+| **State** | Zustand (with persist middleware) |
+| **Routing** | React Router v7 |
+| **UI** | Radix UI, Vaul (Drawer) |
+| **Animation** | Lottie React, Motion |
+| **Audio** | use-sound |
 
-#### ⏳ 양심 모드 (시간 제한 없는 자율형)
+### Infrastructure
+| 분류 | 기술 |
+|------|------|
+| **Deployment** | Vercel |
 
-- 시간 제한 없이 문장을 읽은 뒤 플레이어가 직접 '성공 / 실패' 선택.
-- 실패 시 1벌점, 누적 실패 2회 시 탈락.
-- **승리**: 3라운드 종료 후 가장 적은 실패 횟수를 기록한 플레이어 (가장 많은 실패자가 꼴찌).
-- **벌칙 대상**: 가장 많은 실패 횟수를 기록한 플레이어 (동률일 경우 랜덤 또는 미리 정한 규칙).
+<br/>
 
-### 3. 벌칙 시스템
+## 🏗 아키텍처 & 기술적 의사결정
 
-- 게임 시작 전 벌칙 설정 가능 (예: 아이스크림 사기, 커피 내기 등).
-- 게임 종료 후 `finish` 컴포넌트에서 관리하며, 설정된 벌칙이 있을 경우 노출 후 랭킹 화면으로 전환. 벌칙 미설정 시에는 랭킹 화면으로 바로 이동.
-- 최종 탈락자에게 벌칙 자동 적용 (직접 입력 또는 제안 리스트 중 선택).
+### 1. 고정밀 타이머 시스템
 
-## 주요 기능 (Key Features)
+**문제점**: 기존 `setInterval` 기반 타이머는 React 렌더링 사이클에 따라 시간 지연(Drift)이 발생
 
-- **두 가지 게임 모드**: 긴장감 넘치는 '타이머 모드'와 자율성을 중시하는 '양심 모드' 제공.
-- **플레이어 커스터마이징**: 게임 인원(2~10명) 및 닉네임 설정, 다양한 벌칙 선택 기능.
-- **실시간 점수 및 순위**: 게임 진행 중 플레이어별 점수 및 최종 순위 시스템.
-- **모바일 웹 최적화**: SPA(Single Page Application) 구조로 매끄러운 화면 전환과 네이티브 앱과 유사한 사용자 경험 제공.
-- **자원 로딩 최적화**: 폰트 깜빡임(FOUT) 방지 및 핵심 이미지 미리 로딩으로 부드러운 진입 경험 제공.
-- **게임 이탈 방지**: 플레이 중 실수로 페이지를 이탈하는 것을 방지하는 `useBlocker` 기반 경고 시스템.
-- **중앙 집중식 오디오 관리**: BGM 및 효과음(SFX)을 전역 상태로 제어하여 사용자 설정에 따라 동적으로 반응.
+**해결책**: `Date.now()` 기반 **절대 시간 계산** 방식으로 전면 재설계
 
-## 기술 스택
+```typescript
+// useTimer.ts - 렌더링 지연과 무관한 정밀 타이머
+const expectedEndTimeRef = useRef<number | null>(null);
 
-**Frontend**
+// 타이머 시작 시 목표 종료 시간 계산
+expectedEndTimeRef.current = Date.now() + remainingTimeRef.current;
 
-- Framework: React (Vite)
-- Styling: TailwindCSS
-- State Management: Zustand
-- Audio: use-sound
+// 50ms마다 절대 시간 기준으로 역산
+const timeLeft = Math.max(0, expectedEndTimeRef.current - Date.now());
+```
 
-**Infrastructure**
+- 50ms 간격 업데이트로 **부드러운 TimeGauge 애니메이션**
+- `Math.ceil` 적용으로 **자연스러운 카운트다운 UX**
 
-- Deployment: Vercel
+---
 
-## 주요 개발 과정 및 기술적 의사 결정 (Key Development Process & Technical Decisions)
+### 2. Lottie 애니메이션 동적 로딩
 
-최근 개발 과정에서 게임의 사용자 경험, 성능 및 유지보수성을 향상시키기 위한 여러 중요한 기술적 의사 결정과 변경이 있었습니다.
+**100개 이상의 Lottie 파일**을 효율적으로 관리
 
-### 1. 라우팅 아키텍처 개선
+```typescript
+// Vite의 import.meta.glob으로 빌드 타임에 자동 수집
+const allLotties = import.meta.glob("@/assets/lotties/**/*.json", {
+  eager: true,
+  import: "default",
+});
 
-- **문제점**: 기존 `BrowserRouter` 환경에서는 `react-router-dom` v6.4+에서 제공하는 `useBlocker`와 같은 고급 라우팅 훅을 사용할 수 없었습니다. 이는 게임 플레이 중 사용자 이탈 방지 로직 구현에 제약이 있었습니다.
-- **해결책**: `react-router-dom`의 `createBrowserRouter`와 `RouterProvider`를 사용하는 **데이터 라우터 패턴으로 전환**했습니다. 이 변경을 통해 `useBlocker` 훅을 활용할 수 있는 기반을 마련했습니다.
-- **구조화**: `AppEntry` 컴포넌트가 `RouterProvider` 외부에 위치하여 앱 전체를 감싸는 구조로 변경했습니다. 이는 `AppEntry`가 스플래시 화면, 전역 리소스 로딩, BGM 초기화 등 앱의 초기화 및 전역 래핑 역할을 명확히 수행하도록 하기 위함입니다. 라우터는 순수하게 애플리케이션 콘텐츠의 경로만 정의하도록 관심사를 분리했습니다.
-- **잘못된 경로 처리**: 정의되지 않은 경로로 진입 시, `Navigate` 컴포넌트를 사용하여 `ROUTES.LOBBY` (`/`)로 자동 리다이렉트되도록 처리하여 사용자 경험의 일관성을 확보했습니다.
+// 플레이어 색상 × 애니메이션 타입 조합으로 동적 로딩
+export const getLottieData = (type: string, color: string) => {
+  const targetFileName = `${type}_${color}.json`;
+  const foundKey = Object.keys(allLotties).find(path => path.endsWith(targetFileName));
+  return foundKey ? allLotties[foundKey] : null;
+};
+```
 
-### 2. 게임 플레이 중 이탈 방지 (`useBlocker` 적용)
+---
 
-- **필요성**: 게임 플레이(`play` 단계의 `GAME` 서브 스텝) 중 사용자가 실수로 페이지를 이탈하여 진행 상황을 잃는 것을 방지해야 했습니다.
-- **구현**: `GamePlay` 컴포넌트에 `react-router-dom`의 `useBlocker` 훅을 적용했습니다. 사용자가 게임 진행 중에 다른 경로로 이동하려 할 때(브라우저 뒤로가기, 앱 내 이동 등), 커스텀 확인 팝업(`GameExitConfirmPopup`)을 띄워 이탈 여부를 명확히 묻습니다. 게임 완료 후 결과 페이지(`ROUTES.FINISH`)로 이동하는 경우에는 블로킹 로직이 동작하지 않지 않습니다.
+### 3. 데이터 라우터 패턴 전환
 
-### 3. 오디오 관리 시스템 통합 (BGM 및 SFX)
+**문제점**: 기존 `BrowserRouter`에서는 `useBlocker` 같은 고급 훅 사용 불가
 
-- **배경**: `useAppStore`의 `bgmEnabled` 및 `soundEnabled` 상태에 따라 앱 전체의 배경 음악(BGM)과 효과음(SFX)을 중앙에서 제어할 필요가 있었습니다. `use-sound` 라이브러리가 이미 사용 중인 환경이었습니다.
-- **구현**: `AppEntry`에서 `use-sound` 훅을 직접 사용하여 BGM을 초기화하고, `useAppStore`의 `bgmEnabled` 상태와 브라우저의 자동 재생 정책(`userInteracted` 상태)에 따라 BGM이 재생되거나 일시 중지되도록 로직을 통합했습니다. 이로써 어떤 컴포넌트에서도 `bgmEnabled` 상태만 변경하면 BGM 재생을 제어할 수 있게 되었습니다.
+**해결책**: `createBrowserRouter` + `RouterProvider` 패턴으로 전환
 
-### 4. 성능 최적화 및 사용자 경험 개선
+```typescript
+// router.tsx
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <AppLayout />,
+    children: [
+      { path: ROUTES.LOBBY, element: <GameLobby /> },
+      { path: ROUTES.PLAY, element: <GamePlay /> },
+      // ...
+    ],
+  },
+]);
+```
 
-- **폰트 로딩 최적화**: `<link rel="preload">` 사용에도 불구하고 발생하던 폰트 깜빡임(FOUT) 현상을 해결하기 위해, `AppEntry`에서 **Font Loading API (`document.fonts.ready`)**를 활용하여 모든 커스텀 폰트가 완전히 로드되고 적용될 때까지 메인 앱 콘텐츠 렌더링을 지연시키도록 로직을 추가했습니다. 이는 사용자에게 일관되고 부드러운 타이포그래피 경험을 제공합니다.
-- **주요 이미지 미리 로딩**: `preloadImage` 유틸리티 함수를 통해 게임 로고, 캐릭터 이미지 등 핵심 이미지들을 미리 로드하여 앱 진입 시의 시각적 안정성을 높였습니다.
-- **플레이어 목록 자동 스크롤**: 플레이어 추가 시 `PlayersBottomSheet` 내의 목록이 자동으로 최하단으로 스크롤되도록 `useRef`와 `useEffect`를 활용하여 구현하여, "플레이어 추가" 버튼에 대한 접근성을 높이고 UX를 개선했습니다.
+- `useBlocker`로 **게임 중 이탈 방지** 구현
+- 잘못된 경로 자동 리다이렉트
 
-### 5. 고정밀 타이머 시스템 및 useTimer 훅 최적화
+---
 
-문제점: 기존 setInterval 기반 타이머는 리액트의 렌더링 사이클이나 브라우저 스레드 점유 상태에 따라 지연(Drift)이 발생하여 시간이 멈칫하는 현상이 있었습니다. 또한 1초 단위 업데이트로 인해 TimeGauge(프로그레스 바) 애니메이션이 매끄럽지 못했습니다.
+### 4. 상태 관리 전략
 
-해결책: useTimer 커스텀 훅을 절대 시간(Date.now()) 기반으로 전면 재설계했습니다. 타이머 시작 시 목표 종료 시간을 계산해 두고, 50ms의 짧은 주기로 남은 시간을 역산하여 리액트 렌더링 지연을 완벽하게 극복했습니다.
+```
+┌─────────────────────────────────────────────────┐
+│  useAppStore (Zustand + persist)                │
+│  └─ soundEnabled, bgmEnabled                    │
+│  └─ localStorage 영속화                          │
+├─────────────────────────────────────────────────┤
+│  useGameStore (Zustand)                         │
+│  └─ players, levelOfDifficulty, playType        │
+│  └─ penalty, playTime                           │
+├─────────────────────────────────────────────────┤
+│  useGame Hook                                   │
+│  └─ 복잡한 게임 로직 캡슐화                        │
+│  └─ 턴 관리, 점수, 라이프 시스템                   │
+└─────────────────────────────────────────────────┘
+```
 
-표시 최적화: 내부 로직은 50ms로 정밀하게 동작하되, 화면에 표시되는 초 단위 유틸(formatMsToS)은 Math.ceil(올림)을 적용하여, 카운트다운(3-2-1)이 사용자의 인지 속도에 맞춰 자연스럽게 렌더링되도록 UX를 개선했습니다
+<br/>
 
-## Project Structure
+## 📁 프로젝트 구조
 
 ```
 src/
-├── assets/           # 폰트, 이미지, 사운드 에셋
-├── components/       # UI 컴포넌트 (ui/Button, common/GameButton 등)
-├── containers/       # 비즈니스 로직이 포함된 뷰 (Splash, GameBoard 등)
-├── hooks/            # useTimer, useSound 등 커스텀 훅
-├── store/            # Zustand 전역 상태 (인원, 점수, 모드 관리)
-├── styles/           # globals.css (Tailwind 테마 변수)
-├── types/            # 게임 도메인 타입 정의
-└── utils/            # 사운드 매니저 및 게임 엔진 로직
+├── assets/
+│   ├── lotties/      # 컬러별 Lottie 애니메이션 (100+)
+│   ├── icons/        # SVG 아이콘
+│   ├── images/       # 이미지 에셋
+│   └── sounds/       # BGM, 효과음
+├── components/
+│   ├── ui/           # 재사용 UI (Button, Dialog, Drawer, Switch)
+│   └── common/       # 공통 컴포넌트 (Header, Popup, BottomSheet)
+├── containers/
+│   └── game/
+│       ├── lobby/    # 게임 설정 화면
+│       ├── play/     # 메인 게임 플레이
+│       └── finish/   # 결과 화면
+├── hooks/
+│   ├── useGame.ts    # 게임 로직 훅
+│   ├── useTimer.ts   # 정밀 타이머 훅
+│   └── useRandomLottie.ts
+├── stores/           # Zustand 스토어
+├── lib/              # 유틸리티, 상수, 라우트
+├── styles/           # global.css (Tailwind 테마)
+└── types/            # 타입 정의
 ```
 
-## Docs
+<br/>
 
-- [AI 컨텍스트](./gemini.md)
+## 🎲 게임 플로우
+
+```
+┌──────────┐    ┌────────────────┐    ┌─────────┐    ┌───────────┐
+│   로비   │ -> │ 게임 타입 설정  │ -> │  인트로  │ -> │ 카운트다운 │
+└──────────┘    └────────────────┘    └─────────┘    └───────────┘
+      │                                                      │
+      │         ┌───────────────────────────────────────────┘
+      │         ▼
+      │   ┌───────────┐    ┌───────────┐         ┌───────────┐
+      │   │ 게임 플레이 │ -> │  턴 결과   │ -> ... -> │ 최종 결과  │
+      │   └───────────┘    └───────────┘         └───────────┘
+      │
+      ├── 플레이어 설정 (닉네임, 색상)
+      ├── 벌칙 설정
+      ├── 문구 길이 (긴 문구 / 짧은 단어)
+      └── 진행 방식 (타이머 / 양심)
+```
+
+<br/>
+
+## 🚀 시작하기
+
+### 요구사항
+- Node.js 18+
+- pnpm
+
+### 설치 및 실행
+
+```bash
+# 의존성 설치
+pnpm install
+
+# 개발 서버 실행
+pnpm dev
+
+# 프로덕션 빌드
+pnpm build
+
+# 빌드 미리보기
+pnpm preview
+
+# 린트 실행
+pnpm lint
+```
+
+<br/>
+
+## 📜 게임 규칙
+
+### 게임 구성
+- **플레이어 수**: 2~10명
+- **카드 구성**: 1세트당 10장
+- **총 라운드**: 3라운드 (총 30장)
+
+### 타이머 모드 ⏱
+- 제한 시간 내 문장을 정확히 읽고 '성공' 버튼 클릭
+- 시간 초과 시 목숨 -1
+- 남은 시간이 보너스 점수로 환산
+- 탈락자 중 가장 먼저 탈락한 플레이어가 벌칙 대상
+
+### 양심 모드 ⏳
+- 시간 제한 없이 스스로 '성공 / 실패' 선택
+- 실패 2회 누적 시 탈락
+- 가장 많은 실패 횟수 기록 플레이어가 벌칙 대상
+
+<br/>
+
+## 📝 라이선스
+
+Private Project
+
+---
+
+*이 프로젝트는 Gemini Code Assist와의 코드 검토 및 Pull Request 상호작용을 통해 개발되었습니다.*
