@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom";
 import SettingPopup from "./SettingPopup";
 import RulePopup from "./RulePopup";
 
-type Header = "main" | "back" | "play" | "finish";
+type HeaderType = "main" | "back" | "play" | "finish";
 
 interface HeaderProps {
-  type: Header;
+  type: HeaderType;
 }
 
 export default function Header({ type }: HeaderProps) {

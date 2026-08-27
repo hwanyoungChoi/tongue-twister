@@ -56,7 +56,7 @@ export default function GameLobby() {
   const isLong = levelOfDifficulty === "long";
   const isTimer = playType === "timer";
 
-  const [openPenalty, setOpenPenlaty] = useState(false);
+  const [openPenalty, setOpenPenalty] = useState(false);
   const [openPlayers, setOpenPlayers] = useState(false);
 
   return (
@@ -93,7 +93,7 @@ export default function GameLobby() {
                   </Tooltip>
                 </div>
                 <Switch
-                  onClick={() => setOpenPenlaty(true)}
+                  onClick={() => setOpenPenalty(true)}
                   checked={!!penalty}
                 />
               </div>
@@ -196,7 +196,7 @@ export default function GameLobby() {
         </Button>
       </FixedBottom>
 
-      <PenaltyBottomSheet open={openPenalty} onOpenChange={setOpenPenlaty} />
+      <PenaltyBottomSheet open={openPenalty} onOpenChange={setOpenPenalty} />
 
       <PlayersBottomSheet open={openPlayers} onOpenChange={setOpenPlayers} />
     </>

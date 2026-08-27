@@ -1,4 +1,3 @@
-// src/containers/GamePlay/index.tsx (혹은 play/index.tsx)
 import { useBlocker, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import useGameStore from "@/stores/useGameStore";
@@ -30,7 +29,9 @@ const CONFIRM_SCORE_LOTTIE_TYPES = [
 
 export default function GamePlay() {
   const navigate = useNavigate();
-  const { playType, playTime, levelOfDifficulty } = useGameStore();
+  const playType = useGameStore((state) => state.playType);
+  const playTime = useGameStore((state) => state.playTime);
+  const levelOfDifficulty = useGameStore((state) => state.levelOfDifficulty);
 
   const {
     state: blockerState,
@@ -161,38 +162,34 @@ export default function GamePlay() {
                     <div className="h-full flex flex-col justify-center items-center text-center pt-[20px]">
                       {/* 완전 종료 결과창 UI 영역 */}
                       {turnResult.type === "CLEAR" && (
-                        <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
-                          {playType === "timer" ? (
-                            <>
-                              {formatMsToS(gameTime)}초 남기고 성공했네!
-                              <br />
-                              <span className="text-[#F571A2]">
-                                추가 {turnResult.earnedScore - sequence}점 획득!
-                              </span>
-                              <Lottie
-                                animationData={getLottieData(
-                                  confirmScoreLottie,
-                                  currentPlayer.color,
-                                )}
-                                className="-mt-[30px] h-[320px]"
-                              />
-                            </>
-                          ) : (
-                            <>
-                              {currentPlayerName}{" "}
-                              <span className="text-[#F571A2]">
-                                {turnResult.earnedScore}점 획득!
-                              </span>
-                              <Lottie
-                                animationData={getLottieData(
-                                  confirmScoreLottie,
-                                  currentPlayer.color,
-                                )}
-                                className="-mt-[30px] h-[320px]"
-                              />
-                            </>
-                          )}
-                        </h2>
+                        <>
+                          <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
+                            {playType === "timer" ? (
+                              <>
+                                {formatMsToS(gameTime)}초 남기고 성공했네!
+                                <br />
+                                <span className="text-[#F571A2]">
+                                  추가 {turnResult.earnedScore - sequence}점
+                                  획득!
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                {currentPlayerName}{" "}
+                                <span className="text-[#F571A2]">
+                                  {turnResult.earnedScore}점 획득!
+                                </span>
+                              </>
+                            )}
+                          </h2>
+                          <Lottie
+                            animationData={getLottieData(
+                              confirmScoreLottie,
+                              currentPlayer.color,
+                            )}
+                            className="-mt-[30px] h-[320px]"
+                          />
+                        </>
                       )}
                       {(turnResult.type === "FAIL" ||
                         turnResult.type === "TIMEOUT") && (

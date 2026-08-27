@@ -3,13 +3,12 @@ import { formatMsToS } from "@/lib/utils";
 import useGameStore from "@/stores/useGameStore";
 import { useEffect } from "react";
 
-export default function Countdown({
-  onNext,
-  isPause,
-}: {
+interface CountdownProps {
   onNext: () => void;
   isPause: boolean;
-}) {
+}
+
+export default function Countdown({ onNext, isPause }: CountdownProps) {
   const { start, pause, currentTime } = useTimer({
     initialTime: 3000,
     onTimerEnd: () => onNext(),
