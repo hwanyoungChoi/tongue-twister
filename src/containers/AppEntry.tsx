@@ -11,7 +11,11 @@ import useSound from "use-sound";
 import { Button } from "@/components/ui/button";
 import useTimer from "@/hooks/useTimer";
 
-export default function AppEntry({ children }: { children: React.ReactNode }) {
+interface AppEntryProps {
+  children: React.ReactNode;
+}
+
+export default function AppEntry({ children }: AppEntryProps) {
   const [showSplash, setShowSplash] = useState(true);
 
   const bgmEnabled = useAppStore((state) => state.bgmEnabled);

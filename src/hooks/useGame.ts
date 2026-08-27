@@ -9,6 +9,11 @@ import { MAX_LIFE, MAX_SEQUENCE, MAX_ROUND } from "@/lib/constants";
 export type PlayStep = "INTRO" | "COUNTDOWN" | "GAME" | "TURN_RESULT";
 export type TurnResultType = "CLEAR" | "FAIL" | "TIMEOUT";
 
+interface PlayerStat {
+  score: number;
+  life: number;
+}
+
 export default function useGame(isHistoryPop: boolean) {
   const navigate = useNavigate();
 
@@ -29,7 +34,7 @@ export default function useGame(isHistoryPop: boolean) {
   const isPenaltyRef = useRef(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
-  const [playerStats, setPlayerStats] = useState(() =>
+  const [playerStats, setPlayerStats] = useState<PlayerStat[]>(() =>
     players.map(() => ({ score: 0, life: MAX_LIFE })),
   );
 
@@ -37,6 +42,14 @@ export default function useGame(isHistoryPop: boolean) {
     type: TurnResultType;
     earnedScore: number;
   } | null>(null);
+
+  const updateCurrentStat = (updater: (stat: PlayerStat) => PlayerStat) => {
+    setPlayerStats((prev) =>
+      prev.map((stat, idx) =>
+        idx === currentPlayerIndex ? updater(stat) : stat,
+      ),
+    );
+  };
 
   const currentPlayer = players[currentPlayerIndex];
   const currentLife = playerStats[currentPlayerIndex].life;
@@ -50,39 +63,34 @@ export default function useGame(isHistoryPop: boolean) {
 
     if (type === "CLEAR" && playType === "timer") {
       bonusScore = Math.floor(currentTime / 1000);
-      setPlayerStats((prev) =>
-        prev.map((stat, idx) =>
-          idx === currentPlayerIndex
-            ? { ...stat, score: stat.score + bonusScore }
-            : stat,
-        ),
-      );
+      updateCurrentStat((stat) => ({
+        ...stat,
+        score: stat.score + bonusScore,
+      }));
     }
     setTurnResult({ type, earnedScore: baseScore + bonusScore });
     setSubStep("TURN_RESULT");
   };
 
-  // ⭐️ 시간 초과 (목숨 남았으면 2초 패널티 화면 띄움)
-  const handleTimeout = () => {
+  // ⭐️ 목숨 차감 (남은 목숨이 있으면 2초 패널티 화면, 없으면 턴 종료)
+  const loseLife = (type: Extract<TurnResultType, "FAIL" | "TIMEOUT">) => {
     if (isPenaltyRef.current) {
       return;
     }
     isPenaltyRef.current = true;
 
     pauseGameTimer();
-    setPlayerStats((prev) =>
-      prev.map((stat, idx) =>
-        idx === currentPlayerIndex ? { ...stat, life: stat.life - 1 } : stat,
-      ),
-    );
+    updateCurrentStat((stat) => ({ ...stat, life: stat.life - 1 }));
 
     if (currentLife - 1 <= 0 || sequence === MAX_SEQUENCE) {
-      handleTurnEnd("TIMEOUT", gameTime);
+      handleTurnEnd(type, gameTime);
     } else {
-      setPenaltyState("TIMEOUT");
+      setPenaltyState(type);
       setIsButtonDisabled(true);
     }
   };
+
+  const handleTimeout = () => loseLife("TIMEOUT");
 
   const {
     start: startGameTimer,
@@ -135,11 +143,7 @@ export default function useGame(isHistoryPop: boolean) {
   ]);
 
   const handleSuccess = () => {
-    setPlayerStats((prev) =>
-      prev.map((stat, idx) =>
-        idx === currentPlayerIndex ? { ...stat, score: stat.score + 1 } : stat,
-      ),
-    );
+    updateCurrentStat((stat) => ({ ...stat, score: stat.score + 1 }));
 
     if (sequence === MAX_SEQUENCE) {
       handleTurnEnd("CLEAR", gameTime);
@@ -148,27 +152,8 @@ export default function useGame(isHistoryPop: boolean) {
     }
   };
 
-  // ⭐️ 양심 모드 실패 (목숨 남았으면 2초 패널티 화면 띄움)
-  const handleFail = () => {
-    if (isPenaltyRef.current) {
-      return;
-    }
-    isPenaltyRef.current = true;
-
-    pauseGameTimer();
-    setPlayerStats((prev) =>
-      prev.map((stat, idx) =>
-        idx === currentPlayerIndex ? { ...stat, life: stat.life - 1 } : stat,
-      ),
-    );
-
-    if (currentLife - 1 <= 0 || sequence === MAX_SEQUENCE) {
-      handleTurnEnd("FAIL", gameTime);
-    } else {
-      setPenaltyState("FAIL");
-      setIsButtonDisabled(true);
-    }
-  };
+  // ⭐️ 양심 모드 실패
+  const handleFail = () => loseLife("FAIL");
 
   // ⭐️ 다음 플레이어로 넘어가기
   const handleNextPlayer = () => {
@@ -207,7 +192,7 @@ export default function useGame(isHistoryPop: boolean) {
       subStep,
       currentPlayer,
       currentPlayerName: currentPlayer.name,
-      currentPlayerIndex: currentPlayerIndex,
+      currentPlayerIndex,
       currentLife,
       currentScore,
       sequence,

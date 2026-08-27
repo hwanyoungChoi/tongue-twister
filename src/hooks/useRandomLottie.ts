@@ -5,12 +5,11 @@ import { useMemo } from "react";
  * @param types 고를 수 있는 타입 배열 (2개 이상 몇 개든 가능!)
  * @param trigger 이 값이 변경될 때만 새로운 랜덤값을 다시 뽑음
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default function useRandomLottie(types: string[], trigger?: any) {
-  return useMemo(() => {
-    // eslint-disable-next-line
-    const randomIndex = Math.floor(Math.random() * types.length);
-
-    return types[randomIndex];
-  }, [trigger]); // trigger가 바뀔 때만 useMemo가 다시 실행됨
+export default function useRandomLottie(types: string[], trigger?: unknown) {
+  return useMemo(
+    () => types[Math.floor(Math.random() * types.length)],
+    // ⭐️ types는 매 렌더 새 배열일 수 있어 의도적으로 제외 — trigger가 바뀔 때만 다시 뽑음
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [trigger],
+  );
 }

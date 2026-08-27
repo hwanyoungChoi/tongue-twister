@@ -21,17 +21,19 @@ const KOREAN_ORDINALS = [
 
 const LOTTIE_TYPES = ["player_circle1", "player_circle2"];
 
+interface IntroProps {
+  currentPlayerIndex: number;
+  currentPlayer: Player;
+  onNext: () => void;
+  isPause: boolean;
+}
+
 export default function Intro({
   currentPlayerIndex,
   currentPlayer,
   onNext,
   isPause,
-}: {
-  currentPlayerIndex: number;
-  currentPlayer: Player;
-  onNext: () => void;
-  isPause: boolean;
-}) {
+}: IntroProps) {
   const { start, pause } = useTimer({
     initialTime: 2500,
     onTimerEnd: () => onNext(),
