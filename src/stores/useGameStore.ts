@@ -1,6 +1,12 @@
-import { PLAYER_COLOR_LIST } from "@/lib/constants";
-import type { GameLevelOfDifficulty, GamePlayType, Player } from "@/types/game";
 import { create } from "zustand";
+
+import { PLAYER_COLOR_LIST } from "@/lib/constants";
+import type {
+  GameLevelOfDifficulty,
+  GamePlayType,
+  Player,
+  PlayerResult,
+} from "@/types/game";
 
 interface GameState {
   /**
@@ -23,6 +29,15 @@ interface GameState {
    * playType이 Timer일 때 사용되는 상태, 게임 타이머
    */
   playTime: number;
+  /**
+   * 로비에서 게임을 시작했는지 여부 (세션 가드 용도)
+   * 새로고침/URL 직접 진입 시 false이므로 로비로 되돌린다
+   */
+  hasStarted: boolean;
+  /**
+   * 게임 종료 시점의 플레이어별 최종 성적
+   */
+  results: PlayerResult[];
 }
 
 interface GameAction {
@@ -31,6 +46,18 @@ interface GameAction {
   setLevelOfDifficulty: (param: GameLevelOfDifficulty) => void;
   setPlayType: (param: GamePlayType) => void;
   setPlayTime: (param: number) => void;
+  /**
+   * 로비 → 셋업으로 진입할 때 호출. 이전 판의 결과를 비운다
+   */
+  startGame: () => void;
+  /**
+   * 게임 종료 시 최종 성적을 커밋
+   */
+  finishGame: (param: PlayerResult[]) => void;
+  /**
+   * 로비로 완전히 빠져나올 때 호출
+   */
+  exitGame: () => void;
 }
 
 const useGameStore = create<GameState & GameAction>((set) => ({
@@ -49,6 +76,8 @@ const useGameStore = create<GameState & GameAction>((set) => ({
   levelOfDifficulty: "long",
   playType: "timer",
   playTime: 30,
+  hasStarted: false,
+  results: [],
 
   setPlayers: (newState) => set(() => ({ players: newState })),
   setPenalty: (newState) => set(() => ({ penalty: newState })),
@@ -59,6 +88,10 @@ const useGameStore = create<GameState & GameAction>((set) => ({
     })),
   setPlayType: (newState) => set(() => ({ playType: newState })),
   setPlayTime: (newState) => set(() => ({ playTime: newState })),
+
+  startGame: () => set(() => ({ hasStarted: true, results: [] })),
+  finishGame: (newState) => set(() => ({ results: newState })),
+  exitGame: () => set(() => ({ hasStarted: false, results: [] })),
 }));
 
 export default useGameStore;

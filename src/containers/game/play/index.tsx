@@ -32,12 +32,11 @@ export default function GamePlay() {
   const playType = useGameStore((state) => state.playType);
   const playTime = useGameStore((state) => state.playTime);
   const levelOfDifficulty = useGameStore((state) => state.levelOfDifficulty);
+  const exitGame = useGameStore((state) => state.exitGame);
 
-  const {
-    state: blockerState,
-    proceed,
-    reset,
-  } = useBlocker(({ historyAction }) => historyAction === "POP");
+  const { state: blockerState, reset } = useBlocker(
+    ({ historyAction }) => historyAction === "POP",
+  );
   const isHistoryPop = blockerState === "blocked";
 
   const { gameState, actions } = useGame(isHistoryPop);
@@ -194,14 +193,27 @@ export default function GamePlay() {
                       {(turnResult.type === "FAIL" ||
                         turnResult.type === "TIMEOUT") && (
                         <>
+                          {/* ⭐️ 마지막 장에서 실패하면 목숨이 남아있어도 턴이 끝난다 */}
                           <h2 className="text-[26px] leading-[1.5] text-[#1F1F1F] font-np">
-                            저런.. 이제
-                            <br />
-                            남은 기회는 없어..
+                            {turnResult.remainingLife > 0 ? (
+                              <>
+                                아깝다! 마지막 장에서
+                                <br />
+                                혀가 꼬여버렸어..
+                              </>
+                            ) : (
+                              <>
+                                저런.. 이제
+                                <br />
+                                남은 기회는 없어..
+                              </>
+                            )}
                           </h2>
                           <Lottie
                             animationData={getLottieData(
-                              twoLifeLoseLottie,
+                              turnResult.remainingLife > 0
+                                ? oneLifeLoseLottie
+                                : twoLifeLoseLottie,
                               currentPlayer.color,
                             )}
                             className="-mt-[30px] h-[320px]"
@@ -274,11 +286,10 @@ export default function GamePlay() {
         cancelButtonLabel="종료하기"
         okButtonClick={reset}
         cancelButtonClick={() => {
-          if (playType === "conscience") {
-            navigate(ROUTES.LOBBY, { replace: true });
-            return;
-          }
-          proceed!();
+          // ⭐️ 모드와 무관하게 로비로 복귀. blocker를 먼저 풀어야 navigate가 먹는다
+          reset?.();
+          exitGame();
+          navigate(ROUTES.LOBBY, { replace: true });
         }}
       />
     </>
