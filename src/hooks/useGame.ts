@@ -1,7 +1,9 @@
 // src/hooks/useGame.ts
 import { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
 import useGameStore from "@/stores/useGameStore";
+
 import useTimer from "@/hooks/useTimer";
 import ROUTES from "@/lib/routes";
 import { MAX_LIFE, MAX_SEQUENCE, MAX_ROUND } from "@/lib/constants";
@@ -12,6 +14,8 @@ export type TurnResultType = "CLEAR" | "FAIL" | "TIMEOUT";
 interface PlayerStat {
   score: number;
   life: number;
+  failCount: number;
+  eliminatedOrder: number | null;
 }
 
 export default function useGame(isHistoryPop: boolean) {
@@ -20,6 +24,7 @@ export default function useGame(isHistoryPop: boolean) {
   const players = useGameStore((state) => state.players);
   const playType = useGameStore((state) => state.playType);
   const playTime = useGameStore((state) => state.playTime);
+  const finishGame = useGameStore((state) => state.finishGame);
 
   const [subStep, setSubStep] = useState<PlayStep>("INTRO");
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -35,12 +40,18 @@ export default function useGame(isHistoryPop: boolean) {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   const [playerStats, setPlayerStats] = useState<PlayerStat[]>(() =>
-    players.map(() => ({ score: 0, life: MAX_LIFE })),
+    players.map(() => ({
+      score: 0,
+      life: MAX_LIFE,
+      failCount: 0,
+      eliminatedOrder: null,
+    })),
   );
 
   const [turnResult, setTurnResult] = useState<{
     type: TurnResultType;
     earnedScore: number;
+    remainingLife: number;
   } | null>(null);
 
   const updateCurrentStat = (updater: (stat: PlayerStat) => PlayerStat) => {
@@ -56,7 +67,11 @@ export default function useGame(isHistoryPop: boolean) {
   const currentScore = playerStats[currentPlayerIndex].score;
 
   // ⭐️ 턴 완전 종료 처리 (결과창으로 이동)
-  const handleTurnEnd = (type: TurnResultType, currentTime: number) => {
+  const handleTurnEnd = (
+    type: TurnResultType,
+    currentTime: number,
+    remainingLife: number,
+  ) => {
     pauseGameTimer();
     const baseScore = type === "CLEAR" ? sequence : sequence - 1;
     let bonusScore = 0;
@@ -68,7 +83,7 @@ export default function useGame(isHistoryPop: boolean) {
         score: stat.score + bonusScore,
       }));
     }
-    setTurnResult({ type, earnedScore: baseScore + bonusScore });
+    setTurnResult({ type, earnedScore: baseScore + bonusScore, remainingLife });
     setSubStep("TURN_RESULT");
   };
 
@@ -80,10 +95,33 @@ export default function useGame(isHistoryPop: boolean) {
     isPenaltyRef.current = true;
 
     pauseGameTimer();
-    updateCurrentStat((stat) => ({ ...stat, life: stat.life - 1 }));
 
-    if (currentLife - 1 <= 0 || sequence === MAX_SEQUENCE) {
-      handleTurnEnd(type, gameTime);
+    const nextLife = currentLife - 1;
+    const isEliminated = nextLife <= 0;
+
+    setPlayerStats((prev) => {
+      // ⭐️ 탈락 순서는 "이미 탈락한 인원 수 + 1" — 벌칙 대상 산정(타이머 모드)에 쓰인다
+      const eliminatedCount = prev.filter(
+        (stat) => stat.eliminatedOrder !== null,
+      ).length;
+
+      return prev.map((stat, idx) => {
+        if (idx !== currentPlayerIndex) return stat;
+
+        return {
+          ...stat,
+          life: stat.life - 1,
+          failCount: stat.failCount + 1,
+          eliminatedOrder:
+            isEliminated && stat.eliminatedOrder === null
+              ? eliminatedCount + 1
+              : stat.eliminatedOrder,
+        };
+      });
+    });
+
+    if (isEliminated || sequence === MAX_SEQUENCE) {
+      handleTurnEnd(type, gameTime, Math.max(0, nextLife));
     } else {
       setPenaltyState(type);
       setIsButtonDisabled(true);
@@ -146,7 +184,7 @@ export default function useGame(isHistoryPop: boolean) {
     updateCurrentStat((stat) => ({ ...stat, score: stat.score + 1 }));
 
     if (sequence === MAX_SEQUENCE) {
-      handleTurnEnd("CLEAR", gameTime);
+      handleTurnEnd("CLEAR", gameTime, currentLife);
     } else {
       setSequence((prev) => prev + 1);
     }
@@ -179,7 +217,17 @@ export default function useGame(isHistoryPop: boolean) {
     }
 
     if (nextRound > MAX_ROUND || nextIndex >= players.length) {
-      navigate(ROUTES.FINISH);
+      // ⭐️ 게임 종료 — 결과 화면에서 쓸 최종 성적을 스토어에 커밋
+      finishGame(
+        players.map((player, idx) => ({
+          player,
+          score: playerStats[idx].score,
+          life: playerStats[idx].life,
+          failCount: playerStats[idx].failCount,
+          eliminatedOrder: playerStats[idx].eliminatedOrder,
+        })),
+      );
+      navigate(ROUTES.FINISH, { replace: true });
     } else {
       setRound(nextRound);
       setCurrentPlayerIndex(nextIndex);

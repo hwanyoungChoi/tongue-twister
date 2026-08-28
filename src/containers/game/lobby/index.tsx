@@ -52,6 +52,7 @@ export default function GameLobby() {
     (state) => state.setLevelOfDifficulty,
   );
   const setPlayType = useGameStore((state) => state.setPlayType);
+  const startGame = useGameStore((state) => state.startGame);
 
   const isLong = levelOfDifficulty === "long";
   const isTimer = playType === "timer";
@@ -188,6 +189,7 @@ export default function GameLobby() {
           variant="primary"
           size="md"
           onClick={() => {
+            startGame();
             navigate(ROUTES.PLAY_TYPE_SETUP);
             play();
           }}
