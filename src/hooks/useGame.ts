@@ -24,7 +24,15 @@ export default function useGame(isHistoryPop: boolean) {
   const players = useGameStore((state) => state.players);
   const playType = useGameStore((state) => state.playType);
   const playTime = useGameStore((state) => state.playTime);
+  const startGame = useGameStore((state) => state.startGame);
   const finishGame = useGameStore((state) => state.finishGame);
+
+  // ⭐️ /play 진입 시점에 이전 판 results를 비운다.
+  // /finish에 머문 채로 비우면 GameGuard의 /finish 가드(results.length > 0)가
+  // 그 자리에서 바로 무효화돼 navigate보다 먼저 로비로 튕기는 레이스가 생긴다
+  useEffect(() => {
+    startGame();
+  }, [startGame]);
 
   const [subStep, setSubStep] = useState<PlayStep>("INTRO");
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
